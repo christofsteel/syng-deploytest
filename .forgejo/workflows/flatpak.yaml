@@ -1,0 +1,46 @@
+name: build flatpak
+on:
+  workflow_dispatch: {}
+
+jobs:
+  build-flatpak:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Flatpak and flatpak-builder
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y flatpak flatpak-builder
+
+      - name: Add Flathub remote
+        run: |
+          flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+      - name: Prepare Flatpak YAML files
+        run: |
+          chmod +x build_yaml.sh
+          build_yaml.sh
+        working-directory: resources/flatpak
+      - name: Build Flatpak
+        run: flatpak-builder \
+            --force-clean \
+            --user \
+            --install-deps-from=flathub \
+            build-dir \
+            "rocks.syng.Syng.yaml" 
+        working-directory: resources/flatpak
+      - name: Build Flatpak Artifact
+        run: flatpak build-bundle \
+            ~/.local/share/flatpak/repo \
+            "rocks.syng.Syng.flatpak" \
+            "rocks.syng.Syng"
+        working-directory: resources/flatpak
+      - name: Upload Flatpak artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: flatpak-bundle
+          path: "*.flatpak"
+
+      

@@ -1,5 +1,22 @@
 #!/usr/bin/env bash
 
+. ../utils.sh
+
+# RUNTIME=org.kde.Platform//6.10
+
+YT_DLP=($(curl -s https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest | jq -r '.assets[] | select (.browser_download_url | contains(".tar.gz")) | .digest, .browser_download_url'))
+export YT_DLP_SHA=$(echo ${YT_DLP[0]} | cut -d : -f 2)
+export YT_DLP_URL=${YT_DLP[1]}
+
+YT_DLP_EJS=($(curl -s https://api.github.com/repos/yt-dlp/ejs/releases/latest | jq -r '.assets[] | select (.browser_download_url | contains("py3-none-any.whl")) | .digest, .browser_download_url'))
+export YT_DLP_EJS_SHA=$(echo ${YT_DLP_EJS[0]} | cut -d : -f 2)
+export YT_DLP_EJS_URL=${YT_DLP_EJS[1]}
+export SYNG_COMMIT=$(git log -1 --format=%H)
+envsubst '$YT_DLP_URL $YT_DLP_SHA $YT_DLP_EJS_URL $YT_DLP_EJS_SHA $SYNG_COMMIT' < rocks.syng.Syng.yaml.template > rocks.syng.Syng.yaml
+
+
+uv export --extra client > requirements-client_in.txt
+
 ./flatpak-pip-generator --build-only --yaml expandvars
 ./flatpak-pip-generator --yaml cffi
 ./flatpak-pip-generator --yaml pdm-backend
@@ -19,7 +36,7 @@ AWK_PROG='
       if (inside_block == 0 && $0 ~ package) { next }
       print
     }'
-awk -v package="pyside6" "$AWK_PROG" "../../requirements-client.txt" \
+awk -v package="pyside6" "$AWK_PROG" "requirements-client_in.txt" \
   | awk -v package="shiboken6" "$AWK_PROG" \
   | awk -v package="brotlicffi" "$AWK_PROG" \
   | awk -v package="colorama" "$AWK_PROG" \
