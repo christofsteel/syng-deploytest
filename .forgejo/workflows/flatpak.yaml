@@ -16,7 +16,7 @@ jobs:
       - name: Install Flatpak and flatpak-builder
         run: |
           sudo apt-get update
-          sudo apt-get install -y flatpak flatpak-builder gettext-base python3-requirement-parser
+          sudo apt-get install -y flatpak flatpak-builder gettext-base python3-requirement-parser python3-yaml
 
       - name: Add Flathub remote
         run: |
