@@ -39,7 +39,7 @@ env:
   IMAGE_NAME: christofsteel/syngtesting
   REGISTRY: git.k-fortytwo.de
   USERNAME: christofsteel
-  PASSWORD: ${{ secrets.FORGEJO_TOKEN }}
+  PASSWORD: ${{ secrets.FJCR_PUSH }}
   REGISTRY2: ghcr.io
   USERNAME2: christofsteel
   PASSWORD2: ${{ secrets.GHCR_PUSH }}
