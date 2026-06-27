@@ -43,7 +43,7 @@ env:
   REGISTRY2: ghcr.io
   USERNAME2: christofsteel
   PASSWORD2: ${{ secrets.GHCR_PUSH }}
-  PUSH: false
+  PUSH: true
 
 jobs:
   docker:
