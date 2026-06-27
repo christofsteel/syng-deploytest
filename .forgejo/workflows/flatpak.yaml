@@ -12,7 +12,7 @@ jobs:
       - name: Install Flatpak and flatpak-builder
         run: |
           sudo apt-get update
-          sudo apt-get install -y flatpak flatpak-builder envsubst uv requirements-parser
+          sudo apt-get install -y flatpak flatpak-builder gettext-base uv requirements-parser
 
       - name: Add Flathub remote
         run: |
