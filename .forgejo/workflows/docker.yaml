@@ -42,7 +42,7 @@ env:
   PASSWORD: ${{ secrets.FORGEJO_TOKEN }}
   REGISTRY2: ghcr.io
   USERNAME2: christofsteel
-  PASSWORD: ${{ secrets.GHCR_PUSH }}
+  PASSWORD2: ${{ secrets.GHCR_PUSH }}
   PUSH: false
 
 jobs:
