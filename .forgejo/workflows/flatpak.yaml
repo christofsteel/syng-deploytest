@@ -21,7 +21,7 @@ jobs:
       - name: Prepare Flatpak YAML files
         run: |
           chmod +x build_yaml.sh
-          build_yaml.sh
+          ./build_yaml.sh
         working-directory: resources/flatpak
       - name: Build Flatpak
         run: flatpak-builder \
