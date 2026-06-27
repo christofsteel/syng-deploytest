@@ -5,6 +5,7 @@ on:
   #   branches:
   #     - main
   workflow_dispatch: {}
+  workflow_call:
 
 env:
   WINEPREFIX: /wineprefix
@@ -86,13 +87,6 @@ jobs:
       - name: Create wineprefix
         if: steps.cache-dl.outputs.cache-hit != 'true'
         run: ${{ env.winecfg }}
-
-      # - name: Cache syng build
-      #   id: cache-syng
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: work/dist
-      #     key: Xsyng-${{ env.synghash }}
 
 
       - name: Run python installer
