@@ -1,3 +1,5 @@
+name: Build windows installer and binary
+
 on:
   # push:
   #   branches:
@@ -9,13 +11,6 @@ env:
   WINEDLLOVERRIDES: mshtml=
   WINEARCH: win64
   WINEDEBUG: -all
-  WINE_VERSION: 11.1
-  MPV_NIGHTLY: 20260122
-  MPV_HASH: 6e54aa3
-  FFMPEG_HASH: 0c3afc7e5
-  PYTHON_VERSION: 3.13.12
-  MONO_VERSION: 10.4.1
-  DENO_VERSION: 2.6.7
   PYSIDE_VERSION: 6.9.2
 
 
@@ -25,6 +20,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4        
+
+      - name: Get latest versions for dependencies
+        run: |
+          bash resources/windows/latest-win-deps | tee >> ${GITHUB_ENV}
       - name: Get hash and version for cache
         run: |
           echo "synghash=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
