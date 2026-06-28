@@ -14,25 +14,25 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Flatpak and flatpak-builder
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y flatpak flatpak-builder gettext-base python3-requirement-parser python3-yaml
+        uses: awalsh128/cache-apt-pkgs-action@v1
+        with:
+          packages: flatpak flatpak-builder gettext-base python3-requirement-parser python3-yaml
 
-      - name: Add Flathub remote
-        run: |
-          flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+        # run: |
+        #   sudo apt-get update
+        #   sudo apt-get install -y flatpak flatpak-builder gettext-base python3-requirement-parser python3-yaml
+     
 
       - name: Prepare Flatpak YAML files
         run: |
           chmod +x build_yaml.sh
           ./build_yaml.sh
         working-directory: resources/flatpak
+
       - name: Build Flatpak
-        run: flatpak-builder \
-            --force-clean \
-            --install-deps-from=flathub \
-            build-dir \
-            "rocks.syng.Syng.yaml" 
+        run: |
+          flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+          flatpak-builder --force-clean --user --install-deps-from=flathub build-dir rocks.syng.Syng.yaml
         working-directory: resources/flatpak
       - name: Build Flatpak Artifact
         run: flatpak build-bundle \
