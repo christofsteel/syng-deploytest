@@ -64,7 +64,7 @@ jobs:
         run: |
           flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
           flatpak-builder --force-clean --user --install-deps-from=flathub  --disable-rofiles-fuse build-dir rocks.syng.Syng.yaml
-        working-directory: resources/flatpak
+        working-directory: /workspace/christofsteel/syng-deploytest
       - name: Build Flatpak Artifact
         run: flatpak build-bundle \
             ~/.local/share/flatpak/repo \
