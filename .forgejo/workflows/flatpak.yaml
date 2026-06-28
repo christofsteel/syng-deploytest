@@ -37,10 +37,13 @@ jobs:
           name: flatpak-yaml-files
           path: .
 
-      - name: Install Flatpak and flatpak-builder
-        uses: https://github.com/awalsh128/cache-apt-pkgs-action@v1
-        with:
-          packages: flatpak flatpak-builder
+      - run: |
+          apt update
+          apt-get install flatpak flatpak-builder
+      # - name: Install Flatpak and flatpak-builder
+      #   uses: https://github.com/awalsh128/cache-apt-pkgs-action@v1
+      #   with:
+      #     packages: flatpak flatpak-builder
 
       # - name: Build Flatpak
       #   uses: https://codeberg.org/jamiemurphy/flatpak-runtime-sdk@main
