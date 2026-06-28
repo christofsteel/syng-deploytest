@@ -4,7 +4,7 @@ on:
 
 jobs:
   build-flatpak:
-    runs-on: ubuntu-latest
+    runs-on: flatpak-builder-base
     steps:
       - name: Install uv
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
@@ -13,16 +13,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Flatpak and flatpak-builder
-        uses: https://github.com/awalsh128/cache-apt-pkgs-action@v1
-        with:
-          packages: flatpak flatpak-builder gettext-base python3-requirement-parser python3-yaml fuse
-
-        # run: |
-        #   sudo apt-get update
-        #   sudo apt-get install -y flatpak flatpak-builder gettext-base python3-requirement-parser python3-yaml
-     
-
+      # - name: Install Flatpak and flatpak-builder
+      #   uses: https://github.com/awalsh128/cache-apt-pkgs-action@v1
+      #   with:
+      #     packages: flatpak flatpak-builder gettext-base python3-requirement-parser python3-yaml fuse
+        #
       - name: Prepare Flatpak YAML files
         run: |
           chmod +x build_yaml.sh
@@ -30,16 +25,31 @@ jobs:
         working-directory: resources/flatpak
 
       - name: Build Flatpak
-        run: |
-          flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-          flatpak-builder --force-clean --user --install-deps-from=flathub build-dir rocks.syng.Syng.yaml
-        working-directory: resources/flatpak
-      - name: Build Flatpak Artifact
-        run: flatpak build-bundle \
-            ~/.local/share/flatpak/repo \
-            "rocks.syng.Syng.flatpak" \
-            "rocks.syng.Syng"
-        working-directory: resources/flatpak
+        uses: https://codeberg.org/jamiemurphy/flatpak-runtime-sdk@main
+        with:
+          manifest-path: resoruces/flatpak/rocks.syng.Syng.yaml
+          module: Syng.Rocks!
+          app-id: rocks.syng.Syng
+          bundle: rocks.syng.Syng.flatpak
+
+
+      # - name: Install Flatpak and flatpak-builder
+      #   uses: https://github.com/awalsh128/cache-apt-pkgs-action@v1
+      #   with:
+      #     packages: gettext-base python3-requirement-parser python3-yaml
+
+
+      # - name: Build Flatpak
+      #   run: |
+      #     flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+      #     flatpak-builder --force-clean --user --install-deps-from=flathub build-dir rocks.syng.Syng.yaml
+      #   working-directory: resources/flatpak
+      # - name: Build Flatpak Artifact
+      #   run: flatpak build-bundle \
+      #       ~/.local/share/flatpak/repo \
+      #       "rocks.syng.Syng.flatpak" \
+      #       "rocks.syng.Syng"
+      #   working-directory: resources/flatpak
       - name: Upload Flatpak artifact
         uses: actions/upload-artifact@v4
         with:
