@@ -40,7 +40,7 @@ jobs:
       - name: Build Flatpak
         uses: https://codeberg.org/jamiemurphy/flatpak-runtime-sdk@main
         with:
-          manifest-path: rocks.syng.Syng.yaml
+          manifest-path: /workspace/christofsteel/syng-deploytest/rocks.syng.Syng.yaml
           module: Syng.Rocks!
           app-id: rocks.syng.Syng
           bundle: rocks.syng.Syng.flatpak
