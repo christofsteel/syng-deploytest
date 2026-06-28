@@ -16,7 +16,7 @@ jobs:
       - name: Install Flatpak and flatpak-builder
         uses: https://github.com/awalsh128/cache-apt-pkgs-action@v1
         with:
-          packages: flatpak flatpak-builder gettext-base python3-requirement-parser python3-yaml
+          packages: flatpak flatpak-builder gettext-base python3-requirement-parser python3-yaml fuse
 
         # run: |
         #   sudo apt-get update
