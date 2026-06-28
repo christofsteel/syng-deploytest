@@ -21,7 +21,7 @@ jobs:
           chmod +x build_yaml.sh
           ./build_yaml.sh
         working-directory: resources/flatpak
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: flatpak-yaml-files
           path: resources/flatpak
@@ -32,18 +32,15 @@ jobs:
     steps:
       # - name: Checkout repository
       #   uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
           name: flatpak-yaml-files
           path: .
 
-
-        #
-
       - name: Build Flatpak
         uses: https://codeberg.org/jamiemurphy/flatpak-runtime-sdk@main
         with:
-          manifest-path: resoruces/flatpak/rocks.syng.Syng.yaml
+          manifest-path: rocks.syng.Syng.yaml
           module: Syng.Rocks!
           app-id: rocks.syng.Syng
           bundle: rocks.syng.Syng.flatpak
