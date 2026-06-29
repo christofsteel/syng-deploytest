@@ -42,10 +42,10 @@ jobs:
       # - run: |
       #     apt update
       #     apt-get install -y flatpak flatpak-builder
-      # - name: Install Flatpak and flatpak-builder
-      #   uses: https://github.com/awalsh128/cache-apt-pkgs-action@v1
-      #   with:
-      #     packages: flatpak flatpak-builder
+      - name: Install Flatpak and flatpak-builder
+        uses: https://github.com/awalsh128/cache-apt-pkgs-action@v1
+        with:
+          packages: xvfb
 
       # - name: Build Flatpak
       #   uses: https://codeberg.org/jamiemurphy/flatpak-runtime-sdk@main
@@ -68,7 +68,7 @@ jobs:
         run: |
           # flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
           dbus-daemon --system
-          flatpak run --user --command=flathub-build org.flatpak.Builder --disable-rofiles-fuse rocks.syng.Syng.yaml
+          xvfb-run -- flatpak run --user --command=flathub-build org.flatpak.Builder --disable-rofiles-fuse rocks.syng.Syng.yaml
         # working-directory: /workspace/christofsteel/syng-deploytest
       - name: Build Flatpak Artifact
         run: flatpak build-bundle \
