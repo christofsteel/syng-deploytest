@@ -66,6 +66,7 @@ jobs:
 
       - name: Build Flatpak
         run: |
+          dbus-daemon --system
           xvfb-run -a -s "-screen 0 1024x768x24" -- \
           dbus-run-session \
           flatpak run --user --command=flathub-build org.flatpak.Builder --disable-rofiles-fuse rocks.syng.Syng.yaml
