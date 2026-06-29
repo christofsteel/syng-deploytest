@@ -66,9 +66,9 @@ jobs:
 
       - name: Build Flatpak
         run: |
-          # flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-          dbus-daemon --system
-          xvfb-run -- flatpak run --user --command=flathub-build org.flatpak.Builder --disable-rofiles-fuse rocks.syng.Syng.yaml
+          xvfb-run -a -s "-screen 0 1024x768x24" -- \
+          dbus-run-session \
+          flatpak run --user --command=flathub-build org.flatpak.Builder --disable-rofiles-fuse rocks.syng.Syng.yaml
         # working-directory: /workspace/christofsteel/syng-deploytest
       - name: Build Flatpak Artifact
         run: flatpak build-bundle \
