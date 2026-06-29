@@ -30,7 +30,7 @@ jobs:
     needs: prepare-yaml-files
     runs-on: privileged-ubuntu-latest
     container: 
-      image: git.k-fortytwo.de/christofsteel/flatpakkde:6.10
+      image: git.k-fortytwo.de/christofsteel/flatpakkde:6.10-new
     steps:
       # - name: Checkout repository
       #   uses: actions/checkout@v4
