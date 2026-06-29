@@ -18,8 +18,7 @@ envsubst '$YT_DLP_URL $YT_DLP_SHA $YT_DLP_EJS_URL $YT_DLP_EJS_SHA $SYNG_COMMIT' 
 uv export --extra client > requirements-client_in.txt
 
 ./flatpak-pip-generator --build-only --yaml expandvars
-./flatpak-pip-generator --build-only --yaml uv-build
-./flatpak-pip-generator --build-only --yaml maturin
+./flatpak-pip-generator --build-only --yaml --prefer-wheels=uv-build --runtime org.kde.Sdk//6.10 uv-build
 ./flatpak-pip-generator --yaml cffi
 ./flatpak-pip-generator --yaml pdm-backend
 ./flatpak-pip-generator --yaml pybind11

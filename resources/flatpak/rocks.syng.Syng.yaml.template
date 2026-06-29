@@ -227,7 +227,6 @@ modules:
         commands:
           - unzip deno.zip
 
-  - python3-maturin.yaml
   - python3-uv-build.yaml
   - python3-expandvars.yaml
   - python3-cffi.yaml
