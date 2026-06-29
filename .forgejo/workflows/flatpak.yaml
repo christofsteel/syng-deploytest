@@ -67,6 +67,7 @@ jobs:
       - name: Build Flatpak
         run: |
           # flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+          dbus-daemon --system
           flatpak run --user --command=flathub-build org.flatpak.Builder --force-clean --user --disable-rofiles-fuse --install-deps-from=flathub build-dir rocks.syng.Syng.yaml
         # working-directory: /workspace/christofsteel/syng-deploytest
       - name: Build Flatpak Artifact
