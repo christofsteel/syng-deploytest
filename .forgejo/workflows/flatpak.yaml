@@ -6,18 +6,18 @@ jobs:
   prepare-yaml-files:
     runs-on: privileged-ubuntu-latest
     container: 
-      image: git.k-fortytwo.de/christofsteel/flatpakkde:6.10-new
+      image: git.k-fortytwo.de/christofsteel/syng-flatpakbuilder:1.0.0
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Install Flatpak and flatpak-builder
-        uses: https://github.com/awalsh128/cache-apt-pkgs-action@v1
-        with:
-          packages: gettext-base python3-requirement-parser python3-yaml xvfb
-      - name: Install uv
-        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
-        with:
-          version: "0.11.19"      
+      # - name: Install Flatpak and flatpak-builder
+      #   uses: https://github.com/awalsh128/cache-apt-pkgs-action@v1
+      #   with:
+      #     packages: gettext-base python3-requirement-parser python3-yaml xvfb
+      # - name: Install uv
+      #   uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+      #   with:
+      #     version: "0.11.19"      
       - name: Prepare Flatpak YAML files
         run: |
           chmod +x build_yaml.sh
@@ -35,7 +35,7 @@ jobs:
     needs: prepare-yaml-files
     runs-on: privileged-ubuntu-latest
     container: 
-      image: git.k-fortytwo.de/christofsteel/flatpakkde:6.10-new
+      image: git.k-fortytwo.de/christofsteel/syng-flatpakbuilder:1.0.0
     steps:
       # - name: Checkout repository
       #   uses: actions/checkout@v4
@@ -47,10 +47,10 @@ jobs:
       # - run: |
       #     apt update
       #     apt-get install -y flatpak flatpak-builder
-      - name: Install Flatpak and flatpak-builder
-        uses: https://github.com/awalsh128/cache-apt-pkgs-action@v1
-        with:
-          packages: xvfb
+      # - name: Install Flatpak and flatpak-builder
+      #   uses: https://github.com/awalsh128/cache-apt-pkgs-action@v1
+      #   with:
+      #     packages: xvfb
 
       # - name: Build Flatpak
       #   uses: https://codeberg.org/jamiemurphy/flatpak-runtime-sdk@main
@@ -66,7 +66,7 @@ jobs:
       #   with:
       #     packages: gettext-base python3-requirement-parser python3-yaml
         #
-      - run: ls -l
+      # - run: ls -l
 
 
       - name: Build Flatpak
