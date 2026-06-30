@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cYT_DLP=($(curl -s https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest | jq -r '.assets[] | select (.browser_download_url | contains(".tar.gz")) | .digest, .browser_download_url'))
+YT_DLP=($(curl -s https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest | jq -r '.assets[] | select (.browser_download_url | contains(".tar.gz")) | .digest, .browser_download_url'))
 export YT_DLP_SHA=$(echo ${YT_DLP[0]} | cut -d : -f 2)
 export YT_DLP_URL=${YT_DLP[1]}
 
