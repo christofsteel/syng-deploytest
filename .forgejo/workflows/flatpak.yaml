@@ -74,7 +74,7 @@ jobs:
           dbus-daemon --system
           xvfb-run -a -s "-screen 0 1024x768x24" -- \
           dbus-run-session \
-          flatpak run --user --command=flathub-build org.flatpak.Builder --disable-rofiles-fuse rocks.syng.Syng.yaml
+          flatpak run --user --command=flathub-build org.flatpak.Builder --disable-rofiles-fuse --repo=repo rocks.syng.Syng.yaml
         # working-directory: /workspace/christofsteel/syng-deploytest
       - name: Build Flatpak Artifact
         run: flatpak build-bundle \
