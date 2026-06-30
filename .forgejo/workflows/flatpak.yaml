@@ -78,7 +78,7 @@ jobs:
         # working-directory: /workspace/christofsteel/syng-deploytest
       - name: Build Flatpak Artifact
         run: flatpak build-bundle \
-            repo \
+            /workspace/christofsteel/syng-deploytest/repo \
             "rocks.syng.Syng.flatpak" \
             "rocks.syng.Syng"
         # working-directory: /workspace/christofsteel/syng-deploytest/
