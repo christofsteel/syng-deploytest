@@ -13,7 +13,7 @@ jobs:
       - name: Install Flatpak and flatpak-builder
         uses: https://github.com/awalsh128/cache-apt-pkgs-action@v1
         with:
-          packages: gettext-base python3-requirement-parser python3-yaml
+          packages: gettext-base python3-requirement-parser python3-yaml xvfb
       - name: Install uv
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
         with:
@@ -21,6 +21,9 @@ jobs:
       - name: Prepare Flatpak YAML files
         run: |
           chmod +x build_yaml.sh
+          dbus-daemon --system
+          xvfb-run -a -s "-screen 0 1024x768x24" -- \
+          dbus-run-session \
           ./build_yaml.sh
         working-directory: resources/flatpak
       - uses: actions/upload-artifact@v3
