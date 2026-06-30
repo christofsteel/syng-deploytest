@@ -46,4 +46,4 @@ awk -v package="pyside6" "$AWK_PROG" "requirements-client_in.txt" \
   | sed 's/-e .//g' \
   > "requirements-client.txt"
 
-./flatpak-pip-generator --requirements-file requirements-client.txt --ignore-pkg cffi==1.17.1  --prefer-wheels=ast-serialize --yaml
+./flatpak-pip-generator --requirements-file requirements-client.txt --ignore-pkg cffi==1.17.1  --prefer-wheels=ast-serialize --yaml --runtime org.kde.Sdk//6.10
