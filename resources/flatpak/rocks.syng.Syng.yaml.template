@@ -227,6 +227,7 @@ modules:
         commands:
           - unzip deno.zip
 
+  - python3-pybind11.yaml
   - python3-setuptools_scm.yaml
   - python3-modules.yaml
   - name: syng
