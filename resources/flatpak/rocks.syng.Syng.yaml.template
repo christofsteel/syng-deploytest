@@ -227,7 +227,7 @@ modules:
         commands:
           - unzip deno.zip
 
-  - python3-setuptools_scm
+  - python3-setuptools_scm.yaml
   - python3-modules.yaml
   - name: syng
     buildsystem: simple
