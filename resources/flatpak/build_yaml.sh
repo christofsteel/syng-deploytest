@@ -14,10 +14,10 @@ export YT_DLP_EJS_URL=${YT_DLP_EJS[1]}
 export SYNG_COMMIT=$(git log -1 --format=%H)
 envsubst '$YT_DLP_URL $YT_DLP_SHA $YT_DLP_EJS_URL $YT_DLP_EJS_SHA $SYNG_COMMIT' < rocks.syng.Syng.yaml.template > rocks.syng.Syng.yaml
 
-./flatpak-pip-generator --yaml pdm-backend # for pymediainfo
-./flatpak-pip-generator --yaml pybind11 # for pillow
+# ./flatpak-pip-generator --yaml pdm-backend # for pymediainfo
+# ./flatpak-pip-generator --yaml pybind11 # for pillow
 ./flatpak-pip-generator --yaml setuptools_scm[toml] # for argon2-cffi-bindings
-./flatpak-pip-generator --yaml --pyproject-file ../../pyproject.toml --ignore-pkg=PySide6 --optdep-groups client --runtime org.kde.Sdk//6.10
+./flatpak-pip-generator --yaml --pyproject-file ../../pyproject.toml --ignore-pkg=PySide6 --prefer-wheels=uv-build,pillow,pymediainfo --optdep-groups client --runtime org.kde.Sdk//6.10
 
 # uv export --extra client > requirements-client_in.txt
 #
