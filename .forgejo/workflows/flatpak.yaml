@@ -77,8 +77,7 @@ jobs:
           flatpak run --user --command=flathub-build org.flatpak.Builder --disable-rofiles-fuse --repo=repo rocks.syng.Syng.yaml
         # working-directory: /workspace/christofsteel/syng-deploytest
       - name: Build Flatpak Artifact
-        run: flatpak build-bundle \
-            /workspace/christofsteel/syng-deploytest/repo \
+        run: flatpak build-bundle /workspace/christofsteel/syng-deploytest/repo \
             "rocks.syng.Syng.flatpak" \
             "rocks.syng.Syng"
         # working-directory: /workspace/christofsteel/syng-deploytest/
