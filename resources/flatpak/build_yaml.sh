@@ -23,7 +23,6 @@ uv export --extra client > requirements-client_in.txt
 ./flatpak-pip-generator --yaml pdm-backend
 ./flatpak-pip-generator --yaml pybind11
 ./flatpak-pip-generator --yaml setuptools_scm[toml]
-./flatpak-pip-generator --build-only --yaml --prefer-wheels=ast-serialize --runtime org.kde.Sdk//6.10 ast-serialize
 
 AWK_PROG='
     BEGIN { inside_block = 0 }
@@ -47,4 +46,4 @@ awk -v package="pyside6" "$AWK_PROG" "requirements-client_in.txt" \
   | sed 's/-e .//g' \
   > "requirements-client.txt"
 
-./flatpak-pip-generator --requirements-file requirements-client.txt --ignore-pkg cffi==1.17.1  --ignore-pkg ast-serialize --yaml
+./flatpak-pip-generator --requirements-file requirements-client.txt --ignore-pkg cffi==1.17.1  --prefer-wheels=ast-serialize --yaml
