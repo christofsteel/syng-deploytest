@@ -20,6 +20,10 @@ on:
         description: 'branch tag'
         required: false
         type: string
+      push:
+        description: 'push the image'
+        default: false
+        type: boolean
 
   workflow_call:
     inputs:
@@ -35,6 +39,10 @@ on:
         description: 'branch tag'
         required: false
         type: string
+      push:
+        description: 'push the image'
+        default: false
+        type: boolean
 env:
   IMAGE_NAME: christofsteel/syngtesting
   REGISTRY: git.k-fortytwo.de
@@ -43,7 +51,7 @@ env:
   REGISTRY2: ghcr.io
   USERNAME2: christofsteel
   PASSWORD2: ${{ secrets.GHCR_PUSH }}
-  PUSH: true
+  PUSH: ${{ github.event.inputs.push }}
 
 jobs:
   docker:
