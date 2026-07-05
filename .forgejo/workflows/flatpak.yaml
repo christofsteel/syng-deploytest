@@ -59,7 +59,7 @@ jobs:
           path: "*.flatpak"
 
   run-external-workflow:
-    needs: prepare-yaml-files, build-flatpak
+    needs: [prepare-yaml-files, build-flatpak]
     runs-on: ubuntu-latest
     steps:
       - name: print url
