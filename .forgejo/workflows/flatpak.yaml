@@ -2,11 +2,17 @@ name: build flatpak
 on:
   workflow_dispatch: {}
 
+env:
+  TOKEN: ${{ secrets.GH_TESTREPO }}
+  REPO: christofsteel/testrepo
+
 jobs:
   prepare-yaml-files:
     runs-on: privileged-ubuntu-latest
     container: 
       image: git.k-fortytwo.de/christofsteel/syng-flatpakbuilder:1.0.0
+    outputs:
+      artifact_url: ${{ steps.artifact_url.outputs.artifact_url }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,7 +29,8 @@ jobs:
           name: flatpak-yaml-files
           path: resources/flatpak
       - name: Print artifact url
-        run: echo "https://git.k-fortytwo.de/christofsteel/syng-deploytest/actions/runs/${{ forgejo.run_id }}/artifacts/flatpak-yaml-files"
+        id: artifact_url
+        run: echo "https://git.k-fortytwo.de/christofsteel/syng-deploytest/actions/runs/${{ forgejo.run_id }}/artifacts/flatpak-yaml-files" >> $FORGEJO_OUTPUT
       
   build-flatpak:
     needs: prepare-yaml-files
@@ -51,4 +58,16 @@ jobs:
           name: flatpak-bundle
           path: "*.flatpak"
 
-      
+  run-external-workflow:
+    needs: prepare-yaml-files, build-flatpak
+    runs-on: ubuntu-latest
+    steps:
+      - name: print url
+        run: echo ${{ needs.prepare-yaml-files.outputs.artifact_url }}
+      - name: dispatch
+        run: |
+              curl -X POST \
+              -H "Authorization: token ${{ env.TOKEN }}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              https://api.github.com/repos/${{ env.REPO }}/dispatches \
+              -d "{\"event_type\": \"test-event\", \"client_payload\": { \"url\": \"${{ needs.prepare-yaml-files.outputs.artifact_url }}\"}}"
