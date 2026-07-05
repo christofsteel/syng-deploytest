@@ -30,7 +30,7 @@ jobs:
           path: resources/flatpak
       - name: Print artifact url
         id: artifact_url
-        run: echo "https://git.k-fortytwo.de/christofsteel/syng-deploytest/actions/runs/${{ forgejo.run_id }}/artifacts/flatpak-yaml-files" >> $FORGEJO_OUTPUT
+        run: echo "artifact_url=https://git.k-fortytwo.de/christofsteel/syng-deploytest/actions/runs/${{ forgejo.run_id }}/artifacts/flatpak-yaml-files" >> $FORGEJO_OUTPUT
       
   build-flatpak:
     needs: prepare-yaml-files
