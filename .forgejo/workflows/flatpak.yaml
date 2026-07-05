@@ -10,14 +10,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      # - name: Install Flatpak and flatpak-builder
-      #   uses: https://github.com/awalsh128/cache-apt-pkgs-action@v1
-      #   with:
-      #     packages: gettext-base python3-requirement-parser python3-yaml xvfb
-      # - name: Install uv
-      #   uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
-      #   with:
-      #     version: "0.11.19"      
       - name: Prepare Flatpak YAML files
         run: |
           chmod +x build_yaml.sh
@@ -30,6 +22,8 @@ jobs:
         with:
           name: flatpak-yaml-files
           path: resources/flatpak
+      - name: Print artifact url
+        run: echo "https://git.k-fortytwo.de/christofsteel/syng-deploytest/actions/runs/${{ forgejo.run_id }}/artifacts/flatpak-yaml-files"
       
   build-flatpak:
     needs: prepare-yaml-files
@@ -37,37 +31,10 @@ jobs:
     container: 
       image: git.k-fortytwo.de/christofsteel/syng-flatpakbuilder:1.0.0
     steps:
-      # - name: Checkout repository
-      #   uses: actions/checkout@v4
       - uses: actions/download-artifact@v3
         with:
           name: flatpak-yaml-files
           path: .
-
-      # - run: |
-      #     apt update
-      #     apt-get install -y flatpak flatpak-builder
-      # - name: Install Flatpak and flatpak-builder
-      #   uses: https://github.com/awalsh128/cache-apt-pkgs-action@v1
-      #   with:
-      #     packages: xvfb
-
-      # - name: Build Flatpak
-      #   uses: https://codeberg.org/jamiemurphy/flatpak-runtime-sdk@main
-      #   with:
-      #     manifest-path: /workspace/christofsteel/syng-deploytest/rocks.syng.Syng.yaml
-      #     module: Syng.Rocks!
-      #     app-id: rocks.syng.Syng
-      #     bundle: rocks.syng.Syng.flatpak
-
-
-      # - name: Install Flatpak and flatpak-builder
-      #   uses: https://github.com/awalsh128/cache-apt-pkgs-action@v1
-      #   with:
-      #     packages: gettext-base python3-requirement-parser python3-yaml
-        #
-      # - run: ls -l
-
 
       - name: Build Flatpak
         run: |
@@ -75,10 +42,8 @@ jobs:
           xvfb-run -a -s "-screen 0 1024x768x24" -- \
           dbus-run-session \
           flatpak run --user --command=flathub-build org.flatpak.Builder --disable-rofiles-fuse --repo=repo rocks.syng.Syng.yaml
-        # working-directory: /workspace/christofsteel/syng-deploytest
       - name: Build Flatpak Artifact
         run: flatpak build-bundle /workspace/christofsteel/syng-deploytest/repo "rocks.syng.Syng.flatpak" "rocks.syng.Syng"
-        # working-directory: /workspace/christofsteel/syng-deploytest/
 
       - name: Upload Flatpak artifact
         uses: actions/upload-artifact@v3
