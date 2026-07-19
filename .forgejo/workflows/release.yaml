@@ -86,7 +86,7 @@ jobs:
   #     GH_TESTREPO: ${{secrets.GH_TESTREPO}}
       #
   cleanup:
-    needs: [build-wine, build-docker, update-version]
+    needs: [build-docker, update-version]
     runs-on: ubuntu-latest
     if: always()
     steps:
