@@ -73,7 +73,7 @@ jobs:
           key: downloads-wine${{ env.WINE_VERSION }}-mpv${{ env.MPV_NIGHTLY }}-python${{ env.PYTHON_VERSION }}-mono${{ env.MONO_VERSION }}-deno${{ env.DENO_VERSION }}
 
       - name: Download everything
-        if: steps.cache-dl.outputs.cache-hit != 'true'
+        # if: steps.cache-dl.outputs.cache-hit != 'true'
         run: |
           wget https://github.com/Kron4ek/Wine-Builds/releases/download/${{ env.WINE_VERSION }}/wine-${{ env.WINE_VERSION }}-amd64-wow64.tar.xz
           tar xvf wine-${{ env.WINE_VERSION }}-amd64-wow64.tar.xz
@@ -103,7 +103,7 @@ jobs:
           echo "msiexec=$MSIEXEC" >> $GITHUB_ENV
         working-directory: downloads
       - name: Create wineprefix
-        if: steps.cache-dl.outputs.cache-hit != 'true'
+        # if: steps.cache-dl.outputs.cache-hit != 'true'
         run: ${{ env.winecfg }}
 
 
