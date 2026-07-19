@@ -92,7 +92,7 @@ jobs:
     secrets: inherit
 
   build-flatpak:
-    if: ${{ inputs.skip-fp == false }}
+    if: inputs.skip-fp == false
     needs: update-version
     uses: ./.forgejo/workflows/flatpak.yaml
     with:
