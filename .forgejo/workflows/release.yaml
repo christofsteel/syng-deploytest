@@ -72,9 +72,7 @@ jobs:
     with:
       version: ${{ needs.update-version.outputs.version }}
       commit: ${{ needs.update-version.outputs.sha }}
-    secrets:
-      FJCR_PUSH: ${{secrets.FJCR_PUSH}}}
-      GHCR_PUSH: ${{secrets.GHCR_PUSH}}
+    secrets: inherit
 
   # build-flatpak:
   #   needs: update-version
