@@ -28,21 +28,21 @@ on:
   workflow_call:
     inputs:
       type:
-        description: 'One of pr/stable/dev/nightly'
+        description: 'One of pr/release/prerelease/dev'
         required: true
         type: string
       version:
         description: 'version tag'
         required: false
         type: string
-      branch:
-        description: 'branch tag'
-        required: false
-        type: string
       push:
         description: 'push the image'
         default: false
         type: boolean
+      commit:
+        description: 'commit hash'
+        required: true
+        type: string
 env:
   IMAGE_NAME: christofsteel/syngtesting
   REGISTRY: git.k-fortytwo.de
@@ -61,21 +61,23 @@ jobs:
         run: echo ${{ github.event_name }} - ${{ inputs.type }}
       - name: check out repo
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commit }}
       - name: Get best tag
         id: tagname
         run: |
           SHA="commit-$(git rev-parse --short HEAD)"
           case ${{ inputs.type }} in
-          stable)
+          release)
           TAGS=(${SHA} $(echo ${{ inputs.version }} | sed "s/\([^\.]*\).\([^\.]*\).\(.*\)$/\1 \1.\2 \1.\2.\3 latest/"))
             ;;
-          dev)
+          prerelease)
           TAGS=(${SHA} $(echo ${{ inputs.version }} | sed "s/\(.*\)/\1 prerelease/"))          
           ;;
           pr)
-          TAGS=(${SHA} "pr-${{ inputs.branch }}")
+          TAGS=(${SHA} "pr-${{ inputs.commit }}")
             ;;
-          nightly)
+          dev)
           TAGS=(${SHA} nightly)
           ;;
           esac

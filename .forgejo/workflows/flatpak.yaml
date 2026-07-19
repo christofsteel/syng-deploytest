@@ -1,6 +1,16 @@
 name: build flatpak
 on:
   workflow_dispatch: {}
+  workflow_call:
+    inputs:
+      version:
+        description: 'version tag'
+        required: true
+        type: string
+      commit:
+        description: 'commit hash'
+        required: true
+        type: string
 
 env:
   TOKEN: ${{ secrets.GH_TESTREPO }}
@@ -16,6 +26,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commit }}
       - name: Prepare Flatpak YAML files
         run: |
           chmod +x build_yaml.sh
