@@ -59,12 +59,12 @@ jobs:
         id: sha
         run: echo "SHA=$(git log -1 --format=%H)" >> $GITHUB_OUTPUT}
 
-  build-wine:
-    needs: update-version
-    uses: ./.forgejo/workflows/wix.yaml
-    with:
-      version: ${{ needs.update-version.outputs.version }}
-      commit: ${{ needs.update-version.outputs.sha }}
+  # build-wine:
+  #   needs: update-version
+  #   uses: ./.forgejo/workflows/wix.yaml
+  #   with:
+  #     version: ${{ needs.update-version.outputs.version }}
+  #     commit: ${{ needs.update-version.outputs.sha }}
 
   build-docker:
     needs: update-version
