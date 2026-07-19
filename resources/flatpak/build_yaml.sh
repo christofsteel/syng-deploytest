@@ -22,3 +22,6 @@ WHEELS="uv_build,python-socketio,aiohttp,multidict,yarl,platformdirs,yt-dlp,pack
 
 # ./flatpak-pip-generator --yaml setuptools_scm[toml] # for argon2-cffi-bindings
 ./flatpak-pip-generator --yaml --pyproject-file ../../pyproject.toml --ignore-pkg=PySide6 --prefer-wheels=$WHEELS --optdep-groups client --runtime org.kde.Sdk//6.10
+mkdir dist
+cp -rf patches dist
+mv *.yaml dist

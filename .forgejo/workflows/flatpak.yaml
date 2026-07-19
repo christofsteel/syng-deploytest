@@ -39,7 +39,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: flatpak-yaml-files
-          path: resources/flatpak
+          path: resources/flatpak/dist
       - name: Print artifact url
         id: artifact_url
         run: echo "artifact_url=https://git.k-fortytwo.de/christofsteel/syng-deploytest/actions/runs/${{ forgejo.run_id }}/artifacts/flatpak-yaml-files" >> $FORGEJO_OUTPUT
