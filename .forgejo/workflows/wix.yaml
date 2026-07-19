@@ -34,12 +34,12 @@ jobs:
     steps:
       - name: print inputs
         run: |
-          echo "version: ${{ github.input.version}}"
-          echo "commit: ${{ github.input.commit}}"
+          echo "version: ${{ inputs.version}}"
+          echo "commit: ${{ inputs.commit}}"
       - name: Checkout code
         uses: actions/checkout@v4        
         with:
-          ref: ${{github.inputs.commit}}
+          ref: ${{inputs.commit}}
 
       - name: Get latest versions for dependencies
         run: |
@@ -48,7 +48,7 @@ jobs:
       - name: Get hash and version for cache
         run: |
           # echo "synghash=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          echo "syngversion=${{ github.inputs.version }}" >> $GITHUB_ENV
+          echo "syngversion=${{ inputs.version }}" >> $GITHUB_ENV
       - name: Update Ubuntu Repo
         run: apt update -y
       - name: Install dependencies
