@@ -94,13 +94,13 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ env.USERNAME }}
-          password: ${{ env.PASSWORD }}
+          password: ${{ secrets.FJCR_PUSH }}
       - name: Docker login (GH)
         uses: docker/login-action@v4
         with:
           registry: ${{ env.REGISTRY2 }}
           username: ${{ env.USERNAME2 }}
-          password: ${{ env.PASSWORD2 }}
+          password: ${{ secrets.GHCR_PUSH }}
       - name: Build and push
         uses: docker/build-push-action@v7
         with:
