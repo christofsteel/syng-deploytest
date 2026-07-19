@@ -63,7 +63,7 @@ jobs:
         run: |
           echo Forgejo user: ${{ env.USERNAME }}
           echo Github user: ${{ env.USERNAME2 }}
-          echo push? ${{env.PUSH}}, ${{inputs.type}}
+          echo push? ${{env.PUSH}}, ${{inputs.push}}
           echo type ${{inputs.type}}
       - name: check out repo
         uses: actions/checkout@v4
