@@ -4,8 +4,18 @@ on:
   # push:
   #   branches:
   #     - main
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'version tag'
+        required: true
+        type: string
   workflow_call:
+    inputs:
+      version:
+        description: 'version tag'
+        required: true
+        type: string
 
 env:
   WINEPREFIX: /wineprefix
@@ -28,9 +38,8 @@ jobs:
         working-directory: resources/windows
       - name: Get hash and version for cache
         run: |
-          echo "synghash=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          echo "syngversion=$(grep "^version = .*" pyproject.toml | sed "s/version = \"\(.*\)\"/\1/g")" >> $GITHUB_ENV
-          
+          # echo "synghash=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "syngversion=${{ github.inputs.version }}" >> $GITHUB_ENV
       - name: Update Ubuntu Repo
         run: apt update -y
       - name: Install dependencies

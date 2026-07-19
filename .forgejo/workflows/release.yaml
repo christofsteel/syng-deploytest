@@ -1,0 +1,68 @@
+name: Make a new Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      type:
+        description: "Type of Release"
+        required: true
+        type: choice
+        options:
+          - release
+          - prerelease
+          - dev
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get-version.outputs.VERSION }}
+      sha: ${{ steps.sha.outputs.SHA }}
+    steps:
+      - name: Install uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          version: "0.11.19"      
+      - name: check out repo
+        uses: actions/checkout@v4
+      - name: get current version
+        run: |
+          REPO_VERSION=$(uv version --short)
+          echo "REPO_VERSION=${REPO_VERSION}" >> "$GITHUB_ENV"
+      - name: Check for dev version
+        run: |
+          echo ${{ env.REPO_VERSION }}          
+          if [[ "${{ env.REPO_VERSION }}" =~ ^[0-9]*\.[0-9]*\.[0-9]*$ ]]; then echo "This seems like an already released version"; false; else echo "looking good"; true; fi
+      - name: set git credentials
+        run: |
+          git config --global user.name "Forgejo Action CI"
+          git config --global user.email "git@git.k-fortytwo.de"
+      - name: Bump to stable
+        if: ${{ inputs.type == 'release' }}
+        run: |
+          uv version --bump stable
+          VERSION=$(uv version --short | sed 's/\.dev/-dev/')
+          git add pyproject.toml
+          git commit -m "Update to stable version: $VERSION"
+          git tag v$VERSION"
+          git push
+          git push --tags 
+      - name: sha
+        id: sha
+        run: echo "SHA=$(git log -1 --format=%H)" >> $GITHUB_OUTPUT}
+      - name: get current version
+        id: get-version
+        run: |
+          VERSION=$(uv version --short | sed 's/\.dev/-dev/')
+          echo "VERSION=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "VERSION=${VERSION}" >> "$GITHUB_ENV"
+      - name: check version against flatpak
+        if: ${{ inputs.type == 'release' }}
+        run: bash resources/flatpak/check-version.sh ${{ env.VERSION }} 
+
+
+  build-wine:
+    needs: update-version
+    uses: ./.forgejo/workflows/wix.yml
+    with:
+      version: ${{ needs.update-version.outputs.version }}
