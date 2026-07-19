@@ -11,6 +11,19 @@ on:
           - release
           - prerelease
           - dev
+      skip-fp:
+        description: "Skip Flatpak"
+        type: boolean
+        default: false
+      skip-wine:
+        description: "Skip Wine"
+        type: boolean
+        default: false
+      skip-docker:
+        description: "Skip Docker"
+        type: boolean
+        default: false
+
 
 jobs:
   update-version:
@@ -61,6 +74,7 @@ jobs:
 
   build-wine:
     needs: update-version
+    if: !${{ inputs.skip-wine }}
     uses: ./.forgejo/workflows/wix.yaml
     with:
       version: ${{ needs.update-version.outputs.version }}
@@ -69,6 +83,7 @@ jobs:
   build-docker:
     needs: update-version
     uses: ./.forgejo/workflows/docker.yaml
+    if: !${{ inputs.skip-docker }}
     with:
       version: ${{ needs.update-version.outputs.version }}
       commit: ${{ needs.update-version.outputs.sha }}
@@ -77,6 +92,7 @@ jobs:
     secrets: inherit
 
   build-flatpak:
+    if: !${{ inputs.skip-fp }}
     needs: update-version
     uses: ./.forgejo/workflows/flatpak.yaml
     with:
