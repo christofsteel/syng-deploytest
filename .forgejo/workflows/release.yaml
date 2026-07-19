@@ -44,7 +44,7 @@ jobs:
           VERSION=$(uv version --short | sed 's/\.dev/-dev/')
           git add pyproject.toml
           git commit -m "Update to stable version: $VERSION"
-          git tag v$VERSION"
+          git tag "v$VERSION"
           git push
           git push --tags 
       - name: sha
