@@ -111,8 +111,8 @@ jobs:
       - name: Run python installer
         # if: steps.cache-syng.outputs.cache-hit != 'true'
         run: |
-          echo xvfb-run ${{ env.wine }} python-installer.exe /quiet Include_pip=1
-          xvfb-run ${{ env.wine }} python-installer.exe /quiet Include_pip=1
+          echo xvfb-run -a ${{ env.wine }} python-installer.exe /quiet Include_pip=1
+          xvfb-run -a ${{ env.wine }} python-installer.exe /quiet Include_pip=1
         working-directory: downloads
       - name: Find python
         run: |
@@ -131,7 +131,7 @@ jobs:
       - name: Install wine-mono
         # if: steps.cache-dl.outputs.cache-hit != 'true'
         run: |
-          xvfb-run ${{ env.msiexec }} /i wine-mono.msi
+          xvfb-run -a ${{ env.msiexec }} /i wine-mono.msi
         working-directory: downloads
       - name: preparing workdir
         # if: steps.cache-syng.outputs.cache-hit != 'true'
