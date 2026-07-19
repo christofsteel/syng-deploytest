@@ -77,7 +77,7 @@ jobs:
           release)
           TAGS=(${SHA} $(echo ${{ inputs.version }} | sed "s/\([^\.]*\).\([^\.]*\).\(.*\)$/\1 \1.\2 \1.\2.\3 latest/"))
             ;;
-      prerelease)
+          prerelease)
           TAGS=(${SHA} $(echo ${{ inputs.version }} | sed "s/\(.*\)/\1 prerelease/"))          
           ;;
           pr)
