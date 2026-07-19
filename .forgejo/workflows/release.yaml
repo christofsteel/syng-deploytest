@@ -76,11 +76,11 @@ jobs:
       FJCR_PUSH: ${{secrets.FJCR_PUSH}}}
       GHCR_PUSH: ${{secrets.GHCR_PUSH}}
 
-  build-flatpak:
-    needs: update-version
-    uses: ./.forgejo/workflows/flatpak.yaml
-    with:
-      version: ${{ needs.update-version.outputs.version }}
-      commit: ${{ needs.update-version.outputs.sha }}
-    secrets:
-      GH_TESTREPO: ${{secrets.GH_TESTREPO}}
+  # build-flatpak:
+  #   needs: update-version
+  #   uses: ./.forgejo/workflows/flatpak.yaml
+  #   with:
+  #     version: ${{ needs.update-version.outputs.version }}
+  #     commit: ${{ needs.update-version.outputs.sha }}
+  #   secrets:
+  #     GH_TESTREPO: ${{secrets.GH_TESTREPO}}
