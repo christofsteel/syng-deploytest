@@ -110,6 +110,7 @@ jobs:
       - name: Run python installer
         # if: steps.cache-syng.outputs.cache-hit != 'true'
         run: |
+          echo xvfb-run ${{ env.wine }} python-installer.exe /quiet Include_pip=1
           xvfb-run ${{ env.wine }} python-installer.exe /quiet Include_pip=1
         working-directory: downloads
       - name: Find python
