@@ -68,7 +68,7 @@ jobs:
           key: downloads-wine${{ env.WINE_VERSION }}-mpv${{ env.MPV_NIGHTLY }}-python${{ env.PYTHON_VERSION }}-mono${{ env.MONO_VERSION }}-deno${{ env.DENO_VERSION }}
 
       - name: Get latest versions for dependencies
-        if: steps.cache-dl.outputs.cache-hit != 'true'
+        # if: steps.cache-dl.outputs.cache-hit != 'true'
         run: |
           bash latest-win-deps.sh | tee >> ${GITHUB_ENV}
         working-directory: resources/windows

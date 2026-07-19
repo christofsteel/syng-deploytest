@@ -90,6 +90,8 @@ jobs:
     runs-on: ubuntu-latest
     if: always()
     steps:
-      - name: Cleanup
+      - name: Checkout code
+        uses: actions/checkout@v4        
+      - name: Remove Branch
         run: |
           git push origin --delete release-${{needs.update-version.outputs.version}}
