@@ -72,7 +72,7 @@ jobs:
     with:
       version: ${{ needs.update-version.outputs.version }}
       commit: ${{ needs.update-version.outputs.sha }}
-      push: true
+      push: "true"
       type: ${{ inputs.type }}
     secrets: inherit
 
