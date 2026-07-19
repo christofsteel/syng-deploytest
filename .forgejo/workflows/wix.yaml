@@ -32,6 +32,10 @@ jobs:
   build-msi:
     runs-on: ubuntu-latest
     steps:
+      - name: print inputs
+        run: |
+          echo "version: ${{ github.input.version}}"
+          echo "commit: ${{ github.input.commit}}"
       - name: Checkout code
         uses: actions/checkout@v4        
         with:
