@@ -63,14 +63,14 @@ jobs:
           mkdir -p work/dist
           mkdir -p downloads
           mkdir -p winedl
-      - name: Cache downloads
-        id: cache-dl
-        uses: actions/cache@v4
-        with:
-          path: |
-            downloads
-            ${{ env.wineprefix }}
-          key: downloads-wine${{ env.WINE_VERSION }}-mpv${{ env.MPV_NIGHTLY }}-python${{ env.PYTHON_VERSION }}-mono${{ env.MONO_VERSION }}-deno${{ env.DENO_VERSION }}
+      # - name: Cache downloads
+      #   id: cache-dl
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: |
+      #       downloads
+      #       ${{ env.wineprefix }}
+      #     key: downloads-wine${{ env.WINE_VERSION }}-mpv${{ env.MPV_NIGHTLY }}-python${{ env.PYTHON_VERSION }}-mono${{ env.MONO_VERSION }}-deno${{ env.DENO_VERSION }}
 
       - name: Download everything
         # if: steps.cache-dl.outputs.cache-hit != 'true'
