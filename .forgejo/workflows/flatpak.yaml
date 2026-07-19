@@ -71,25 +71,12 @@ jobs:
           name: flatpak-bundle
           path: "*.flatpak"
 
-  # run-external-workflow:
-  #   needs: [prepare-yaml-files, build-flatpak]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: print url
-  #       run: echo ${{ needs.prepare-yaml-files.outputs.artifact_url }}
-  #     - name: dispatch
-  #       run: |
-  #             curl -X POST \
-  #             -H "Authorization: token ${{ env.TOKEN }}" \
-  #             -H "Accept: application/vnd.github.v3+json" \
-  #             https://api.github.com/repos/${{ env.REPO }}/dispatches \
-  #             -d "{\"event_type\": \"test-event\", \"client_payload\": { \"url\": \"${{ needs.prepare-yaml-files.outputs.artifact_url }}\"}}"
   call-flathub-build:
     needs: prepare-yaml-files
     uses: ./.forgejo/workflows/external.yaml
     with:
       repo: christofsteel/testrepo
       event: test-event
-      payload: "{\"url\": \"${{ needs.prepare-yaml-files.outputs.artifact_url }}\"}"
+      payload: "{\\\"url\\\": \\\"${{ needs.prepare-yaml-files.outputs.artifact_url }}\\\"}"
     secrets:
       token: ${{ secrets.GH_TESTREPO }}
