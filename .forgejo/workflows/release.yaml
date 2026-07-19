@@ -39,14 +39,17 @@ jobs:
           git config --global user.email "git@git.k-fortytwo.de"
       - name: Bump to stable
         if: ${{ inputs.type == 'release' }}
+        run: uv version --bump stable
+      - name: check version against flatpak
+        if: ${{ inputs.type == 'release' }}
+        run: bash resources/flatpak/check-version.sh ${{ env.VERSION }} 
+      - name: Create release-branch
         run: |
-          uv version --bump stable
-          VERSION=$(uv version --short | sed 's/\.dev/-dev/')
+          VERSION=$(uv version --short')
+          git checkout -b "release-$VERSION"
           git add pyproject.toml
-          git commit -m "Update to stable version: $VERSION"
-          git tag "v$VERSION"
-          git push
-          git push --tags 
+          git commit -m "Update to version: $VERSION"
+          git push origin "release-$VERSION"
       - name: sha
         id: sha
         run: echo "SHA=$(git log -1 --format=%H)" >> $GITHUB_OUTPUT}
@@ -56,13 +59,10 @@ jobs:
           VERSION=$(uv version --short | sed 's/\.dev/-dev/')
           echo "VERSION=${VERSION}" >> "$GITHUB_OUTPUT"
           echo "VERSION=${VERSION}" >> "$GITHUB_ENV"
-      - name: check version against flatpak
-        if: ${{ inputs.type == 'release' }}
-        run: bash resources/flatpak/check-version.sh ${{ env.VERSION }} 
-
 
   build-wine:
     needs: update-version
     uses: ./.forgejo/workflows/wix.yaml
     with:
       version: ${{ needs.update-version.outputs.version }}
+      commit: ${{ needs.update-version.outputs.sha }}

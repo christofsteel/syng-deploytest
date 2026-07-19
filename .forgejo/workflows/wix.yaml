@@ -16,13 +16,16 @@ on:
         description: 'version tag'
         required: true
         type: string
+      commit:
+        description: 'commit hash'
+        required: true
+        type: string
 
 env:
   WINEPREFIX: /wineprefix
   WINEDLLOVERRIDES: mshtml=
   WINEARCH: win64
   WINEDEBUG: -all
-  PYSIDE_VERSION: 6.11.1
 
 
 jobs:
@@ -31,6 +34,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4        
+        with:
+          ref: ${{github.inputs.commit}}
 
       - name: Get latest versions for dependencies
         run: |
@@ -138,10 +143,10 @@ jobs:
           cp resources/windows/dialog.bmp work/
           cp resources/windows/banner.bmp work/
           cp resources/windows/agpl-3.0.rtf work/
-      - name: prepare syng
-        if: false
-        run: |
-          sed -i "s/\"pyside6.*/\"pyside6==${PYSIDE_VERSION}\"/" pyproject.toml 
+      # - name: prepare syng
+      #   if: false
+      #   run: |
+      #     sed -i "s/\"pyside6.*/\"pyside6==${PYSIDE_VERSION}\"/" pyproject.toml 
       - name: install syng
         run: ${{ env.wine }} ${{ env.python }} -m pip install .[client]
       - name: run PyInstaller (folder)
@@ -167,7 +172,7 @@ jobs:
         working-directory: work
       - name: run candle
         run: |
-          cleared_syng_version=$(sed "s/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\).*/\1.\2.\3/" <<< ${{env.syngversion}})
+          cleared_syng_version=$(sed "s/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\).*/\1.\2.\3/" <<< "${{env.syngversion}}")
           echo $cleared_syng_version
           ls
           ${{ env.wine }} ${{ env.candle }} -dSource="dist\\syng\\_internal" InternalGroup.wxs
