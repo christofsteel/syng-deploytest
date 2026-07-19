@@ -11,18 +11,6 @@ on:
           - release
           - prerelease
           - dev
-      skip-fp:
-        description: "Skip Flatpak"
-        type: boolean
-        default: false
-      skip-wine:
-        description: "Skip Wine"
-        type: boolean
-        default: false
-      skip-docker:
-        description: "Skip Docker"
-        type: boolean
-        default: false
 
 
 jobs:
@@ -72,27 +60,24 @@ jobs:
         id: sha
         run: echo "SHA=$(git log -1 --format=%H)" >> $GITHUB_OUTPUT}
 
-  build-wine:
-    needs: update-version
-    if: ${{ inputs.skip-wine == false }}
-    uses: ./.forgejo/workflows/wix.yaml
-    with:
-      version: ${{ needs.update-version.outputs.version }}
-      commit: ${{ needs.update-version.outputs.sha }}
-
-  build-docker:
-    needs: update-version
-    uses: ./.forgejo/workflows/docker.yaml
-    if: ${{ inputs.skip-docker == false }}
-    with:
-      version: ${{ needs.update-version.outputs.version }}
-      commit: ${{ needs.update-version.outputs.sha }}
-      push: "true"
-      type: ${{ inputs.type }}
-    secrets: inherit
+  # build-wine:
+  #   needs: update-version
+  #   uses: ./.forgejo/workflows/wix.yaml
+  #   with:
+  #     version: ${{ needs.update-version.outputs.version }}
+  #     commit: ${{ needs.update-version.outputs.sha }}
+  #
+  # build-docker:
+  #   needs: update-version
+  #   uses: ./.forgejo/workflows/docker.yaml
+  #   with:
+  #     version: ${{ needs.update-version.outputs.version }}
+  #     commit: ${{ needs.update-version.outputs.sha }}
+  #     push: "true"
+  #     type: ${{ inputs.type }}
+  #   secrets: inherit
 
   build-flatpak:
-    if: inputs.skip-fp == false
     needs: update-version
     uses: ./.forgejo/workflows/flatpak.yaml
     with:
@@ -102,7 +87,8 @@ jobs:
       GH_TESTREPO: ${{secrets.GH_TESTREPO}}
 
   cleanup:
-    needs: [build-docker, build-flatpak, build-docker, update-version]
+    # needs: [build-docker, build-flatpak, build-docker, update-version]
+    needs: [build-flatpak, update-version]
     runs-on: ubuntu-latest
     if: always()
     steps:

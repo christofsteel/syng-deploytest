@@ -27,7 +27,7 @@ jobs:
     steps:
       - name: call
         run: |
-          DATA="{\"event_type\": \"${{ inputs.event }}\", \"client_payload\": ${{inputs.payload}} }"
+          DATA='{\"event_type\": \"${{ inputs.event }}\", \"client_payload\": ${{inputs.payload}} }'
           echo $DATA
           curl -X POST \
           -H "Authorization: token ${{ secrets.token }}" \
