@@ -63,6 +63,6 @@ jobs:
 
   build-wine:
     needs: update-version
-    uses: ./.forgejo/workflows/wix.yml
+    uses: .forgejo/workflows/wix.yml
     with:
       version: ${{ needs.update-version.outputs.version }}
