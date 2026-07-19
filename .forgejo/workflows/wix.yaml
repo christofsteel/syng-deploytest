@@ -41,10 +41,6 @@ jobs:
         with:
           ref: ${{inputs.commit}}
 
-      - name: Get latest versions for dependencies
-        run: |
-          bash latest-win-deps.sh | tee >> ${GITHUB_ENV}
-        working-directory: resources/windows
       - name: Get hash and version for cache
         run: |
           # echo "synghash=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
@@ -63,17 +59,22 @@ jobs:
           mkdir -p work/dist
           mkdir -p downloads
           mkdir -p winedl
-      # - name: Cache downloads
-      #   id: cache-dl
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: |
-      #       downloads
-      #       ${{ env.wineprefix }}
-      #     key: downloads-wine${{ env.WINE_VERSION }}-mpv${{ env.MPV_NIGHTLY }}-python${{ env.PYTHON_VERSION }}-mono${{ env.MONO_VERSION }}-deno${{ env.DENO_VERSION }}
+      - name: Cache downloads
+        id: cache-dl
+        uses: actions/cache@v4
+        with:
+          path: |
+            downloads
+          key: downloads-wine${{ env.WINE_VERSION }}-mpv${{ env.MPV_NIGHTLY }}-python${{ env.PYTHON_VERSION }}-mono${{ env.MONO_VERSION }}-deno${{ env.DENO_VERSION }}
+
+      - name: Get latest versions for dependencies
+        if: steps.cache-dl.outputs.cache-hit != 'true'
+        run: |
+          bash latest-win-deps.sh | tee >> ${GITHUB_ENV}
+        working-directory: resources/windows
 
       - name: Download everything
-        # if: steps.cache-dl.outputs.cache-hit != 'true'
+        if: steps.cache-dl.outputs.cache-hit != 'true'
         run: |
           wget https://github.com/Kron4ek/Wine-Builds/releases/download/${{ env.WINE_VERSION }}/wine-${{ env.WINE_VERSION }}-amd64-wow64.tar.xz
           tar xvf wine-${{ env.WINE_VERSION }}-amd64-wow64.tar.xz
