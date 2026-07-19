@@ -59,12 +59,12 @@ jobs:
         id: sha
         run: echo "SHA=$(git log -1 --format=%H)" >> $GITHUB_OUTPUT}
 
-  # build-wine:
-  #   needs: update-version
-  #   uses: ./.forgejo/workflows/wix.yaml
-  #   with:
-  #     version: ${{ needs.update-version.outputs.version }}
-  #     commit: ${{ needs.update-version.outputs.sha }}
+  build-wine:
+    needs: update-version
+    uses: ./.forgejo/workflows/wix.yaml
+    with:
+      version: ${{ needs.update-version.outputs.version }}
+      commit: ${{ needs.update-version.outputs.sha }}
 
   build-docker:
     needs: update-version
@@ -76,17 +76,17 @@ jobs:
       type: ${{ inputs.type }}
     secrets: inherit
 
-  # build-flatpak:
-  #   needs: update-version
-  #   uses: ./.forgejo/workflows/flatpak.yaml
-  #   with:
-  #     version: ${{ needs.update-version.outputs.version }}
-  #     commit: ${{ needs.update-version.outputs.sha }}
-  #   secrets:
-  #     GH_TESTREPO: ${{secrets.GH_TESTREPO}}
-      #
+  build-flatpak:
+    needs: update-version
+    uses: ./.forgejo/workflows/flatpak.yaml
+    with:
+      version: ${{ needs.update-version.outputs.version }}
+      commit: ${{ needs.update-version.outputs.sha }}
+    secrets:
+      GH_TESTREPO: ${{secrets.GH_TESTREPO}}
+
   cleanup:
-    needs: [build-docker, update-version]
+    needs: [build-docker, build-flatpak, build-docker, update-version]
     runs-on: ubuntu-latest
     if: always()
     steps:
