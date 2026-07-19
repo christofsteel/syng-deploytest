@@ -57,6 +57,8 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
+      - name: print something
+        run: echo ${{ env.USERNAME }}
       - name: Print event trigger
         run: echo ${{ github.event_name }} - ${{ inputs.type }}
       - name: check out repo
