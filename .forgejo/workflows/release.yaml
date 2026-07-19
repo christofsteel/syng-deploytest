@@ -74,7 +74,7 @@ jobs:
 
   build-wine:
     needs: update-version
-    if: !${{ inputs.skip-wine }}
+    if: ${{ inputs.skip-wine }} == false
     uses: ./.forgejo/workflows/wix.yaml
     with:
       version: ${{ needs.update-version.outputs.version }}
@@ -83,7 +83,7 @@ jobs:
   build-docker:
     needs: update-version
     uses: ./.forgejo/workflows/docker.yaml
-    if: !${{ inputs.skip-docker }}
+    if: ${{ inputs.skip-docker }} == false
     with:
       version: ${{ needs.update-version.outputs.version }}
       commit: ${{ needs.update-version.outputs.sha }}
@@ -92,7 +92,7 @@ jobs:
     secrets: inherit
 
   build-flatpak:
-    if: !${{ inputs.skip-fp }}
+    if: ${{ inputs.skip-fp }} == false
     needs: update-version
     uses: ./.forgejo/workflows/flatpak.yaml
     with:
