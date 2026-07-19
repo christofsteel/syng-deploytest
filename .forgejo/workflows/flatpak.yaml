@@ -77,6 +77,6 @@ jobs:
     with:
       repo: christofsteel/testrepo
       event: test-event
-      payload: '{\"url\": \"${{ needs.prepare-yaml-files.outputs.artifact_url }}\"}'
+      payload: '{"url": "${{ needs.prepare-yaml-files.outputs.artifact_url }}"}'
     secrets:
       token: ${{ secrets.GH_TESTREPO }}
