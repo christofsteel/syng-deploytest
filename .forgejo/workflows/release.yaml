@@ -87,6 +87,7 @@ jobs:
       #
   cleanup:
     needs: [build-wine, build-docker, update-version]
+    runs-on: ubuntu-latest
     if: always()
     steps:
       - name: Cleanup
