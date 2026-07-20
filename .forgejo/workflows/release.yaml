@@ -102,11 +102,15 @@ jobs:
       - name: Check for stable version
         id: stable
         run: |
-            echo "STABLE=${{ inputs.type == 'release' }}" >> $GITHUB_OUTPUT
+            echo "PRERELEASE=${{ inputs.type != 'release' }}" >> $GITHUB_OUTPUT
       - name: Print version
         run: |
           echo "Version: ${{ steps.tag.outputs.tag }}"
-          echo "Stable: ${{ steps.stable.outputs.stable }}"
+          echo "Prerelease: ${{ steps.stable.outputs.prerelease }}"
+      - name: list
+        run: ls -alh dist/
+      - name: clean
+        run: rm dist/flatpak-yaml-files
       - name: download artifact
         uses: actions/download-artifact@v3
         with:
@@ -118,7 +122,7 @@ jobs:
           tag: ${{ steps.tag.outputs.tag }}
           sha: ${{ needs.update-version.outputs.sha }}
           release-dir: dist
-          prerelease: ${{ steps.stable.outputs.stable }}
+          prerelease: ${{ steps.stable.outputs.prerelease }}
 
   cleanup:
     # needs: [build-docker, build-flatpak, build-docker, update-version]

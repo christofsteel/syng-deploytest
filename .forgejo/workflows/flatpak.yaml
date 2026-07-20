@@ -70,7 +70,7 @@ jobs:
       - name: Upload Flatpak artifact
         uses: actions/upload-artifact@v3
         with:
-          name: syng-${{inputs.version}}-x86_64-flatpak
+          name: syng-${{inputs.version}}-x86_64.flatpak
           path: "*.flatpak"
 
   call-flathub-build:
