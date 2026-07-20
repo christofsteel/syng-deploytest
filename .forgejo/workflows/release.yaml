@@ -117,6 +117,7 @@ jobs:
         run: rm -rf dist/flatpak-yaml-files
       - name: flatten
         run: mv dist/**/* dist/
+      - run: rmdir *
       - uses: actions/forgejo-release@v2.12.1
         with:
           direction: upload
