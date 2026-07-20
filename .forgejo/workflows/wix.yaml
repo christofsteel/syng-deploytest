@@ -195,9 +195,9 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: syng-${{ env.syngversion }}-win64.exe
-          path: ./work/dist/syng-${{env.syngversion}}-win64.exe
+          path: ./work/dist/syng-${{env.syngversion}}-win64-exe
       - name: create installer artifact
         uses: actions/upload-artifact@v3
         with:
           name: syng-installer-${{ env.syngversion }}-win64.msi
-          path: ./work/syng-installer-${{ env.syngversion }}-win64.msi
+          path: ./work/syng-installer-${{ env.syngversion }}-win64-msi
