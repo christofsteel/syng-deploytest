@@ -163,6 +163,7 @@ jobs:
         # if: steps.cache-syng.outputs.cache-hit != 'true'
         run: |
           ${{ env.wine }} ${{ env.pyinstaller }} -n "syng" -F -w -i'.\syng.ico' --add-data='.\syng.ico;.' --add-data='.\background.png;.' --add-data='.\background20perc.png;.' --add-binary '.\deno.exe;.' --add-binary '.\libmpv-2.dll;.' --add-binary '.\ffmpeg.exe;.' syng/main.py
+          ls -alh dist/
           mv dist/syng.exe dist/syng-${{env.syngversion}}-win64.exe
         
         working-directory: ./work
@@ -190,14 +191,15 @@ jobs:
       - name: run light
         run: |
           ${{ env.wine }} ${{ env.light }} -ext WixUIExtension -sval -out syng-installer-${{ env.syngversion }}-win64.msi InternalGroup.wixobj syng.wixobj
+          ls -alh dist/
         working-directory: work
       - name: create portable app artifact
         uses: actions/upload-artifact@v3
         with:
-          name: syng-${{ env.syngversion }}-win64.exe
-          path: ./work/dist/syng-${{env.syngversion}}-win64-exe
+          name: syng-${{ env.syngversion }}-win64-exe
+          path: ./work/dist/syng-${{env.syngversion}}-win64.exe
       - name: create installer artifact
         uses: actions/upload-artifact@v3
         with:
-          name: syng-installer-${{ env.syngversion }}-win64.msi
-          path: ./work/syng-installer-${{ env.syngversion }}-win64-msi
+          name: syng-installer-${{ env.syngversion }}-win64=msi
+          path: ./work/syng-installer-${{ env.syngversion }}-win64.msi
