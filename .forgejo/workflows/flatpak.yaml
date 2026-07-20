@@ -75,7 +75,7 @@ jobs:
     uses: ./.forgejo/workflows/external.yaml
     with:
       repo: christofsteel/testrepo
-      event: test-event
+      event: trigger-workflow
       payload: '{"url": "${{ needs.prepare-yaml-files.outputs.artifact_url }}"}'
     secrets:
       token: ${{ secrets.GH_TESTREPO }}
