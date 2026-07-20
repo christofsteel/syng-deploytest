@@ -107,14 +107,14 @@ jobs:
         run: |
           echo "Version: ${{ steps.tag.outputs.tag }}"
           echo "Prerelease: ${{ steps.stable.outputs.prerelease }}"
-      - name: list
-        run: ls -alh dist/
-      - name: clean
-        run: rm dist/flatpak-yaml-files
       - name: download artifact
         uses: actions/download-artifact@v3
         with:
           path: dist
+      - name: list
+        run: ls -alh dist/
+      - name: clean
+        run: rm dist/flatpak-yaml-files
       - uses: actions/forgejo-release@v2.12.1
         with:
           direction: upload
