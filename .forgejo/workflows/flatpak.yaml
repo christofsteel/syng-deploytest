@@ -44,31 +44,34 @@ jobs:
         id: artifact_url
         run: echo "artifact_url=https://git.k-fortytwo.de/christofsteel/syng-deploytest/actions/runs/${{ forgejo.run_id }}/artifacts/flatpak-yaml-files" >> $FORGEJO_OUTPUT
       
-  # build-flatpak:
-  #   needs: prepare-yaml-files
-  #   runs-on: privileged-ubuntu-latest
-  #   container: 
-  #     image: git.k-fortytwo.de/christofsteel/syng-flatpakbuilder:1.0.0
-  #   steps:
-  #     - uses: actions/download-artifact@v3
-  #       with:
-  #         name: flatpak-yaml-files
-  #         path: .
-  #
-  #     - name: Build Flatpak
-  #       run: |
-  #         dbus-daemon --system
-  #         xvfb-run -a -s "-screen 0 1024x768x24" -- \
-  #         dbus-run-session \
-  #         flatpak run --user --command=flathub-build org.flatpak.Builder --disable-rofiles-fuse --repo=repo rocks.syng.Syng.yaml
-  #     - name: Build Flatpak Artifact
-  #       run: flatpak build-bundle /workspace/christofsteel/syng-deploytest/repo "rocks.syng.Syng.flatpak" "rocks.syng.Syng"
-  #
-  #     - name: Upload Flatpak artifact
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: flatpak-bundle
-  #         path: "*.flatpak"
+  build-flatpak:
+    needs: prepare-yaml-files
+    runs-on: privileged-ubuntu-latest
+    container: 
+      image: git.k-fortytwo.de/christofsteel/syng-flatpakbuilder:1.0.0
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: flatpak-yaml-files
+          path: .
+
+      - name: Build Flatpak
+        run: |
+          dbus-daemon --system
+          xvfb-run -a -s "-screen 0 1024x768x24" -- \
+          dbus-run-session \
+          flatpak run --user --command=flathub-build org.flatpak.Builder --disable-rofiles-fuse --repo=repo rocks.syng.Syng.yaml
+      - name: Build Flatpak Artifact
+        run: |
+          flatpak build-bundle /workspace/christofsteel/syng-deploytest/repo "rocks.syng.Syng.flatpak" "rocks.syng.Syng"
+          mv rocks.syng.Syng.flatpak rocks.syng.Syng-${{ inputs.version }}-x86_64.flatpak
+      
+
+      - name: Upload Flatpak artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: syng-${{inputs.version}}-x86_64-flatpak
+          path: "*.flatpak"
 
   call-flathub-build:
     needs: prepare-yaml-files

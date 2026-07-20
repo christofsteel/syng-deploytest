@@ -86,9 +86,43 @@ jobs:
     secrets:
       GH_TESTREPO: ${{secrets.GH_TESTREPO}}
 
-  cleanup:
+  publish:
     # needs: [build-docker, build-flatpak, build-docker, update-version]
     needs: [build-flatpak, update-version]
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{needs.update-version.outputs.sha}}
+      - name: Get tag
+        id: tag
+        run: |
+            echo "TAG=v${{ needs.update-version.outputs.version }}" >> $GITHUB_OUTPUT
+      - name: Check for stable version
+        id: stable
+        run: |
+            echo "STABLE=${{ inputs.type == 'release' }}" >> $GITHUB_OUTPUT
+      - name: Print version
+        run: |
+          echo "Version: ${{ steps.tag.outputs.tag }}"
+          echo "Stable: ${{ steps.stable.outputs.stable }}"
+      - name: download artifact
+        uses: actions/download-artifact@v3
+        with:
+          path: dist
+      - uses: actions/forgejo-release@v2.12.1
+        with:
+          direction: upload
+          release-notes-assistant: true
+          tag: ${{ steps.tag.outputs.tag }}
+          sha: ${{ needs.update-version.outputs.sha }}
+          release-dir: dist
+          prerelease: ${{ steps.stable.outputs.stable }}
+
+  cleanup:
+    # needs: [build-docker, build-flatpak, build-docker, update-version]
+    needs: [publish, update-version]
     runs-on: ubuntu-latest
     if: always()
     steps:
