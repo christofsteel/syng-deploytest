@@ -163,7 +163,7 @@ jobs:
         # if: steps.cache-syng.outputs.cache-hit != 'true'
         run: |
           ${{ env.wine }} ${{ env.pyinstaller }} -n "syng" -F -w -i'.\syng.ico' --add-data='.\syng.ico;.' --add-data='.\background.png;.' --add-data='.\background20perc.png;.' --add-binary '.\deno.exe;.' --add-binary '.\libmpv-2.dll;.' --add-binary '.\ffmpeg.exe;.' syng/main.py
-          mv syng.exe syng-${{env.syngversion}}-win64.exe
+          mv dist/syng.exe dist/syng-${{env.syngversion}}-win64.exe
         
         working-directory: ./work
       - name: Find wix binaries
