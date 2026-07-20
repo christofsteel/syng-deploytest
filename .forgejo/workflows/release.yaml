@@ -114,7 +114,7 @@ jobs:
       - name: list
         run: ls -alh dist/
       - name: clean
-        run: rm dist/flatpak-yaml-files
+        run: rm -rf dist/flatpak-yaml-files
       - uses: actions/forgejo-release@v2.12.1
         with:
           direction: upload
