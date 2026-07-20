@@ -112,7 +112,7 @@ jobs:
         with:
           path: dist
       - name: list
-        run: ls -alh dist/
+        run: ls -Rlh dist/
       - name: clean
         run: rm -rf dist/flatpak-yaml-files
       - uses: actions/forgejo-release@v2.12.1
