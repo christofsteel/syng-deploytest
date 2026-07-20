@@ -118,8 +118,7 @@ jobs:
       - name: flatten
         run: mv dist/**/* dist/
       - run: |
-          rmdir dist/*
-          true
+          rmdir dist/* || true
       - uses: actions/forgejo-release@v2.12.1
         with:
           direction: upload
