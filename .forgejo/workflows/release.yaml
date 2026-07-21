@@ -119,17 +119,6 @@ jobs:
         run: mv dist/**/* dist/
       - run: |
           rmdir dist/* || true
-      # - name: set git credentials
-      #   run: |
-      #     git config --global user.name "Forgejo Action CI"
-      #     git config --global user.email "git@git.k-fortytwo.de"
-      # - name: Create tag
-      #   run: |
-      #     git tag ${{ steps.tag.outputs.tag }}
-      #     git push --tags
-      # - run: |
-      #     git log
-      #     echo ${{ steps.update-version.outputs.sha }}
       - uses: actions/forgejo-release@v2.13.4
         with:
           direction: upload
@@ -143,10 +132,11 @@ jobs:
     # needs: [build-docker, build-flatpak, build-docker, update-version]
     needs: [publish, update-version]
     runs-on: ubuntu-latest
-    if: always()
+    if: failure()
     steps:
       - name: Checkout code
         uses: actions/checkout@v4        
       - name: Remove Branch
         run: |
-          git push origin --delete release-${{needs.update-version.outputs.version}}
+          git push origin --delete release-${{needs.update-version.outputs.version}} || true
+          git push origin --delete v${{needs.update-version.outputs.version}} || true
