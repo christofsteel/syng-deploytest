@@ -127,6 +127,9 @@ jobs:
         run: |
           git tag ${{ steps.tag.outputs.tag }}
           git push --tags
+      - run: |
+          git log
+          echo ${{ steps.update-version.outputs.sha }}
       - uses: actions/forgejo-release@v2.12.1
         with:
           direction: upload
