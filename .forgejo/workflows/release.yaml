@@ -119,6 +119,14 @@ jobs:
         run: mv dist/**/* dist/
       - run: |
           rmdir dist/* || true
+      - name: set git credentials
+        run: |
+          git config --global user.name "Forgejo Action CI"
+          git config --global user.email "git@git.k-fortytwo.de"
+      - name: Create tag
+        run: |
+          git tag ${{ steps.tag.outputs.tag }}
+          git push --tags
       - uses: actions/forgejo-release@v2.12.1
         with:
           direction: upload
