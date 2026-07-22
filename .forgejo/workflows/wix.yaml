@@ -22,16 +22,19 @@ on:
         type: string
 
 env:
-  WINEPREFIX: /wineprefix
-  WINEDLLOVERRIDES: mshtml=
-  WINEARCH: win64
-  WINEDEBUG: -all
 
 
 jobs:
   build-msi:
     runs-on: ubuntu-latest
     steps:
+      - name: set env
+        run: |
+          echo "WINEPREFIX=/wineprefix" >> ${GITHUB_ENV}
+          echo "WINEDLLOVERRIDES=mshtml=" >> ${GITHUB_ENV}
+          echo "WINEARCH=win64" >> ${GITHUB_ENV}
+          echo "WINEDEBUG=-all" >> ${GITHUB_ENV}
+          
       - name: print inputs
         run: |
           echo "version: ${{ inputs.version}}"
