@@ -12,21 +12,20 @@ on:
           - prerelease
           - dev
 jobs:
-  debug:
-    uses: ./.forgejo/workflows/debug.yaml
-    with:
-      release: test123
+  # debug:
+  #   uses: ./.forgejo/workflows/debug.yaml
+  #   with:
+  #     release: test123
     # runs-on: ubuntu-latest
     # steps:
     #   - name: print inputs
     #     run: |
     #       echo "type: ${{ inputs.type }}"
 
-  # prepare:
-  #   needs: debug
-  #   uses: ./.forgejo/workflows/prepare.yaml
-  #   with:
-  #     release: "release"
+  prepare:
+    uses: ./.forgejo/workflows/prepare.yaml
+    with:
+      release: "release"
   #
   # build:
   #   needs: prepare
