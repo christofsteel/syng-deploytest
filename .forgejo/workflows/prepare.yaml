@@ -53,6 +53,7 @@ jobs:
         id: get-version
         run: |
           VERSION=$(uv version --short | sed 's/\.dev/-dev/')
+          echo "version=${VERSION}"
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
       - name: Create release-branch
         run: |
@@ -62,7 +63,9 @@ jobs:
           git push origin "release-${{steps.get-version.outputs.version}}"
       - name: get commit hash
         id: commit
-        run: echo "commit=$(git log -1 --format=%H)" >> $GITHUB_OUTPUT}
+        run: |
+          echo "commit=$(git log -1 --format=%H)"
+          echo "commit=$(git log -1 --format=%H)" >> $GITHUB_OUTPUT}
 
   check-flatpak:
     needs: update-version
