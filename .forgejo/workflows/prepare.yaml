@@ -3,7 +3,7 @@ name: Prepare repository for Releasing
 on:
   workflow_call:
     inputs:
-      type:
+      release:
         description: 'Type of Build'
         required: true
         type: string
@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: print inputs
         run: |
-          echo "type: ${{ inputs.type }}"
+          echo "type: ${{ inputs.release }}"
 
   update-version:
     runs-on: ubuntu-latest
