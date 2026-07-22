@@ -4,7 +4,6 @@ on:
   workflow_call:
     inputs:
       release:
-        description: 'Type of Build'
         required: true
         type: string
     outputs:

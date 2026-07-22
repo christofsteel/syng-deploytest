@@ -23,7 +23,7 @@ jobs:
     needs: debug
     uses: ./.forgejo/workflows/prepare.yaml
     with:
-      release: release
+      release: "release"
 
   build:
     needs: prepare
