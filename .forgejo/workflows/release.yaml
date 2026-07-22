@@ -23,7 +23,7 @@ jobs:
     needs: debug
     uses: ./.forgejo/workflows/prepare.yaml
     with:
-      type: ${{ inputs.type }}
+      type: release
 
   build:
     needs: prepare
