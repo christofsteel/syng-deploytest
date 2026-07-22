@@ -17,8 +17,17 @@ jobs:
     with:
       release: ${{ inputs.release }}
 
-  build:
+  debug:
     needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - name: print
+        run: |
+          echo version ${{ needs.prepare.output.version }}
+          echo commit ${{ needs.prepare.output.commit }}
+
+  build:
+    needs: [prepare, debug]
     uses: ./.forgejo/workflows/build.yaml
     with:
       release: ${{ inputs.release }}
