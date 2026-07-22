@@ -13,11 +13,14 @@ on:
           - dev
 jobs:
   debug:
-    runs-on: ubuntu-latest
-    steps:
-      - name: print inputs
-        run: |
-          echo "type: ${{ inputs.type }}"
+  uses: ./.forgejo/workflows/debug.yaml
+  with:
+    release: test123
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - name: print inputs
+    #     run: |
+    #       echo "type: ${{ inputs.type }}"
 
   prepare:
     needs: debug
