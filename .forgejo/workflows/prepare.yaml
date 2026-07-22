@@ -1,0 +1,70 @@
+name: Prepare repository for Releasing
+
+on:
+  workflow_dispatch:
+    inputs:
+      type:
+        description: 'Type of Build'
+        required: true
+        options:
+          - release
+          - prerelease
+          - dev
+    outputs:
+      version: ${{ jobs.update-version.outputs.version }}
+      commit: ${{ jobs.update-version.outputs.commit }}
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
+      commit: ${{ steps.commit.outputs.commit }}
+    steps:
+      - name: Install uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          version: "0.11.19"      
+      - name: check out repo
+        uses: actions/checkout@v4
+      - name: Check for dev version
+        run: |
+          if [[ "$(uv version --short)" =~ ^[0-9]*\.[0-9]*\.[0-9]*$ ]]; then 
+            echo "This seems like an already released version"; false
+          else
+            echo "looking good"; true
+          fi
+      - name: set git credentials
+        run: |
+          git config --global user.name "Forgejo Action CI"
+          git config --global user.email "git@git.k-fortytwo.de"
+      - name: Bump to stable
+        if: ${{ inputs.type == 'release' }}
+        run: uv version --bump stable
+      - name: get current version
+        id: get-version
+        run: |
+          VERSION=$(uv version --short | sed 's/\.dev/-dev/')
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+      - name: Create release-branch
+        run: |
+          git checkout -b "release-${{steps.get-version.outputs.version}}"
+          git add pyproject.toml
+          git commit -m "Update to version: ${{steps.get-version.outputs.version}}"
+          git push origin "release-${{steps.get-version.outputs.version}}"
+      - name: get commit hash
+        id: commit
+        run: echo "commit=$(git log -1 --format=%H)" >> $GITHUB_OUTPUT}
+
+    check-flatpak:
+      needs: update-version
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
+          with:
+            ref: ${{ inputs.commit }}
+        - name: check version against manifest
+          if: ${{ inputs.type == 'release' }}
+          run: bash resources/flatpak/check-version.sh ${{ env.VERSION }} 
+

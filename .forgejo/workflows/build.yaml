@@ -1,0 +1,45 @@
+name: Build artifacts
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: 'version tag'
+        required: true
+        type: string
+      type:
+        description: 'Type of Build'
+        required: true
+        options:
+          - release
+          - prerelease
+          - dev
+      commit:
+        description: 'commit hash'
+        required: true
+        type: string
+    outputs:
+      flatpak_yaml_artifact_url:
+        value: ${{ jobs.build-flatpak.outputs.artifact_url }}
+
+jobs:
+  build-wine:
+    uses: ./.forgejo/workflows/wix.yaml
+    with:
+      version: ${{ inputs.version }}
+      commit: ${{ inputs.commit }}
+
+  build-docker:
+    uses: ./.forgejo/workflows/docker.yaml
+    with:
+      version: ${{ inputs.version }}
+      commit: ${{ inputs.commit }}
+      push: "false"
+      type: ${{ inputs.type }}
+
+  build-flatpak:
+    uses: ./.forgejo/workflows/flatpak.yaml
+    with:
+      version: ${{ inputs.version }}
+      commit: ${{ inputs.commit }}
+  
+      

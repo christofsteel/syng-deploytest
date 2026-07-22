@@ -1,0 +1,71 @@
+name: Publish artifacts
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: 'version tag'
+        required: true
+        type: string
+      type:
+        description: 'Type of Build'
+        required: true
+        options:
+          - release
+          - prerelease
+          - dev
+      commit:
+        description: 'commit hash'
+        required: true
+        type: string
+
+env:
+  flatpak_yaml_artifact_url: "https://git.k-fortytwo.de/christofsteel/syng-deploytest/actions/runs/${{ forgejo.run_id }}/artifacts/flatpak-yaml-files"
+
+
+jobs:
+  publish-docker:
+    uses: ./.forgejo/workflows/docker.yaml
+    with:
+      version: ${{ inputs.version }}
+      commit: ${{ inputs.sha }}
+      push: "true"
+      type: ${{ inputs.type }}
+    secrets: inherit
+
+  publish-flathub:
+    uses: ./.forgejo/workflows/external.yaml
+    with:
+      repo: christofsteel/testrepo
+      event: trigger-workflow
+      payload: |
+        {
+          "url": "${{ env.flatpak_yaml_artifact_url }}"
+        }
+    secrets:
+      token: ${{ secrets.GH_TESTREPO }}
+
+  publish-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commit }}
+      - name: download artifact
+        uses: actions/download-artifact@v3
+        with:
+          path: dist
+      - name: clean and flatten
+        run: |
+          rm -rf dist/flatpak-yaml-files
+          mv dist/**/* dist/
+          rmdir dist/* || true
+      - uses: actions/forgejo-release@v2.13.4
+        with:
+          direction: upload
+          release-notes-assistant: true
+          tag: v${{ inputs.version }}
+          sha: ${{ inputs.commit }}
+          release-dir: dist
+          prerelease: ${{ inputs.type != 'release' }}

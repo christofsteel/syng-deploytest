@@ -7,16 +7,17 @@ on:
         description: 'version tag'
         required: true
         type: string
+      type:
+        description: 'Type of Build'
+        required: true
+        options:
+          - release
+          - prerelease
+          - dev
       commit:
         description: 'commit hash'
         required: true
         type: string
-    outputs:
-      artifact_url:
-        value: ${{ jobs.prepare-yaml-files.outputs.artifact_url }}
-
-env:
-  REPO: christofsteel/testrepo
 
 jobs:
   prepare-yaml-files:
@@ -42,9 +43,6 @@ jobs:
         with:
           name: flatpak-yaml-files
           path: resources/flatpak/dist
-      - name: Print artifact url
-        id: artifact_url
-        run: echo "artifact_url=https://git.k-fortytwo.de/christofsteel/syng-deploytest/actions/runs/${{ forgejo.run_id }}/artifacts/flatpak-yaml-files" >> $FORGEJO_OUTPUT
       
   build-flatpak:
     needs: prepare-yaml-files
@@ -78,7 +76,6 @@ jobs:
         run: |
           flatpak build-bundle /workspace/christofsteel/syng-deploytest/repo "rocks.syng.Syng.flatpak" "rocks.syng.Syng"
           mv rocks.syng.Syng.flatpak rocks.syng.Syng-${{ inputs.version }}-x86_64.flatpak
-
 
       - name: Upload Flatpak artifact
         uses: actions/upload-artifact@v3
