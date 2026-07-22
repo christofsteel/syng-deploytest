@@ -118,7 +118,6 @@ jobs:
 
   publish-release:
     needs: [build-ok, update-version]
-    # needs: [build-flatpak, update-version]
     runs-on: ubuntu-latest
     steps:
       - name: check out repo

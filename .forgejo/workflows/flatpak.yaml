@@ -56,10 +56,8 @@ jobs:
         with:
           name: flatpak-yaml-files
           path: .
-
-      - uses: Create key for cache
-        run: |
-          echo "cachekey=$(cat * | md5sum)" >> $GITHUB_ENV
+      - name: Create key for cache
+        run: echo "cachekey=$(cat * | md5sum)" >> $GITHUB_ENV
       - name: Cache flatpak
         id: cache-flatpak
         uses: actions/cache@v4

@@ -13,16 +13,13 @@ enable-email-notifications: true
 jobs:
   mypy:
     runs-on: ubuntu-latest
-    container:
-      image: python:3.13
-    
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v4
-      # - name: Set up Python
-      #   uses: actions/setup-python@v5
-      #   with:
-      #     python-version: '3.13'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
       - name: Install and poetry and all dependencies
         run: |
           pip install uv --quiet
@@ -36,10 +33,10 @@ jobs:
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v4
-      # - name: Set up Python
-      #   uses: actions/setup-python@v5
-      #   with:
-      #     python-version: '3.13'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
       - name: Install ruff
         run: pip install ruff --quiet
       - name: Run ruff
