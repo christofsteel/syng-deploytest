@@ -1,7 +1,7 @@
 name: Just debug things
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       release:
         description: "release"
