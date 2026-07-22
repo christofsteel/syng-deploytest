@@ -6,7 +6,11 @@ on:
       release:
         description: "Type of release"
         required: true
-        type: string
+        type: choice
+        options:
+          - release
+          - prerelease
+          - dev
   workflow_call:
     inputs:
       release:
@@ -48,7 +52,7 @@ jobs:
           git config --global user.name "Forgejo Action CI"
           git config --global user.email "git@git.k-fortytwo.de"
       - name: Bump to stable
-        if: ${{ inputs.type == 'release' }}
+        if: ${{ inputs.release == 'release' }}
         run: uv version --bump stable
       - name: get current version
         id: get-version
@@ -74,6 +78,6 @@ jobs:
         with:
           ref: ${{ inputs.commit }}
       - name: check version against manifest
-        if: ${{ inputs.type == 'release' }}
+        if: ${{ inputs.release == 'release' }}
         run: bash resources/flatpak/check-version.sh ${{ env.VERSION }} 
 
