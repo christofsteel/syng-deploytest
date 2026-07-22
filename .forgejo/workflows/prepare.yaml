@@ -12,6 +12,13 @@ on:
       commit: ${{ jobs.update-version.outputs.commit }}
 
 jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: print inputs
+        run: |
+          echo "type: ${{ inputs.type }}"
+
   update-version:
     runs-on: ubuntu-latest
     outputs:
