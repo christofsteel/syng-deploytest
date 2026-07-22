@@ -12,7 +12,7 @@ on:
       commit: ${{ jobs.update-version.outputs.commit }}
 
 jobs:
-  debug:
+  debug-prepare:
     runs-on: ubuntu-latest
     steps:
       - name: print inputs
