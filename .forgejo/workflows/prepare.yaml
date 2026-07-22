@@ -6,10 +6,7 @@ on:
       type:
         description: 'Type of Build'
         required: true
-        options:
-          - release
-          - prerelease
-          - dev
+        type: string
     outputs:
       version: ${{ jobs.update-version.outputs.version }}
       commit: ${{ jobs.update-version.outputs.commit }}

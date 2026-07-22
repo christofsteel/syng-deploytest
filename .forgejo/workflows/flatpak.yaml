@@ -10,10 +10,7 @@ on:
       type:
         description: 'Type of Build'
         required: true
-        options:
-          - release
-          - prerelease
-          - dev
+        type: string
       commit:
         description: 'commit hash'
         required: true
