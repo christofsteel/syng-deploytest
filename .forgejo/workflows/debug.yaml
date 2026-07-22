@@ -15,4 +15,10 @@ jobs:
       - name: print inputs
         run: |
           echo "type: ${{ inputs.release }}"
+  print2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: print inputs
+        run: |
+          echo "type: ${{ inputs.release }}"
 
