@@ -46,7 +46,7 @@ jobs:
           # echo "synghash=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "syngversion=${{ inputs.version }}" >> $GITHUB_ENV
       - name: Update Ubuntu Repo
-        run: apt update -y
+        run: apt-get update -y
       - name: Install dependencies
         run: apt-get install -y xvfb 7zip
       - name: Create workdirs
