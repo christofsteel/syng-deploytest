@@ -65,7 +65,7 @@ jobs:
         id: commit
         run: |
           echo "commit=$(git log -1 --format=%H)"
-          echo "commit=$(git log -1 --format=%H)" >> $GITHUB_OUTPUT}
+          echo "commit=$(git log -1 --format=%H)" >> ${GITHUB_OUTPUT}
 
   check-flatpak:
     needs: update-version
