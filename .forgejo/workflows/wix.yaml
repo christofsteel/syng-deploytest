@@ -21,8 +21,6 @@ on:
         required: true
         type: string
 
-env:
-
 
 jobs:
   build-msi:
