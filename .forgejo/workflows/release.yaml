@@ -13,9 +13,9 @@ on:
           - dev
 jobs:
   debug:
-  uses: ./.forgejo/workflows/debug.yaml
-  with:
-    release: test123
+    uses: ./.forgejo/workflows/debug.yaml
+    with:
+      release: test123
     # runs-on: ubuntu-latest
     # steps:
     #   - name: print inputs
