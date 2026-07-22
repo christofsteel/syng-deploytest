@@ -17,17 +17,12 @@ on:
         required: true
         type: string
     outputs:
-      version: ${{ jobs.update-version.outputs.version }}
-      commit: ${{ jobs.update-version.outputs.commit }}
+      version: 
+        value: ${{ jobs.update-version.outputs.version }}
+      commit: 
+        value: ${{ jobs.update-version.outputs.commit }}
 
 jobs:
-  debug-prepare:
-    runs-on: ubuntu-latest
-    steps:
-      - name: print inputs
-        run: |
-          echo "type: ${{ inputs.release }}"
-
   update-version:
     runs-on: ubuntu-latest
     outputs:

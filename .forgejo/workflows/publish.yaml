@@ -7,7 +7,7 @@ on:
         description: 'version tag'
         required: true
         type: string
-      type:
+      release:
         description: 'Type of Build'
         required: true
         type: string
@@ -27,7 +27,7 @@ jobs:
       version: ${{ inputs.version }}
       commit: ${{ inputs.sha }}
       push: "true"
-      type: ${{ inputs.type }}
+      release: ${{ inputs.type }}
     secrets: inherit
 
   publish-flathub:
@@ -65,4 +65,4 @@ jobs:
           tag: v${{ inputs.version }}
           sha: ${{ inputs.commit }}
           release-dir: dist
-          prerelease: ${{ inputs.type != 'release' }}
+          prerelease: ${{ inputs.release != 'release' }}

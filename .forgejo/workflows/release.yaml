@@ -3,7 +3,7 @@ name: Make a new Release
 on:
   workflow_dispatch:
     inputs:
-      type:
+      release:
         description: "Type of Release"
         required: true
         type: choice
@@ -12,47 +12,37 @@ on:
           - prerelease
           - dev
 jobs:
-  debug:
-    uses: ./.forgejo/workflows/debug.yaml
+  prepare:
+    uses: ./.forgejo/workflows/prepare.yaml
     with:
-      release: test123
-    # runs-on: ubuntu-latest
-    # steps:
-    #   - name: print inputs
-    #     run: |
-    #       echo "type: ${{ inputs.type }}"
+      release: ${{ inputs.release }}
 
-  # prepare:
-  #   uses: ./.forgejo/workflows/prepare.yaml
-  #   with:
-  #     release: "release"
-  #
-  # build:
-  #   needs: prepare
-  #   uses: ./.forgejo/workflows/build.yaml
-  #   with:
-  #     type: ${{ inputs.type }}
-  #     version: ${{ needs.prepare.output.version }}
-  #     commit: ${{ needs.prepare.output.commit }}
-  #
-  # publish:
-  #   needs: build
-  #   uses: ./.forgejo/workflows/publish.yaml
-  #   with:
-  #     type: ${{ inputs.type }}
-  #     version: ${{ needs.prepare.output.version }}
-  #     commit: ${{ needs.prepare.output.commit }}
-  #   secrets: inherit
-  #
-  #
-  # cleanup:
-  #   needs: [prepare, publish]
-  #   runs-on: ubuntu-latest
-  #   if: ${{ failure() || cancelled() }}
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4        
-  #     - name: Remove Branch
-  #       run: |
-  #         git push origin --delete release-${{needs.prepare.outputs.version}} || true
-  #         git push origin --delete v${{needs.prepare.outputs.version}} || true
+  build:
+    needs: prepare
+    uses: ./.forgejo/workflows/build.yaml
+    with:
+      release: ${{ inputs.release }}
+      version: ${{ needs.prepare.output.version }}
+      commit: ${{ needs.prepare.output.commit }}
+
+  publish:
+    needs: build
+    uses: ./.forgejo/workflows/publish.yaml
+    with:
+      release: ${{ inputs.release }}
+      version: ${{ needs.prepare.output.version }}
+      commit: ${{ needs.prepare.output.commit }}
+    secrets: inherit
+
+
+  cleanup:
+    needs: [prepare, publish]
+    runs-on: ubuntu-latest
+    if: ${{ failure() || cancelled() }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4        
+      - name: Remove Branch
+        run: |
+          git push origin --delete release-${{needs.prepare.outputs.version}} || true
+          git push origin --delete v${{needs.prepare.outputs.version}} || true
