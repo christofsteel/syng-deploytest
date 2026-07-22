@@ -74,5 +74,5 @@ jobs:
           ref: ${{ inputs.commit }}
       - name: check version against manifest
         if: ${{ inputs.release == 'release' }}
-        run: bash resources/flatpak/check-version.sh ${{ env.VERSION }} 
+        run: bash resources/flatpak/check-version.sh ${{ needs.update-version.outputs.version }} 
 
