@@ -53,15 +53,15 @@ jobs:
         id: commit
         run: echo "commit=$(git log -1 --format=%H)" >> $GITHUB_OUTPUT}
 
-    check-flatpak:
-      needs: update-version
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@v4
-          with:
-            ref: ${{ inputs.commit }}
-        - name: check version against manifest
-          if: ${{ inputs.type == 'release' }}
-          run: bash resources/flatpak/check-version.sh ${{ env.VERSION }} 
+  check-flatpak:
+    needs: update-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commit }}
+      - name: check version against manifest
+        if: ${{ inputs.type == 'release' }}
+        run: bash resources/flatpak/check-version.sh ${{ env.VERSION }} 
 
