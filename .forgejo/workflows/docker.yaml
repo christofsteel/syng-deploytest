@@ -57,14 +57,6 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
-      - name: Print event trigger
-        run: echo ${{ github.event_name }} - ${{ inputs.type }}
-      - name: Print stuff
-        run: |
-          echo Forgejo user: ${{ env.USERNAME }}
-          echo Github user: ${{ env.USERNAME2 }}
-          echo push? ${{env.PUSH}}, ${{inputs.push}}
-          echo type ${{inputs.type}}
       - name: check out repo
         uses: actions/checkout@v4
         with:
@@ -72,7 +64,7 @@ jobs:
       - name: Get best tag
         id: tagname
         run: |
-          SHA="commit-$(git rev-parse --short HEAD)"
+          SHA="commit-${{inputs.commit}}"
           case ${{ inputs.type }} in
           release)
           TAGS=(${SHA} $(echo ${{ inputs.version }} | sed "s/\([^\.]*\).\([^\.]*\).\(.*\)$/\1 \1.\2 \1.\2.\3 latest/"))
@@ -88,7 +80,6 @@ jobs:
           ;;
           esac
           echo ${TAGS[@]}
-          echo ${{ inputs.version }} 
           FULL_TAGS=$(for tag in ${TAGS[@]}; do echo ${{ env.REGISTRY2 }}/${{ env.IMAGE_NAME }}:${tag},${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${tag}; done | tr '\n' ',' | sed s/,$//)
           echo "TAGS=\"${FULL_TAGS}\"" >> "$GITHUB_OUTPUT"
       - name: Print tags

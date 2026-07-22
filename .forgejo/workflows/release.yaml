@@ -73,7 +73,7 @@ jobs:
     with:
       version: ${{ needs.update-version.outputs.version }}
       commit: ${{ needs.update-version.outputs.sha }}
-      push: "true"
+      push: "false"
       type: ${{ inputs.type }}
     secrets: inherit
 
@@ -86,8 +86,38 @@ jobs:
     secrets:
       GH_TESTREPO: ${{secrets.GH_TESTREPO}}
 
-  publish:
+  build-ok:
     needs: [build-wine, build-flatpak, build-docker, update-version]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print "Build ok"
+        run: echo "Build ok"
+
+  publish-docker:
+    needs: [build-ok, update-version]
+    uses: ./.forgejo/workflows/docker.yaml
+    with:
+      version: ${{ needs.update-version.outputs.version }}
+      commit: ${{ needs.update-version.outputs.sha }}
+      push: "true"
+      type: ${{ inputs.type }}
+    secrets: inherit
+
+  publish-flathub:
+    needs: [build-ok, build-flatpak]
+    uses: ./.forgejo/workflows/external.yaml
+    with:
+      repo: christofsteel/testrepo
+      event: trigger-workflow
+      payload: |
+        {
+          "url": "${{ needs.build-flatpak.outputs.artifact_url }}"
+        }
+    secrets:
+      token: ${{ secrets.GH_TESTREPO }}
+
+  publish-release:
+    needs: [build-ok, update-version]
     # needs: [build-flatpak, update-version]
     runs-on: ubuntu-latest
     steps:
@@ -95,44 +125,36 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{needs.update-version.outputs.sha}}
-      - name: Get tag
-        id: tag
-        run: |
-            echo "TAG=v${{ needs.update-version.outputs.version }}" >> $GITHUB_OUTPUT
-      - name: Check for stable version
-        id: stable
-        run: |
-            echo "PRERELEASE=${{ inputs.type != 'release' }}" >> $GITHUB_OUTPUT
-      - name: Print version
-        run: |
-          echo "Version: ${{ steps.tag.outputs.tag }}"
-          echo "Prerelease: ${{ steps.stable.outputs.prerelease }}"
       - name: download artifact
         uses: actions/download-artifact@v3
         with:
           path: dist
-      - name: list
-        run: ls -Rlh dist/
-      - name: clean
-        run: rm -rf dist/flatpak-yaml-files
-      - name: flatten
-        run: mv dist/**/* dist/
-      - run: |
+      - name: clean and flatten
+        run: |
+          rm -rf dist/flatpak-yaml-files
+          mv dist/**/* dist/
           rmdir dist/* || true
       - uses: actions/forgejo-release@v2.13.4
         with:
           direction: upload
           release-notes-assistant: true
-          tag: ${{ steps.tag.outputs.tag }}
+          tag: v${{ needs.update-version.outputs.version }}
           sha: ${{ needs.update-version.outputs.sha }}
           release-dir: dist
-          prerelease: ${{ steps.stable.outputs.prerelease }}
+          prerelease: ${{ inputs.type != 'release' }}
+
+  publish-ok:
+    needs: [publish-flathub, publish-docker, publish-release]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print "Publish ok"
+        run: echo "Publish ok"
+    
 
   cleanup:
-    # needs: [build-docker, build-flatpak, build-docker, update-version]
-    needs: [publish, update-version]
+    needs: [publish-ok, update-version]
     runs-on: ubuntu-latest
-    if: failure()
+    if: ${{ failure() || cancelled() }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4        
