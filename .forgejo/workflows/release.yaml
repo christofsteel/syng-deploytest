@@ -12,7 +12,15 @@ on:
           - prerelease
           - dev
 jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: print inputs
+        run: |
+          echo "type: ${{ inputs.type }}"
+
   prepare:
+    needs: debug
     uses: ./.forgejo/workflows/prepare.yaml
     with:
       type: ${{ inputs.type }}
