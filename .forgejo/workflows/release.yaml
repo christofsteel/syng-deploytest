@@ -27,7 +27,7 @@ jobs:
           echo commit ${{ needs.prepare.outputs.commit }}
 
   build:
-    needs: [prepare, debug]
+    needs: prepare
     uses: ./.forgejo/workflows/build.yaml
     with:
       release: ${{ inputs.release }}
@@ -35,7 +35,7 @@ jobs:
       commit: ${{ needs.prepare.outputs.commit }}
 
   publish:
-    needs: build
+    needs: [build, prepare]
     uses: ./.forgejo/workflows/publish.yaml
     with:
       release: ${{ inputs.release }}
