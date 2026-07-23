@@ -32,7 +32,6 @@ jobs:
           echo "WINEDLLOVERRIDES=mshtml=" >> ${GITHUB_ENV}
           echo "WINEARCH=win64" >> ${GITHUB_ENV}
           echo "WINEDEBUG=-all" >> ${GITHUB_ENV}
-          
       - name: print inputs
         run: |
           echo "version: ${{ inputs.version}}"
@@ -44,7 +43,6 @@ jobs:
 
       - name: Get hash and version for cache
         run: |
-          # echo "synghash=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "syngversion=${{ inputs.version }}" >> $GITHUB_ENV
       - name: Update Ubuntu Repo
         run: apt-get update -y
@@ -56,6 +54,11 @@ jobs:
           mkdir -p work/dist
           mkdir -p downloads
           mkdir -p winedl
+      - name: Get latest versions for dependencies
+        # if: steps.cache-dl.outputs.cache-hit != 'true'
+        run: |
+          bash latest-win-deps.sh | tee >> ${GITHUB_ENV}
+        working-directory: resources/windows
       - name: Cache downloads
         id: cache-dl
         uses: actions/cache@v4
@@ -63,13 +66,6 @@ jobs:
           path: |
             downloads
           key: downloads-wine${{ env.WINE_VERSION }}-mpv${{ env.MPV_NIGHTLY }}-python${{ env.PYTHON_VERSION }}-mono${{ env.MONO_VERSION }}-deno${{ env.DENO_VERSION }}
-
-      - name: Get latest versions for dependencies
-        # if: steps.cache-dl.outputs.cache-hit != 'true'
-        run: |
-          bash latest-win-deps.sh | tee >> ${GITHUB_ENV}
-        working-directory: resources/windows
-
       - name: Download everything
         if: steps.cache-dl.outputs.cache-hit != 'true'
         run: |
@@ -94,16 +90,16 @@ jobs:
       - name: Find Wine
         run: |
           WINECFG="$PWD/wine-${{ env.WINE_VERSION }}-amd64-wow64/bin/winecfg"
-          echo "winecfg=$WINECFG" >> $GITHUB_ENV
           WINE="$PWD/wine-${{ env.WINE_VERSION }}-amd64-wow64/bin/wine"
-          echo "wine=$WINE" >> $GITHUB_ENV
           MSIEXEC="$PWD/wine-${{ env.WINE_VERSION }}-amd64-wow64/bin/msiexec"
+          echo "winecfg=$WINECFG" >> $GITHUB_ENV
+          echo "wine=$WINE" >> $GITHUB_ENV
           echo "msiexec=$MSIEXEC" >> $GITHUB_ENV
-        working-directory: downloads
+          echo "winecfg=$WINECFG"
+          echo "wine=$WINE"
+          echo "msiexec=$MSIEXEC"
       - name: Create wineprefix
         run: ${{ env.winecfg }}
-
-
       - name: Run python installer
         run: |
           echo xvfb-run -a ${{ env.wine }} python-installer.exe /quiet Include_pip=1
