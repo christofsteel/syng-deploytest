@@ -1,0 +1,43 @@
+name: cleanup after publish
+
+on:
+  workflow_call:
+    inputs:
+      release:
+        required: true
+        type: string
+      commit:
+        description: 'commit hash'
+        required: true
+        type: string
+
+jobs:
+  merge-and-bump:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out repo
+        uses: actions/checkout@v4
+      - name: set git credentials
+        run: |
+          git config --global user.name "Forgejo Action CI"
+          git config --global user.email "git@git.k-fortytwo.de"
+      - name: merge
+        run: git merge ${{ inputs.commit }} 
+      - name: Install uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          version: "0.11.19"      
+      - name: bump to next dev/patch
+        if: ${{ inputs.release == 'release' }}
+        run: uv version --bump dev --bump patch
+      - name: bump to next dev
+        if: ${{ inputs.release == 'prerelease' }}
+        run: uv version --bump dev
+      - name: commit and push
+        run: |
+          git add pyproject.toml
+          git commit -m "Update to next dev"
+          git push origin main
+          
+
+      
