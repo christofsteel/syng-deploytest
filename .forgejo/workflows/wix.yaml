@@ -101,6 +101,8 @@ jobs:
           ls -lh ${WINECFG}
           ls -lh ${WINE}
           ls -lh ${MSIEXEC}
+        working-directory: downloads
+
       - name: Create wineprefix
         run: ${{ env.winecfg }}
       - name: Run python installer
