@@ -43,8 +43,16 @@ jobs:
       commit: ${{ needs.prepare.outputs.commit }}
     secrets: inherit
 
-
   cleanup:
+    need: [prepare, publish]
+    uses: ./.forgejo/workflows/build.yaml
+    with:
+      release: ${{ inputs.release }}
+      commit: ${{ needs.prepare.outputs.commit }}
+
+      
+
+  cleanup-fail:
     needs: [prepare, publish]
     runs-on: ubuntu-latest
     if: ${{ failure() || cancelled() }}

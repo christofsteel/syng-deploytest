@@ -1498,7 +1498,7 @@ wheels = [
 
 [[package]]
 name = "syng"
-version = "2.4.0.dev1"
+version = "2.3.0.dev0"
 source = { editable = "." }
 dependencies = [
     { name = "aiohttp" },
