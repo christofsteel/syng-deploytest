@@ -98,9 +98,9 @@ jobs:
           echo "winecfg=$WINECFG"
           echo "wine=$WINE"
           echo "msiexec=$MSIEXEC"
-          ls -lh ${{env.WINECFG}}
-          ls -lh ${{env.WINE}}
-          ls -lh ${{env.MSIEXEC}}
+          ls -lh ${WINECFG}
+          ls -lh ${WINE}
+          ls -lh ${MSIEXEC}
       - name: Create wineprefix
         run: ${{ env.winecfg }}
       - name: Run python installer
