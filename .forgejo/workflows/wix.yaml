@@ -95,12 +95,6 @@ jobs:
           echo "winecfg=$WINECFG" >> $GITHUB_ENV
           echo "wine=$WINE" >> $GITHUB_ENV
           echo "msiexec=$MSIEXEC" >> $GITHUB_ENV
-          echo "winecfg=$WINECFG"
-          echo "wine=$WINE"
-          echo "msiexec=$MSIEXEC"
-          ls -lh ${WINECFG}
-          ls -lh ${WINE}
-          ls -lh ${MSIEXEC}
         working-directory: downloads
 
       - name: Create wineprefix
