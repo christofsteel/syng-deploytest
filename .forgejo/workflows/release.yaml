@@ -44,8 +44,8 @@ jobs:
     secrets: inherit
 
   cleanup:
-    need: [prepare, publish]
-    uses: ./.forgejo/workflows/build.yaml
+    needs: [prepare, publish]
+    uses: ./.forgejo/workflows/cleanup.yaml
     with:
       release: ${{ inputs.release }}
       commit: ${{ needs.prepare.outputs.commit }}
