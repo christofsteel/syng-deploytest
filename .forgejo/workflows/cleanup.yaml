@@ -1,6 +1,15 @@
 name: cleanup after publish
 
 on:
+  workflow_dispatch:
+    inputs:
+      release:
+        required: true
+        type: string
+      commit:
+        description: 'commit hash'
+        required: true
+        type: string
   workflow_call:
     inputs:
       release:
@@ -17,12 +26,17 @@ jobs:
     steps:
       - name: check out repo
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commit }}
       - name: set git credentials
         run: |
           git config --global user.name "Forgejo Action CI"
           git config --global user.email "git@git.k-fortytwo.de"
       - name: merge
-        run: git merge ${{ inputs.commit }} 
+        run: |
+          git pull origin main
+          git checkout main 
+          git merge ${{ inputs.commit }} 
       - name: Install uv
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
         with:
@@ -38,6 +52,3 @@ jobs:
           git add pyproject.toml
           git commit -m "Update to next dev"
           git push origin main
-          
-
-      
