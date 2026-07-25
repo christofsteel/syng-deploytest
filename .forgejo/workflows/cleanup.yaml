@@ -28,14 +28,15 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ inputs.commit }}
+          fetch-depth: 0
       - name: set git credentials
         run: |
           git config --global user.name "Forgejo Action CI"
           git config --global user.email "git@git.k-fortytwo.de"
       - name: merge
         run: |
-          echo git pull --unshallow
-          git pull --unshallow
+          # echo git pull --unshallow
+          # git pull --unshallow
           echo git fetch origin main
           git fetch origin main
           echo git checkout main 
