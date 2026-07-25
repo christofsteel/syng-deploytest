@@ -15,6 +15,19 @@ on:
         description: 'commit hash'
         required: true
         type: string
+      docker:
+        description: "Build docker"
+        required: true
+        type: boolean
+      flatpak:
+        description: "Build flatpak"
+        required: true
+        type: boolean
+      wine:
+        description: "Build wine"
+        required: true
+        type: boolean
+        
     outputs:
       flatpak_yaml_artifact_url:
         value: ${{ jobs.build-flatpak.outputs.artifact_url }}
@@ -22,12 +35,14 @@ on:
 jobs:
   build-wine:
     uses: ./.forgejo/workflows/wix.yaml
+    if: ${{ inputs.wine }}
     with:
       version: ${{ inputs.version }}
       commit: ${{ inputs.commit }}
 
   build-docker:
     uses: ./.forgejo/workflows/docker.yaml
+    if: ${{ inputs.docker }}
     with:
       version: ${{ inputs.version }}
       commit: ${{ inputs.commit }}
@@ -36,6 +51,7 @@ jobs:
 
   build-flatpak:
     uses: ./.forgejo/workflows/flatpak.yaml
+    if: ${{ inputs.flatpak }}
     with:
       version: ${{ inputs.version }}
       commit: ${{ inputs.commit }}
