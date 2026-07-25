@@ -81,3 +81,5 @@ jobs:
           sha: ${{ inputs.commit }}
           release-dir: dist
           prerelease: ${{ inputs.release != 'release' }}
+          override: true
+          verbose: true
