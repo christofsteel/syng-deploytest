@@ -69,7 +69,6 @@ jobs:
 
   check-flatpak:
     needs: update-version
-    if: false
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
