@@ -33,6 +33,12 @@ on:
         value: ${{ jobs.build-flatpak.outputs.artifact_url }}
 
 jobs:
+  print:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print inputs
+        run: |
+          echo ${{ inputs }}
   build-wine:
     uses: ./.forgejo/workflows/wix.yaml
     if: ${{ inputs.wine }}
