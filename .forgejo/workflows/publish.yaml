@@ -20,7 +20,6 @@ on:
 jobs:
   publish-docker:
     uses: ./.forgejo/workflows/docker.yaml
-    if: false
     with:
       version: ${{ inputs.version }}
       commit: ${{ inputs.sha }}
@@ -30,7 +29,6 @@ jobs:
 
   publish-flathub:
     uses: ./.forgejo/workflows/external.yaml
-    if: false
     with:
       repo: christofsteel/testrepo
       event: trigger-workflow
@@ -49,14 +47,12 @@ jobs:
         with:
           ref: ${{ inputs.commit }}
       - name: ensure dist
-        run: mkdir dist/ && touch dist/test123
+        run: mkdir dist/
       - name: download artifact
-        if: ${{ inputs.wine || inputs.flatpak }}
         uses: actions/download-artifact@v3
         with:
           path: dist
       - name: clean and flatten
-        if: ${{ inputs.wine || inputs.flatpak }}
         run: |
           rm -rf dist/flatpak-yaml-files || true
           mv dist/**/* dist/
