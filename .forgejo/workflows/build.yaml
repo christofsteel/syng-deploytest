@@ -43,7 +43,7 @@ jobs:
           echo commit: ${{ inputs.commit }}
           echo docker: ${{ inputs.docker }}
           echo flatpak: ${{ inputs.flatpak }}
-          echo version: ${{ inputs.version }}
+          echo wine: ${{ inputs.wine }}
   build-wine:
     uses: ./.forgejo/workflows/wix.yaml
     if: ${{ inputs.wine }}
