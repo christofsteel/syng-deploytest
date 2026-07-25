@@ -38,7 +38,12 @@ jobs:
     steps:
       - name: Print inputs
         run: |
-          echo ${{ inputs }}
+          echo version: ${{ inputs.version }}
+          echo release: ${{ inputs.release }}
+          echo commit: ${{ inputs.commit }}
+          echo docker: ${{ inputs.docker }}
+          echo flatpak: ${{ inputs.flatpak }}
+          echo version: ${{ inputs.version }}
   build-wine:
     uses: ./.forgejo/workflows/wix.yaml
     if: ${{ inputs.wine }}
