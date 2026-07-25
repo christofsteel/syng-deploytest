@@ -21,8 +21,6 @@ on:
         value: ${{ jobs.build-flatpak.outputs.artifact_url }}
 
 jobs:
-  print:
-    runs-on: ubuntu-latest
   build-wine:
     uses: ./.forgejo/workflows/wix.yaml
     if: true
