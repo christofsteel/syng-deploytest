@@ -64,8 +64,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ inputs.commit }}
-      - name: make dist
-        run: mkdir dist
       - name: download artifact
         if: ${{ inputs.wine || inputs.flatpak }}
         uses: actions/download-artifact@v3
@@ -78,10 +76,19 @@ jobs:
           mv dist/**/* dist/
           rmdir dist/* || true
       - uses: actions/forgejo-release@v2.13.4
+        if: ${{ inputs.wine || inputs.flatpak }}
         with:
           direction: upload
           release-notes-assistant: true
           tag: v${{ inputs.version }}
           sha: ${{ inputs.commit }}
           release-dir: dist
+          prerelease: ${{ inputs.release != 'release' }}
+      - uses: actions/forgejo-release@v2.13.4
+        if: ${{ !inputs.wine && !inputs.flatpak }}
+        with:
+          direction: upload
+          release-notes-assistant: true
+          tag: v${{ inputs.version }}
+          sha: ${{ inputs.commit }}
           prerelease: ${{ inputs.release != 'release' }}
