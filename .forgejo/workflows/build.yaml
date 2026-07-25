@@ -46,7 +46,7 @@ jobs:
           echo wine: ${{ inputs.wine }}
   build-wine:
     uses: ./.forgejo/workflows/wix.yaml
-    if: ${{ inputs.wine }}
+    if: inputs.wine
     with:
       version: ${{ inputs.version }}
       commit: ${{ inputs.commit }}
