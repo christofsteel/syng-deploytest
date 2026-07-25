@@ -16,9 +16,6 @@ on:
       release:
         required: true
         type: string
-      flatpak:
-        required: true
-        type: boolean
     outputs:
       version: 
         value: ${{ jobs.update-version.outputs.version }}
@@ -72,7 +69,7 @@ jobs:
 
   check-flatpak:
     needs: update-version
-    if: ${{ inputs.flatpak }}
+    if: false
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository

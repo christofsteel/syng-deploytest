@@ -15,24 +15,12 @@ on:
         description: 'commit hash'
         required: true
         type: string
-      docker:
-        description: "Build docker"
-        required: true
-        type: boolean
-      flatpak:
-        description: "Build flatpak"
-        required: true
-        type: boolean
-      wine:
-        description: "Build wine"
-        required: true
-        type: boolean
         
 
 jobs:
   publish-docker:
     uses: ./.forgejo/workflows/docker.yaml
-    if: ${{ inputs.docker }}
+    if: false
     with:
       version: ${{ inputs.version }}
       commit: ${{ inputs.sha }}
@@ -42,7 +30,7 @@ jobs:
 
   publish-flathub:
     uses: ./.forgejo/workflows/external.yaml
-    if: ${{ inputs.flatpak }}
+    if: false
     with:
       repo: christofsteel/testrepo
       event: trigger-workflow
