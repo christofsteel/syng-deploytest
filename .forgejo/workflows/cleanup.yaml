@@ -34,8 +34,8 @@ jobs:
           git config --global user.email "git@git.k-fortytwo.de"
       - name: merge
         run: |
-          echo git pull --unshallow ${{ inputs.commit }}
-          git pull --unshallow ${{ inputs.commit }}
+          echo git pull --unshallow
+          git pull --unshallow
           echo git fetch origin main
           git fetch origin main
           echo git checkout main 
