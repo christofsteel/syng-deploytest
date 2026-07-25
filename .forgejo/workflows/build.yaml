@@ -23,14 +23,12 @@ on:
 jobs:
   build-wine:
     uses: ./.forgejo/workflows/wix.yaml
-    if: false
     with:
       version: ${{ inputs.version }}
       commit: ${{ inputs.commit }}
 
   build-docker:
     uses: ./.forgejo/workflows/docker.yaml
-    if: false
     with:
       version: ${{ inputs.version }}
       commit: ${{ inputs.commit }}
@@ -39,7 +37,6 @@ jobs:
 
   build-flatpak:
     uses: ./.forgejo/workflows/flatpak.yaml
-    if: false
     with:
       version: ${{ inputs.version }}
       commit: ${{ inputs.commit }}
