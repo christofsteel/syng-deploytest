@@ -34,9 +34,13 @@ jobs:
           git config --global user.email "git@git.k-fortytwo.de"
       - name: merge
         run: |
-          git pull --unshallow
+          echo git pull --unshallow ${{ inputs.commit }}
+          git pull --unshallow ${{ inputs.commit }}
+          echo git fetch origin main
           git fetch origin main
+          echo git checkout main 
           git checkout main 
+          echo git merge ${{ inputs.commit }} 
           git merge ${{ inputs.commit }} 
       - name: Install uv
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
