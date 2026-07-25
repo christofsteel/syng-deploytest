@@ -49,7 +49,7 @@ jobs:
         with:
           ref: ${{ inputs.commit }}
       - name: ensure dist
-        run: mkdir dist/
+        run: mkdir dist/ && touch dist/test123
       - name: download artifact
         if: ${{ inputs.wine || inputs.flatpak }}
         uses: actions/download-artifact@v3
@@ -61,6 +61,7 @@ jobs:
           rm -rf dist/flatpak-yaml-files || true
           mv dist/**/* dist/
           rmdir dist/* || true
+      - run: ls -alh dist/
       - uses: actions/forgejo-release@v2.13.4
         with:
           direction: upload

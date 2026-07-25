@@ -23,7 +23,7 @@ on:
 jobs:
   build-wine:
     uses: ./.forgejo/workflows/wix.yaml
-    if: true
+    if: false
     with:
       version: ${{ inputs.version }}
       commit: ${{ inputs.commit }}
