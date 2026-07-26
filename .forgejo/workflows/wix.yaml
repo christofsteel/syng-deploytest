@@ -39,7 +39,7 @@ jobs:
           echo "version: ${{ inputs.version}}"
           echo "commit: ${{ inputs.commit}}"
       - name: install node
-        run: apt-get update && apt-get install -y nodejs 7zip jq curl
+        run: apt-get update && apt-get install -y nodejs 7zip jq curl wget
       - name: Checkout code
         uses: actions/checkout@v4        
         with:
