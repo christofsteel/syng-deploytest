@@ -102,7 +102,9 @@ jobs:
           cp resources/windows/banner.bmp work/
           cp resources/windows/agpl-3.0.rtf work/
       - name: install syng
-        run: ${{ env.wine }} ${{ env.python }} -m pip install .[client]
+        run: |
+          echo ${{ env.wine }} ${{ env.python }} -m pip install .[client]
+          ${{ env.wine }} ${{ env.python }} -m pip install .[client]
       - name: run PyInstaller (folder)
         run: ${{ env.wine }} ${{ env.pyinstaller }} -n "syng" -w -i'.\syng.ico' --add-data='.\syng.ico;.' --add-data='.\background.png;.' --add-data='.\background20perc.png;.' --add-binary '.\deno.exe;.' --add-binary '.\libmpv-2.dll;.' --add-binary '.\ffmpeg.exe;.' syng/main.py
         working-directory: ./work
