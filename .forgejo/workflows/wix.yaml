@@ -25,17 +25,21 @@ on:
 jobs:
   build-msi:
     runs-on: ubuntu-latest
+    container:
+      image: tobix/pywine:3.14
+
     steps:
-      - name: set env
+      - name: set envs
         run: |
-          echo "WINEPREFIX=/wineprefix" >> ${GITHUB_ENV}
-          echo "WINEDLLOVERRIDES=mshtml=" >> ${GITHUB_ENV}
-          echo "WINEARCH=win64" >> ${GITHUB_ENV}
-          echo "WINEDEBUG=-all" >> ${GITHUB_ENV}
+          echo "wine=wine" >> ${GITHUB_ENV}
+          echo "python=/opt/wineprefix/drive_c/Python/python.exe"
+          echo "pyinstaller=/opt/wineprefix/drive_c/Python/Scripts/pyinstaller.exe"
       - name: print inputs
         run: |
           echo "version: ${{ inputs.version}}"
           echo "commit: ${{ inputs.commit}}"
+      - name: install node
+        run: apt-get update && apt-get install -y nodejs 7zip jq curl
       - name: Checkout code
         uses: actions/checkout@v4        
         with:
@@ -44,10 +48,6 @@ jobs:
       - name: Get hash and version for cache
         run: |
           echo "syngversion=${{ inputs.version }}" >> $GITHUB_ENV
-      - name: Update Ubuntu Repo
-        run: apt-get update -y
-      - name: Install dependencies
-        run: apt-get install -y xvfb 7zip
       - name: Create workdirs
         run: |
           mkdir -p wix
@@ -69,15 +69,11 @@ jobs:
       - name: Download everything
         if: steps.cache-dl.outputs.cache-hit != 'true'
         run: |
-          wget https://github.com/Kron4ek/Wine-Builds/releases/download/${{ env.WINE_VERSION }}/wine-${{ env.WINE_VERSION }}-amd64-wow64.tar.xz
-          tar xvf wine-${{ env.WINE_VERSION }}-amd64-wow64.tar.xz
-          rm wine-${{ env.WINE_VERSION }}-amd64-wow64.tar.xz
           wget https://github.com/shinchiro/mpv-winbuild-cmake/releases/download/${{ env.MPV_NIGHTLY }}/ffmpeg-x86_64-git-${{ env.FFMPEG_HASH }}.7z -O ffmpeg.7z
           wget https://github.com/shinchiro/mpv-winbuild-cmake/releases/download/${{ env.MPV_NIGHTLY }}/mpv-dev-x86_64-${{ env.MPV_NIGHTLY }}-git-${{ env.MPV_HASH }}.7z -O mpv.7z
           7z x ffmpeg.7z
           7z x mpv.7z
           rm ffmpeg.7z mpv.7z
-          wget https://www.python.org/ftp/python/${{ env.PYTHON_VERSION }}/python-${{ env.PYTHON_VERSION }}-amd64.exe -O python-installer.exe
           wget https://github.com/wine-mono/wine-mono/releases/download/wine-mono-${{ env.MONO_VERSION }}/wine-mono-${{ env.MONO_VERSION }}-x86.msi -O wine-mono.msi
           wget https://github.com/wixtoolset/wix3/releases/download/wix3141rtm/wix314-binaries.zip
           unzip wix314-binaries.zip -d wix 
@@ -87,39 +83,9 @@ jobs:
           rm deno-x86_64-pc-windows-msvc.zip
         working-directory: downloads
 
-      - name: Find Wine
-        run: |
-          WINECFG="$PWD/wine-${{ env.WINE_VERSION }}-amd64-wow64/bin/winecfg"
-          WINE="$PWD/wine-${{ env.WINE_VERSION }}-amd64-wow64/bin/wine"
-          MSIEXEC="$PWD/wine-${{ env.WINE_VERSION }}-amd64-wow64/bin/msiexec"
-          echo "winecfg=$WINECFG" >> $GITHUB_ENV
-          echo "wine=$WINE" >> $GITHUB_ENV
-          echo "msiexec=$MSIEXEC" >> $GITHUB_ENV
-        working-directory: downloads
-
-      - name: Create wineprefix
-        run: ${{ env.winecfg }}
-      - name: Run python installer
-        run: |
-          echo xvfb-run -a ${{ env.wine }} python-installer.exe /quiet Include_pip=1
-          xvfb-run -a ${{ env.wine }} python-installer.exe /quiet Include_pip=1
-        working-directory: downloads
-      - name: Find python
-        run: |
-          PYTHON=$(find /wineprefix -iname "python.exe" -exec readlink -f {} \;)
-          echo "python=$PYTHON" >> $GITHUB_ENV
-        working-directory: downloads
-
-      - name: Install pyinstaller
-        run: |
-          ${{ env.wine }} ${{ env.python }} -m pip install pyinstaller
-      - name: Find pyinstaller
-        run: |
-          PYINSTALLER=$(find /wineprefix -iname "pyinstaller.exe" -exec readlink -f {} \;)
-          echo "pyinstaller=$PYINSTALLER" >> $GITHUB_ENV
       - name: Install wine-mono
         run: |
-          xvfb-run -a ${{ env.msiexec }} /i wine-mono.msi
+          xvfb-run -a msiexec /i wine-mono.msi
         working-directory: downloads
       - name: preparing workdir
         run: |
