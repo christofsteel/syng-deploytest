@@ -32,8 +32,8 @@ jobs:
       - name: set envs
         run: |
           echo "wine=wine" >> ${GITHUB_ENV}
-          echo "python=/opt/wineprefix/drive_c/Python/python.exe"
-          echo "pyinstaller=/opt/wineprefix/drive_c/Python/Scripts/pyinstaller.exe"
+          echo "python=/opt/wineprefix/drive_c/Python/python.exe" >> ${GITHUB_ENV}
+          echo "pyinstaller=/opt/wineprefix/drive_c/Python/Scripts/pyinstaller.exe" >> ${GITHUB_ENV}
       - name: print inputs
         run: |
           echo "version: ${{ inputs.version}}"
