@@ -141,7 +141,6 @@ jobs:
         run: ${{ env.wine }} ${{ env.pyinstaller }} -n "syng" -w -i'.\syng.ico' --add-data='.\syng.ico;.' --add-data='.\background.png;.' --add-data='.\background20perc.png;.' --add-binary '.\deno.exe;.' --add-binary '.\libmpv-2.dll;.' --add-binary '.\ffmpeg.exe;.' syng/main.py
         working-directory: ./work
       - name: run PyInstaller (standalone)
-        if: false
         run: |
           ${{ env.wine }} ${{ env.pyinstaller }} -n "syng" -F -w -i'.\syng.ico' --add-data='.\syng.ico;.' --add-data='.\background.png;.' --add-data='.\background20perc.png;.' --add-binary '.\deno.exe;.' --add-binary '.\libmpv-2.dll;.' --add-binary '.\ffmpeg.exe;.' syng/main.py
           mv dist/syng.exe dist/syng-${{env.syngversion}}-win64.exe
