@@ -41,6 +41,7 @@ jobs:
 
   publish-release:
     runs-on: ubuntu-latest
+    if: ${{ inputs.release == 'release' || inputs.release == 'prerelease' }}
     steps:
       - name: check out repo
         uses: actions/checkout@v4

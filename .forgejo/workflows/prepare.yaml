@@ -59,6 +59,7 @@ jobs:
           echo "version=${VERSION}"
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
       - name: Create release-branch
+        if: ${{ inputs.release == 'release' || inputs.release == 'prerelease' }}
         run: |
           git checkout -b "release-${{steps.get-version.outputs.version}}"
           git push origin "release-${{steps.get-version.outputs.version}}"
