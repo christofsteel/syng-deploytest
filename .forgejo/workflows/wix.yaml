@@ -116,14 +116,15 @@ jobs:
       - name: Find wix binaries
         run: |
           HEAT=$(find wix -iname "heat.exe" -exec readlink -f {} \;)
-          echo "heat=$HEAT" >> $GITHUB_ENV
+          echo "heat=$HEAT" | tee >> $GITHUB_ENV
           CANDLE=$(find wix -iname "candle.exe" -exec readlink -f {} \;)
-          echo "candle=$CANDLE" >> $GITHUB_ENV
+          echo "candle=$CANDLE" | tee >> $GITHUB_ENV
           LIGHT=$(find wix -iname "light.exe" -exec readlink -f {} \;)
-          echo "light=$LIGHT" >> $GITHUB_ENV
+          echo "light=$LIGHT" | tee >> $GITHUB_ENV
         working-directory: downloads
       - name: run heat
         run: |
+          echo ${{ env.wine }} ${{ env.heat }} dir dist/syng/_internal -var var.Source -dr INSTALLFOLDER -cg InternalGroup -gg -out InternalGroup.wxs
           ${{ env.wine }} ${{ env.heat }} dir dist/syng/_internal -var var.Source -dr INSTALLFOLDER -cg InternalGroup -gg -out InternalGroup.wxs
         working-directory: work
       - name: run candle
