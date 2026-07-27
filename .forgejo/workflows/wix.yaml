@@ -124,6 +124,7 @@ jobs:
         working-directory: downloads
       - name: run heat
         run: |
+          ls -alh ${{env.heat}}
           echo ${{ env.wine }} ${{ env.heat }} dir dist/syng/_internal -var var.Source -dr INSTALLFOLDER -cg InternalGroup -gg -out InternalGroup.wxs
           ${{ env.wine }} ${{ env.heat }} dir dist/syng/_internal -var var.Source -dr INSTALLFOLDER -cg InternalGroup -gg -out InternalGroup.wxs
         working-directory: work
