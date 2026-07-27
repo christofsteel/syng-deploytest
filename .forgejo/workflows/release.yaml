@@ -11,21 +11,6 @@ on:
           - release
           - prerelease
           - dev
-      docker:
-        description: "Build docker"
-        required: true
-        type: boolean
-        default: true
-      flatpak:
-        description: "Build flatpak"
-        required: true
-        type: boolean
-        default: true
-      wine:
-        description: "Build wine"
-        required: true
-        type: boolean
-        default: true
 
 jobs:
   prepare:
@@ -50,9 +35,6 @@ jobs:
       release: ${{ inputs.release }}
       version: ${{ needs.prepare.outputs.version }}
       commit: ${{ needs.prepare.outputs.commit }}
-      docker: ${{ inputs.docker }}
-      flatpak: ${{ inputs.flatpak }}
-      wine: ${{ inputs.wine }}
 
   publish:
     needs: [build, prepare]
@@ -61,9 +43,6 @@ jobs:
       release: ${{ inputs.release }}
       version: ${{ needs.prepare.outputs.version }}
       commit: ${{ needs.prepare.outputs.commit }}
-      docker: ${{ inputs.docker }}
-      flatpak: ${{ inputs.flatpak }}
-      wine: ${{ inputs.wine }}
     secrets: inherit
 
   cleanup:

@@ -48,7 +48,10 @@ jobs:
           git config --global user.email "git@git.k-fortytwo.de"
       - name: Bump to stable
         if: ${{ inputs.release == 'release' }}
-        run: uv version --bump stable
+        run: |
+          uv version --bump stable
+          git add pyproject.toml
+          git commit -m "Update to version: ${{steps.get-version.outputs.version}}"
       - name: get current version
         id: get-version
         run: |
@@ -58,8 +61,6 @@ jobs:
       - name: Create release-branch
         run: |
           git checkout -b "release-${{steps.get-version.outputs.version}}"
-          git add pyproject.toml
-          git commit -m "Update to version: ${{steps.get-version.outputs.version}}"
           git push origin "release-${{steps.get-version.outputs.version}}"
       - name: get commit hash
         id: commit
