@@ -30,7 +30,7 @@ jobs:
   publish-flathub:
     runs-on: ubuntu-latest
     steps:
-      - uses: https://git.k-fortytwo.de/christofsteel/call-external-workflow
+      - uses: https://git.k-fortytwo.de/christofsteel/call-external-workflow@1969d667c747adf1126d90134c4c8124b7b3866f
         with:
           auth-token: ${{ secrets.GH_TESTREPO }}
           repo: christofsteel/testrepo
