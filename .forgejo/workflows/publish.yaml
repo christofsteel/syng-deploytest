@@ -28,16 +28,17 @@ jobs:
     secrets: inherit
 
   publish-flathub:
-    uses: ./.forgejo/workflows/external.yaml
-    with:
-      repo: christofsteel/testrepo
-      event: trigger-workflow
-      payload: |
-        {
-          "url":" https://git.k-fortytwo.de/christofsteel/syng-deploytest/actions/runs/${{ forgejo.run_id }}/artifacts/flatpak-yaml-files"
-        }
-    secrets:
-      token: ${{ secrets.GH_TESTREPO }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.forgejo/call-external-workflow
+        with:
+          auth-token: ${{ secrets.GH_TESTREPO }}
+          repo: christofsteel/testrepo
+          event: trigger-workflow
+          payload: |
+            {
+              "url":" https://git.k-fortytwo.de/christofsteel/syng-deploytest/actions/runs/${{ forgejo.run_id }}/artifacts/flatpak-yaml-files"
+            }
 
   publish-release:
     runs-on: ubuntu-latest
