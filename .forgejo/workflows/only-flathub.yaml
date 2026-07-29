@@ -32,7 +32,7 @@ jobs:
     steps:
       - uses: https://git.k-fortytwo.de/christofsteel/call-external-workflow@6c91450b5ed0b94da7d517441446c02208ede566
         with:
-          auth-token: ${{ secrets.GH_TESTREPO }}
+          auth-token: ${{ secrets.SYNG_FLATHUB_REPO }}
           repo: christofsteel/testrepo
           event: trigger-workflow
           payload: |
