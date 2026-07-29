@@ -1,0 +1,41 @@
+name: Deploy only to Flathub (PR)
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  prepare-yaml-files:
+    runs-on: privileged-ubuntu-latest
+    container: 
+      image: git.k-fortytwo.de/christofsteel/syng-flatpakbuilder:1.0.0
+    outputs:
+      artifact_url: ${{ steps.artifact_url.outputs.artifact_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Prepare Flatpak YAML files
+        run: |
+          chmod +x build_yaml.sh
+          dbus-daemon --system
+          xvfb-run -a -s "-screen 0 1024x768x24" -- \
+          dbus-run-session \
+          ./build_yaml.sh
+        working-directory: resources/flatpak
+      - uses: actions/upload-artifact@v3
+        with:
+          name: flatpak-yaml-files
+          path: resources/flatpak/dist
+
+  make_pr:
+    depends: prepare-yaml-files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: https://git.k-fortytwo.de/christofsteel/call-external-workflow@6c91450b5ed0b94da7d517441446c02208ede566
+        with:
+          auth-token: ${{ secrets.GH_TESTREPO }}
+          repo: christofsteel/testrepo
+          event: trigger-workflow
+          payload: |
+            {
+              "url":" https://git.k-fortytwo.de/${{ forgejo.repository }}/actions/runs/${{ forgejo.run_id }}/artifacts/flatpak-yaml-files"
+            }
