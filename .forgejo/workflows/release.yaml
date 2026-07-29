@@ -19,16 +19,16 @@ jobs:
       release: ${{ inputs.release }}
       flatpak: ${{ inputs.flatpak }}
 
-  # build:
-  #   needs: prepare
-  #   uses: ./.forgejo/workflows/build.yaml
-  #   with:
-  #     release: ${{ inputs.release }}
-  #     version: ${{ needs.prepare.outputs.version }}
-  #     commit: ${{ needs.prepare.outputs.commit }}
+  build:
+    needs: prepare
+    uses: ./.forgejo/workflows/build.yaml
+    with:
+      release: ${{ inputs.release }}
+      version: ${{ needs.prepare.outputs.version }}
+      commit: ${{ needs.prepare.outputs.commit }}
 
   publish:
-    needs: [prepare]
+    needs: [build, prepare]
     uses: ./.forgejo/workflows/publish.yaml
     with:
       release: ${{ inputs.release }}

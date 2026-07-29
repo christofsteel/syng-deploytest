@@ -18,14 +18,14 @@ on:
         
 
 jobs:
-  # publish-docker:
-  #   uses: ./.forgejo/workflows/docker.yaml
-  #   with:
-  #     version: ${{ inputs.version }}
-  #     commit: ${{ inputs.sha }}
-  #     push: "true"
-  #     release: ${{ inputs.type }}
-  #   secrets: inherit
+  publish-docker:
+    uses: ./.forgejo/workflows/docker.yaml
+    with:
+      version: ${{ inputs.version }}
+      commit: ${{ inputs.sha }}
+      push: "true"
+      release: ${{ inputs.type }}
+    secrets: inherit
 
   publish-flathub:
     runs-on: ubuntu-latest
@@ -40,33 +40,33 @@ jobs:
               "url":" https://git.k-fortytwo.de/christofsteel/syng-deploytest/actions/runs/${{ forgejo.run_id }}/artifacts/flatpak-yaml-files"
             }
 
-  # publish-release:
-  #   runs-on: ubuntu-latest
-  #   if: ${{ inputs.release == 'release' || inputs.release == 'prerelease' }}
-  #   steps:
-  #     - name: check out repo
-  #       uses: actions/checkout@v4
-  #       with:
-  #         ref: ${{ inputs.commit }}
-  #     - name: ensure dist
-  #       run: mkdir dist/
-  #     - name: download artifact
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         path: dist
-  #     - name: clean and flatten
-  #       run: |
-  #         rm -rf dist/flatpak-yaml-files || true
-  #         mv dist/**/* dist/
-  #         rmdir dist/* || true
-  #     - run: ls -alh dist/
-  #     - uses: actions/forgejo-release@v2.13.4
-  #       with:
-  #         direction: upload
-  #         release-notes-assistant: true
-  #         tag: v${{ inputs.version }}
-  #         sha: ${{ inputs.commit }}
-  #         release-dir: dist
-  #         prerelease: ${{ inputs.release != 'release' }}
-  #         override: true
-  #         verbose: true
+  publish-release:
+    runs-on: ubuntu-latest
+    if: ${{ inputs.release == 'release' || inputs.release == 'prerelease' }}
+    steps:
+      - name: check out repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commit }}
+      - name: ensure dist
+        run: mkdir dist/
+      - name: download artifact
+        uses: actions/download-artifact@v3
+        with:
+          path: dist
+      - name: clean and flatten
+        run: |
+          rm -rf dist/flatpak-yaml-files || true
+          mv dist/**/* dist/
+          rmdir dist/* || true
+      - run: ls -alh dist/
+      - uses: actions/forgejo-release@v2.13.4
+        with:
+          direction: upload
+          release-notes-assistant: true
+          tag: v${{ inputs.version }}
+          sha: ${{ inputs.commit }}
+          release-dir: dist
+          prerelease: ${{ inputs.release != 'release' }}
+          override: true
+          verbose: true
