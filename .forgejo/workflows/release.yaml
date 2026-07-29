@@ -11,9 +11,6 @@ on:
           - release
           - prerelease
           - dev
-env:
-  flatpak_repo: christofsteel/testrepo
-  image_name: christofsteel/syngtesting
 
 jobs:
   prepare:
@@ -39,6 +36,7 @@ jobs:
       version: ${{ needs.prepare.outputs.version }}
       commit: ${{ needs.prepare.outputs.commit }}
       image_name: christofsteel/syngtesting
+      flatpak_repo: christofsteel/testrepo
     secrets: inherit
 
   cleanup:
