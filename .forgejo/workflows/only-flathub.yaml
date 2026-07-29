@@ -30,10 +30,10 @@ jobs:
     needs: prepare-yaml-files
     runs-on: ubuntu-latest
     steps:
-      - uses: https://git.k-fortytwo.de/christofsteel/call-external-workflow@db3eec6b9c920370c824dd1b427b4cfc7a0ff2fa
+      - uses: https://git.k-fortytwo.de/christofsteel/call-external-workflow@30646f5389799524e8d00a4fceb87955685f2eaa
         with:
           auth-token: ${{ secrets.SYNG_FLATHUB_REPO }}
-          repo: christofsteel/testrepo
+          repo: flathub/rocks.syng.Syng
           event: trigger-workflow
           payload: |
             {
