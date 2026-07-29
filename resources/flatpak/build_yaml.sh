@@ -12,8 +12,8 @@ export DENO_AARCH64_SHA=$(echo ${DENO_AARCH64[0]} | cut -d : -f 2)
 export DENO_AARCH64_URL=${DENO_AARCH64[1]}
 
 DENO_X86_64=($(curl -s https://api.github.com/repos/denoland/deno/releases/latest | jq -r '.assets[] | select(.browser_download_url | contains("x86_64") and contains("deno-") and contains("linux") and contains(".zip") and (contains("sha256sum")|not)) | .digest, .browser_download_url'))
-export DENO_X86_64_SHA=$(echo ${DENO_AARCH64[0]} | cut -d : -f 2)
-export DENO_X86_64_URL=${DENO_AARCH64[1]}
+export DENO_X86_64_SHA=$(echo ${DENO_X86_64[0]} | cut -d : -f 2)
+export DENO_X86_64_URL=${DENO_X86_64[1]}
 
 export SYNG_COMMIT=$(git log -1 --format=%H)
 mkdir dist
