@@ -30,7 +30,7 @@ jobs:
     needs: prepare-yaml-files
     runs-on: ubuntu-latest
     steps:
-      - uses: https://git.k-fortytwo.de/christofsteel/call-external-workflow@6c91450b5ed0b94da7d517441446c02208ede566
+      - uses: https://git.k-fortytwo.de/christofsteel/call-external-workflow@db3eec6b9c920370c824dd1b427b4cfc7a0ff2fa
         with:
           auth-token: ${{ secrets.SYNG_FLATHUB_REPO }}
           repo: christofsteel/testrepo
