@@ -27,7 +27,7 @@ jobs:
           path: resources/flatpak/dist
 
   make_pr:
-    depends: prepare-yaml-files
+    needs: prepare-yaml-files
     runs-on: ubuntu-latest
     steps:
       - uses: https://git.k-fortytwo.de/christofsteel/call-external-workflow@6c91450b5ed0b94da7d517441446c02208ede566
