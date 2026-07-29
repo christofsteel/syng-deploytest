@@ -35,6 +35,9 @@ on:
         description: 'version tag'
         required: false
         type: string
+      image_name:
+        required: true
+        type: string
       push:
         description: 'push the image'
         default: false
@@ -50,7 +53,7 @@ jobs:
     steps:
       - name: set env
         run: |
-          echo "IMAGE_NAME=christofsteel/syngtesting" >> ${GITHUB_ENV}
+          echo "IMAGE_NAME=${{ inputs.image_name }}" >> ${GITHUB_ENV}
           echo "REGISTRY=git.k-fortytwo.de" >> ${GITHUB_ENV}
           echo "USERNAME=christofsteel" >> ${GITHUB_ENV}
           echo "REGISTRY2=ghcr.io" >> ${GITHUB_ENV}

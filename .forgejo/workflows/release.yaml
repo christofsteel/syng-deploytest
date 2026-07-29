@@ -11,6 +11,9 @@ on:
           - release
           - prerelease
           - dev
+env:
+  flatpak_repo: christofsteel/testrepo
+  image_name: christofsteel/syngtestimg
 
 jobs:
   prepare:
@@ -26,6 +29,7 @@ jobs:
       release: ${{ inputs.release }}
       version: ${{ needs.prepare.outputs.version }}
       commit: ${{ needs.prepare.outputs.commit }}
+      image_name: ${{ env.image_name }}
 
   publish:
     needs: [build, prepare]
@@ -34,6 +38,7 @@ jobs:
       release: ${{ inputs.release }}
       version: ${{ needs.prepare.outputs.version }}
       commit: ${{ needs.prepare.outputs.commit }}
+      image_name: ${{ env.image_name }}
     secrets: inherit
 
   cleanup:

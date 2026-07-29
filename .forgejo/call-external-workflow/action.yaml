@@ -1,22 +1,21 @@
 inputs:
-  inputs:
-    repo:
-      description: 'author/name of the external repo'
-      required: true
-      type: string
-    event:
-      description: 'name of the external event'
-      required: true
-      type: string
-    auth-token:
-      description: 'Auth Token'
-      required: true
-      type: string
-    payload:
-      description: 'parameters of the event as JSON'
-      required: false
-      default: "{}"
-      type: string
+  repo:
+    description: 'author/name of the external repo'
+    required: true
+    type: string
+  event:
+    description: 'name of the external event'
+    required: true
+    type: string
+  auth-token:
+    description: 'Auth Token'
+    required: true
+    type: string
+  payload:
+    description: 'parameters of the event as JSON'
+    required: false
+    default: "{}"
+    type: string
 
 runs:
   using: 'composite'

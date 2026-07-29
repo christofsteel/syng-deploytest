@@ -15,6 +15,9 @@ on:
         description: 'commit hash'
         required: true
         type: string
+      image_name:
+        required: true
+        type: string
         
     outputs:
       flatpak_yaml_artifact_url:
@@ -34,6 +37,7 @@ jobs:
       commit: ${{ inputs.commit }}
       push: "false"
       release: ${{ inputs.release }}
+      image_name: ${{ inputs.image_name }}
 
   build-flatpak:
     uses: ./.forgejo/workflows/flatpak.yaml
