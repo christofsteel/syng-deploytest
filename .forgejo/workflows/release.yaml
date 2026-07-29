@@ -19,25 +19,16 @@ jobs:
       release: ${{ inputs.release }}
       flatpak: ${{ inputs.flatpak }}
 
-  debug:
-    needs: prepare
-    runs-on: ubuntu-latest
-    steps:
-      - name: print
-        run: |
-          echo version ${{ needs.prepare.outputs.version }}
-          echo commit ${{ needs.prepare.outputs.commit }}
-
-  build:
-    needs: prepare
-    uses: ./.forgejo/workflows/build.yaml
-    with:
-      release: ${{ inputs.release }}
-      version: ${{ needs.prepare.outputs.version }}
-      commit: ${{ needs.prepare.outputs.commit }}
+  # build:
+  #   needs: prepare
+  #   uses: ./.forgejo/workflows/build.yaml
+  #   with:
+  #     release: ${{ inputs.release }}
+  #     version: ${{ needs.prepare.outputs.version }}
+  #     commit: ${{ needs.prepare.outputs.commit }}
 
   publish:
-    needs: [build, prepare]
+    needs: [prepare]
     uses: ./.forgejo/workflows/publish.yaml
     with:
       release: ${{ inputs.release }}
