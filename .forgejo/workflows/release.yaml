@@ -13,7 +13,7 @@ on:
           - dev
 env:
   flatpak_repo: christofsteel/testrepo
-  image_name: christofsteel/syngtestimg
+  image_name: christofsteel/syngtesting
 
 jobs:
   prepare:
@@ -29,7 +29,7 @@ jobs:
       release: ${{ inputs.release }}
       version: ${{ needs.prepare.outputs.version }}
       commit: ${{ needs.prepare.outputs.commit }}
-      image_name: ${{ env.image_name }}
+      image_name: christofsteel/syngtesting
 
   publish:
     needs: [build, prepare]
@@ -38,7 +38,7 @@ jobs:
       release: ${{ inputs.release }}
       version: ${{ needs.prepare.outputs.version }}
       commit: ${{ needs.prepare.outputs.commit }}
-      image_name: ${{ env.image_name }}
+      image_name: christofsteel/syngtesting
     secrets: inherit
 
   cleanup:
