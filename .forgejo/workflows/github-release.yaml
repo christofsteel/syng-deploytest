@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ncipollo/release-action@v1
+      - uses: https://github.com/ncipollo/release-action@v1
         with:
           owner: christofsteel
           repo: testrepo
