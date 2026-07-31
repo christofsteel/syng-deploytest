@@ -12,4 +12,5 @@ jobs:
         with:
           owner: christofsteel
           repo: testrepo
+          tag: v2.4.0
           token: ${{ secrets.GH_TESTREPO }}
