@@ -1,0 +1,14 @@
+name: draft a release on github (testrepo)
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  release:
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ncipollo/release-action@v1
+        with:
+          owner: christofsteel
+          repo: testrepo
+          token: ${{ secrets.GH_TESTREPO }}
