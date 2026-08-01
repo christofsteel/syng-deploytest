@@ -12,4 +12,4 @@ jobs:
         with:
           repository: christofsteel/testrepo
           tag_name: gh-testrelease
-          token: ${{ secrets.GH_TESTREPO }}
+          token: ${{ secrets.GH_TESTREPO_CONTENTS_WRITE }}
