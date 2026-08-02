@@ -105,6 +105,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v7
         with:
-          context: resources/docker
+          context: .
+          file: ./resources/docker/Dockerfile
           push: ${{ inputs.push }}
           tags: ${{ steps.tagname.outputs.tags }}
