@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - runs: ls -alh > /dev/stderr
+      - run: ls -alh > /dev/stderr
       - uses: https://git.k-fortytwo.de/actions/gh-release@9560f1070adf2fcd15cfe812a2784d5400847859
         with:
           repo: christofsteel/testrepo
