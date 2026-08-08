@@ -8,8 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: https://github.com/softprops/action-gh-release@v3
+      - uses: https://git.k-fortytwo.de/actions/gh-release@9560f1070adf2fcd15cfe812a2784d5400847859
         with:
-          repository: christofsteel/testrepo
-          tag_name: gh-testrelease
-          token: ${{ secrets.GH_TESTREPO_CONTENTS_WRITE }}
+          repo: christofsteel/testrepo
+          tag: gh-testrelease
+          auth-token: ${{ secrets.GH_TESTREPO_CONTENTS_WRITE }}
+          commitish: main
