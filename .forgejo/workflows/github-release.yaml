@@ -14,3 +14,4 @@ jobs:
           tag: gh-testrelease
           auth-token: ${{ secrets.GH_TESTREPO_CONTENTS_WRITE }}
           commitish: main
+          files: pyproject.toml
