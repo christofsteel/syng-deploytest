@@ -111,10 +111,11 @@ jobs:
           prerelease: ${{ inputs.release != 'release' }}
           override: true
           verbose: true
-      - uses: https://git.k-fortytwo.de/actions/gh-release@v1
+      - name: Make Github release
+        uses: https://git.k-fortytwo.de/actions/gh-release@v1
         with:
           repo: ${{ inputs.repo_name }}
           auth-token: ${{ secrets.SYNG_GITHUB }}
           tag: v${{ inputs.version }}
           release-dir: dist
-          prerelease: ${{ inputs.release != 'release }}
+          prerelease: ${{ inputs.release != 'release' }}
