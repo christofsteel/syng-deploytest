@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: ls -alh > /dev/stderr
-      - uses: https://git.k-fortytwo.de/actions/gh-release@9bef959a442ed6b2517993ecf9190a231e3b7bd3
+      - uses: https://git.k-fortytwo.de/actions/gh-release@660de268d968017bb9c9a14c62dae28704e4f018
         with:
           repo: christofsteel/testrepo
           tag: gh-testrelease
