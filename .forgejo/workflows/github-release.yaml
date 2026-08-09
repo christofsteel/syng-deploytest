@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: |
           mkdir dist
-          touch dist/foo
+          echo "123" >> dist/foo
           echo "1234" >> dist/bar
       - run: ls -alh > /dev/stderr
       - uses: https://git.k-fortytwo.de/actions/gh-release@v1
