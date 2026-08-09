@@ -8,6 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: |
+          mkdir dist
+          touch dist/foo
+          echo "1234" >> dist/bar
       - run: ls -alh > /dev/stderr
       - uses: https://git.k-fortytwo.de/actions/gh-release@af5ea1ec0e46e3329ecbfeb8edc3162ddece3a0f
         with:
@@ -15,6 +19,4 @@ jobs:
           tag: gh-testrelease
           auth-token: ${{ secrets.GH_TESTREPO_CONTENTS_WRITE }}
           commitish: main
-          files: |
-            pyproject.toml
-            uv.lock
+          release-dir: dist
