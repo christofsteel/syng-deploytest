@@ -37,6 +37,7 @@ jobs:
       commit: ${{ needs.prepare.outputs.commit }}
       image_name: christofsteel/syngtesting
       flatpak_repo: christofsteel/testrepo
+      repo_name: christofsteel/testrepo
     secrets: inherit
 
   cleanup:
