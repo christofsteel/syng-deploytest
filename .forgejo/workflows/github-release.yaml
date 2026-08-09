@@ -9,10 +9,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: ls -alh > /dev/stderr
-      - uses: https://git.k-fortytwo.de/actions/gh-release@7c257daf15ec012b27e7c1a279060e599f82990a
+      - uses: https://git.k-fortytwo.de/actions/gh-release@2a5037bb43bda207044359505782ceb152db24ff
         with:
           repo: christofsteel/testrepo
           tag: gh-testrelease
           auth-token: ${{ secrets.GH_TESTREPO_CONTENTS_WRITE }}
           commitish: main
-          files: pyproject.toml
+          files: |
+            pyproject.toml
+            uv.lock
