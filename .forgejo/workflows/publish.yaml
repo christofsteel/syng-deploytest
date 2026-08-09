@@ -86,8 +86,23 @@ jobs:
           mv dist/**/* dist/
           rmdir dist/* || true
       - run: ls -alh dist/
-      - uses: actions/forgejo-release@v2.13.4
+      - name: Make local release
+        uses: actions/forgejo-release@v2.13.4
         with:
+          direction: upload
+          release-notes-assistant: true
+          tag: v${{ inputs.version }}
+          sha: ${{ inputs.commit }}
+          release-dir: dist
+          prerelease: ${{ inputs.release != 'release' }}
+          override: true
+          verbose: true
+      - name: Make Codeberg release
+        uses: actions/forgejo-release@v2.13.4
+        with:
+          url: https://codeberg.org
+          repo: ${{ inputs.repo_name }}
+          token: ${{ secrets.SYNG_CODEBERG }}
           direction: upload
           release-notes-assistant: true
           tag: v${{ inputs.version }}
