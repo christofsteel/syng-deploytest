@@ -28,6 +28,7 @@ on:
 
 jobs:
   publish-docker:
+    if: false
     uses: ./.forgejo/workflows/docker.yaml
     with:
       version: ${{ inputs.version }}
@@ -39,6 +40,7 @@ jobs:
 
   publish-flathub:
     runs-on: ubuntu-latest
+    if: false
     steps:
       - uses: https://git.k-fortytwo.de/christofsteel/call-external-workflow@6c91450b5ed0b94da7d517441446c02208ede566
         with:
