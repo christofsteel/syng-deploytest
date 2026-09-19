@@ -76,9 +76,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ inputs.commit }}
-          fetch-depth: 0
-      - name: unshallow
-        run: git fetch --unshallow
       - name: ensure dist
         run: mkdir dist/
       - name: download artifact

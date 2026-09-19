@@ -60,5 +60,12 @@ jobs:
         uses: actions/checkout@v4        
       - name: Remove Branch
         run: |
+          git remote add codeberg https://christofsteel:${{ secrets.SYNG_CODEBERG }}@codeberg.org/${{ inputs.repo_name }}
+          git remote add github https://${{ secrets.GH_TESTREPO_CONTENTS_WRITE }}@github.com/${{ inputs.repo_name }}
+
           git push origin --delete release-${{needs.prepare.outputs.version}} || true
           git push origin --delete v${{needs.prepare.outputs.version}} || true
+          git push github --delete release-${{needs.prepare.outputs.version}} || true
+          git push github --delete v${{needs.prepare.outputs.version}} || true
+          git push codeberg --delete release-${{needs.prepare.outputs.version}} || true
+          git push codeberg --delete v${{needs.prepare.outputs.version}} || true
