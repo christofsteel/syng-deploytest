@@ -126,6 +126,7 @@ jobs:
       - name: push tag to github
         run: |
           git remote add github https://${{ secrets.GH_TESTREPO_CONTENTS_WRITE }}@github.com/${{ inputs.repo_name }}
+          git tag v${{ inputs.version }}
           git push github --tags
       - name: Make Github release
         uses: https://git.k-fortytwo.de/actions/gh-release@v1.1.5
