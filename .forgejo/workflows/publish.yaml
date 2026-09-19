@@ -103,12 +103,12 @@ jobs:
           prerelease: ${{ inputs.release != 'release' }}
           override: true
           verbose: true
-      - name: Push changes to codeberg
-        run: |
-          git remote add codeberg https://${{ secrets.SYNG_CODEBERG }}@codeberg.org/${{ inputs.repo_name }}
-          git branch -a
-          git status
-          git push codeberg
+      # - name: Push changes to codeberg
+      #   run: |
+      #     git remote add codeberg https://${{ secrets.SYNG_CODEBERG }}@codeberg.org/${{ inputs.repo_name }}
+      #     git branch -a
+      #     git status
+      #     git push codeberg
       - name: Make Codeberg release
         uses: actions/forgejo-release@v2.13.4
         with:
