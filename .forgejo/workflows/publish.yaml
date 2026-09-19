@@ -123,6 +123,8 @@ jobs:
           prerelease: ${{ inputs.release != 'release' }}
           override: true
           verbose: true
+      - name: push tag to github
+        run: git push github --tags
       - name: Make Github release
         uses: https://git.k-fortytwo.de/actions/gh-release@v1.1.5
         with:
