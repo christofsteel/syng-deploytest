@@ -21,6 +21,10 @@ on:
         type: string
 
 jobs:
+  print-inputs:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ inputs }} >> /dev/stderr
   merge-and-bump:
     runs-on: ubuntu-latest
     if: ${{ inputs.release == 'release' || inputs.release == 'prerelease' }}
