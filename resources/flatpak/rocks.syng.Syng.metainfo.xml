@@ -46,6 +46,16 @@
 
 
   <releases>
+    <release version="2.4.0" date="2026-09-19">
+      <description>
+        <p>
+          <em>Changes</em>:
+        </p>
+        <ul>
+          <li>not a real release</li>
+        </ul>
+      </description>
+    </release>
     <release version="2.3.0" date="2026-01-29">
       <description>
         <p>
