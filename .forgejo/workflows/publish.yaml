@@ -77,6 +77,7 @@ jobs:
       - name: ensure dist
         run: mkdir dist/
       - name: download artifact
+        if: false
         uses: actions/download-artifact@v3
         with:
           path: dist
