@@ -28,7 +28,6 @@ on:
 
 jobs:
   publish-docker:
-    if: false
     uses: ./.forgejo/workflows/docker.yaml
     with:
       version: ${{ inputs.version }}
@@ -40,7 +39,6 @@ jobs:
 
   publish-flathub:
     runs-on: ubuntu-latest
-    if: false
     steps:
       - uses: https://git.k-fortytwo.de/christofsteel/call-external-workflow@6c91450b5ed0b94da7d517441446c02208ede566
         with:
@@ -79,19 +77,16 @@ jobs:
       - name: ensure dist
         run: mkdir dist/
       - name: download artifact
-        if: false
         uses: actions/download-artifact@v3
         with:
           path: dist
       - name: clean and flatten
-        if: false
         run: |
           rm -rf dist/flatpak-yaml-files || true
           mv dist/**/* dist/
           rmdir dist/* || true
       - run: |
-          echo example >> dist/artifact
-          ls -alh dist/
+          ls -alh dist/ >> /dev/stderr
       - name: Make local release
         uses: actions/forgejo-release@v2.13.4
         with:
@@ -103,12 +98,6 @@ jobs:
           prerelease: ${{ inputs.release != 'release' }}
           override: true
           verbose: true
-      # - name: Push changes to codeberg
-      #   run: |
-      #     git remote add codeberg https://${{ secrets.SYNG_CODEBERG }}@codeberg.org/${{ inputs.repo_name }}
-      #     git branch -a
-      #     git status
-      #     git push codeberg
       - name: Make Codeberg release
         uses: actions/forgejo-release@v2.13.4
         with:
@@ -123,11 +112,6 @@ jobs:
           prerelease: ${{ inputs.release != 'release' }}
           override: true
           verbose: true
-      # - name: push tag to github
-      #   run: |
-      #     git remote add github https://${{ secrets.GH_TESTREPO_CONTENTS_WRITE }}@github.com/${{ inputs.repo_name }}
-      #     git tag v${{ inputs.version }}
-      #     git push github --tags
       - name: Make Github release
         uses: https://git.k-fortytwo.de/actions/gh-release@v1.1.5
         with:
