@@ -65,7 +65,7 @@ jobs:
         if: ${{ inputs.release == 'release' || inputs.release == 'prerelease' }}
         run: |
           git remote add codeberg https://${{ secrets.SYNG_CODEBERG }}@codeberg.org/${{ inputs.repo_name }}
-          git remote add github https://${{ secrets.SYNG_GITHUB }}@github.com/${{ inputs.repo_name }}
+          git remote add github https://${{ secrets.GH_TESTREPO_CONTENTS_WRITE }}@github.com/${{ inputs.repo_name }}
 
           git checkout -b "release-${{steps.get-version.outputs.version}}"
           git push origin "release-${{steps.get-version.outputs.version}}"
