@@ -18,7 +18,7 @@ jobs:
     with:
       release: ${{ inputs.release }}
       flatpak: ${{ inputs.flatpak }}
-      repo_name: christofsteel/testrepo
+      repo_name: christofsteel/syng-deploytest
     secrets: inherit
 
   build:
@@ -39,7 +39,7 @@ jobs:
       commit: ${{ needs.prepare.outputs.commit }}
       image_name: christofsteel/syngtesting
       flatpak_repo: christofsteel/testrepo
-      repo_name: christofsteel/testrepo
+      repo_name: christofsteel/syng-deploytest
     secrets: inherit
 
   cleanup:
