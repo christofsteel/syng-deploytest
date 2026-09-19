@@ -13,7 +13,7 @@ jobs:
           echo "123" >> dist/foo
           echo "1234" >> dist/bar
       - run: ls -alh > /dev/stderr
-      - uses: https://git.k-fortytwo.de/actions/gh-release@v1
+      - uses: https://git.k-fortytwo.de/actions/gh-release@v1.1.3
         with:
           repo: christofsteel/testrepo
           tag: gh-testrelease
