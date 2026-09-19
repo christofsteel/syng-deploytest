@@ -24,6 +24,9 @@ on:
       repo_name:
         required: true
         type: string
+      flatpak:
+        required: true
+        type: boolean
         
 
 jobs:
@@ -38,6 +41,7 @@ jobs:
     secrets: inherit
 
   publish-flathub:
+    if: ${{ inputs.flatpak }}
     runs-on: ubuntu-latest
     steps:
       - uses: https://git.k-fortytwo.de/christofsteel/call-external-workflow@6c91450b5ed0b94da7d517441446c02208ede566

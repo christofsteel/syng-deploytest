@@ -16,6 +16,9 @@ on:
       release:
         required: true
         type: string
+      flatpak:
+        required: true
+        type: boolean
       repo_name:
         required: true
         type: string
@@ -81,6 +84,7 @@ jobs:
 
   check-flatpak:
     needs: update-version
+    if: ${{ inputs.flatpak }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository

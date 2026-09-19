@@ -11,6 +11,11 @@ on:
           - release
           - prerelease
           - dev
+      flatpak:
+        description: "Build Flatpak"
+        required: false
+        type: boolean
+        default: true
 
 jobs:
   prepare:
@@ -29,6 +34,7 @@ jobs:
       version: ${{ needs.prepare.outputs.version }}
       commit: ${{ needs.prepare.outputs.commit }}
       image_name: christofsteel/syngtesting
+      flatpak: ${{ inputs.flatpak }}
 
   publish:
     needs: [build, prepare]
@@ -40,6 +46,7 @@ jobs:
       image_name: christofsteel/syngtesting
       flatpak_repo: christofsteel/testrepo
       repo_name: christofsteel/syng-deploytest
+      flatpak: ${{ inputs.flatpak }}
     secrets: inherit
 
   cleanup:
@@ -48,6 +55,7 @@ jobs:
     with:
       release: ${{ inputs.release }}
       commit: ${{ needs.prepare.outputs.commit }}
+      flatpak: ${{ inputs.flatpak }}
 
       
 

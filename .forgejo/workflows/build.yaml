@@ -18,6 +18,9 @@ on:
       image_name:
         required: true
         type: string
+      flatpak:
+        required: true
+        type: boolean
         
     outputs:
       flatpak_yaml_artifact_url:
@@ -40,6 +43,7 @@ jobs:
       image_name: ${{ inputs.image_name }}
 
   build-flatpak:
+    if: ${{ inputs.flatpak }}
     uses: ./.forgejo/workflows/flatpak.yaml
     with:
       version: ${{ inputs.version }}
