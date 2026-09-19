@@ -61,8 +61,13 @@ jobs:
       - name: Create release-branch
         if: ${{ inputs.release == 'release' || inputs.release == 'prerelease' }}
         run: |
+          git remote add codeberg https://${{ secrets.SYNG_CODEBERG }}@codeberg.org/${{ inputs.repo_name }}
+          git remote add github https://${{ secrets.SYNG_GITHUB }}@github.com/${{ inputs.repo_name }}
+
           git checkout -b "release-${{steps.get-version.outputs.version}}"
           git push origin "release-${{steps.get-version.outputs.version}}"
+          git push github "release-${{steps.get-version.outputs.version}}"
+          git push codeberg "release-${{steps.get-version.outputs.version}}"
       - name: get commit hash
         id: commit
         run: |
