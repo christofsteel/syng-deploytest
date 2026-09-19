@@ -124,7 +124,7 @@ jobs:
           override: true
           verbose: true
       - name: Make Github release
-        uses: https://git.k-fortytwo.de/actions/gh-release@v1
+        uses: https://git.k-fortytwo.de/actions/gh-release@v1.1.2
         with:
           repo: ${{ inputs.repo_name }}
           auth-token: ${{ secrets.SYNG_GITHUB }}
