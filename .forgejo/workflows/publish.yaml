@@ -84,11 +84,14 @@ jobs:
         with:
           path: dist
       - name: clean and flatten
+        if: false
         run: |
           rm -rf dist/flatpak-yaml-files || true
           mv dist/**/* dist/
           rmdir dist/* || true
-      - run: ls -alh dist/
+      - run: |
+          echo example >> dist/artifact
+          ls -alh dist/
       - name: Make local release
         uses: actions/forgejo-release@v2.13.4
         with:
