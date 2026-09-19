@@ -18,6 +18,7 @@ jobs:
     with:
       release: ${{ inputs.release }}
       flatpak: ${{ inputs.flatpak }}
+      repo_name: christofsteel/testrepo
     secrets: inherit
 
   build:
