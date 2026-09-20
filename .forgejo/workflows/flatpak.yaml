@@ -17,6 +17,11 @@ on:
         type: string
 
 jobs:
+  print-inputs-build-flatpak:
+    runs-on: ubuntu-latest
+    steps:
+      run: echo ${{ github.event.client_payload.message }} > /dev/stderr
+
   prepare-yaml-files:
     runs-on: privileged-ubuntu-latest
     container: 

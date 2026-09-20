@@ -29,6 +29,11 @@ on:
         value: ${{ jobs.update-version.outputs.commit }}
 
 jobs:
+  print-inputs-prepare:
+    runs-on: ubuntu-latest
+    steps:
+      run: echo ${{ github.event.client_payload.message }} > /dev/stderr
+
   update-version:
     runs-on: ubuntu-latest
     outputs:

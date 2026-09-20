@@ -18,6 +18,11 @@ on:
         default: true
 
 jobs:
+  print-inputs-release:
+    runs-on: ubuntu-latest
+    steps:
+      run: echo ${{ github.event.client_payload.message }} > /dev/stderr
+
   prepare:
     uses: ./.forgejo/workflows/prepare.yaml
     with:

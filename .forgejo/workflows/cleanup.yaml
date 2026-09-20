@@ -21,10 +21,11 @@ on:
         type: string
 
 jobs:
-  print-inputs:
+  print-inputs-cleanup:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ inputs }} >> /dev/stderr
+      run: echo ${{ github.event.client_payload.message }} > /dev/stderr
+
   merge-and-bump:
     runs-on: ubuntu-latest
     if: ${{ inputs.release == 'release' || inputs.release == 'prerelease' }}
