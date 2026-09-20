@@ -57,6 +57,14 @@ jobs:
       - name: bump to next dev
         if: ${{ inputs.release == 'prerelease' }}
         run: uv version --bump dev
+      - name: delete release branch
+        if: ${{ inputs.release == 'release' || inputs.release == 'prerelease' }}
+        run: |
+          git remote add codeberg https://christofsteel:${{ secrets.SYNG_CODEBERG }}@codeberg.org/${{ inputs.repo_name }}
+          git remote add github https://${{ secrets.GH_TESTREPO_CONTENTS_WRITE }}@github.com/${{ inputs.repo_name }}
+          git push -d origin "release-${{steps.get-version.outputs.version}}"
+          git push -d github "release-${{steps.get-version.outputs.version}}"
+          git push -d codeberg "release-${{steps.get-version.outputs.version}}"
       - name: commit and push
         run: |
           git add pyproject.toml
