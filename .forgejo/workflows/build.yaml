@@ -38,16 +38,6 @@ jobs:
     steps:
       - run: echo "${{ tojson(inputs) }}" > /dev/stderr
 
-  build-dummy:
-    if: ${{ !inputs.windows && !inputs.flatpak }}
-    steps:
-      - run: echo "dummy" > dummy 
-      - uses: actions/upload-artifact@v3
-        with:
-          path: dummy
-          name: dummy
-
-
   build-wine:
     if: ${{ inputs.windows }}
     uses: ./.forgejo/workflows/wix.yaml

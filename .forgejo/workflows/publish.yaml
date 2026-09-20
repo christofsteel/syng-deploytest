@@ -24,6 +24,8 @@ on:
       repo_name:
         required: true
         type: string
+      windows:
+        type: boolean
       flatpak:
         required: true
         type: boolean
@@ -87,6 +89,7 @@ jobs:
       - name: ensure dist
         run: mkdir dist/
       - name: download artifact
+        if: ${{ inputs.windows || inputs.flatpak }}
         uses: actions/download-artifact@v3
         with:
           path: dist

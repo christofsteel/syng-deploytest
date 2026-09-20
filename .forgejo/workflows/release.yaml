@@ -71,6 +71,7 @@ jobs:
       flatpak: ${{ inputs.flatpak }}
       docker: ${{ inputs.docker }}
       pypi: ${{ inputs.pypi }}
+      windows: ${{ inputs.windows }}
     secrets: inherit
 
   cleanup:
