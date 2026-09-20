@@ -16,6 +16,21 @@ on:
         required: false
         type: boolean
         default: true
+      windows:
+        description: "Build Windows"
+        required: false
+        type: boolean
+        default: true
+      docker:
+        description: "Build Docker"
+        required: false
+        type: boolean
+        default: true
+      pypi:
+        description: "Publish on PyPI"
+        required: false
+        type: boolean
+        default: true
 
 jobs:
   print-inputs-release:
@@ -40,6 +55,8 @@ jobs:
       commit: ${{ needs.prepare.outputs.commit }}
       image_name: christofsteel/syngtesting
       flatpak: ${{ inputs.flatpak }}
+      windows: ${{ inputs.windows }}
+      docker: ${{ inputs.docker }}
 
   publish:
     needs: [build, prepare]
@@ -52,6 +69,8 @@ jobs:
       flatpak_repo: christofsteel/testrepo
       repo_name: christofsteel/syng-deploytest
       flatpak: ${{ inputs.flatpak }}
+      docker: ${{ inputs.docker }}
+      pypi: ${{ inputs.pypi }}
     secrets: inherit
 
   cleanup:

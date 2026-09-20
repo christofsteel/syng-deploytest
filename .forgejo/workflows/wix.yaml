@@ -20,6 +20,8 @@ on:
         description: 'commit hash'
         required: true
         type: string
+      windows:
+        type: boolean
 
 
 jobs:

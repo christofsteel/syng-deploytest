@@ -27,10 +27,15 @@ on:
       flatpak:
         required: true
         type: boolean
+      docker:
+        type: boolean
+      pypi:
+        type: boolean
         
 
 jobs:
   publish-docker:
+    if: ${{ inputs.docker }}
     uses: ./.forgejo/workflows/docker.yaml
     with:
       version: ${{ inputs.version }}
@@ -38,6 +43,7 @@ jobs:
       push: "true"
       release: ${{ inputs.type }}
       image_name: ${{ inputs.image_name }}
+      docker: ${{ inputs.docker }}
     secrets: inherit
 
   publish-flathub:
@@ -56,7 +62,7 @@ jobs:
 
   publish-pypi:
     runs-on: ubuntu-latest
-    if: ${{ inputs.release == 'release' }}
+    if: ${{ inputs.release == 'release' && inputs.pypi}}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -87,7 +93,7 @@ jobs:
       - name: clean and flatten
         run: |
           rm -rf dist/flatpak-yaml-files || true
-          mv dist/**/* dist/
+          mv dist/**/* dist/ || true
           rmdir dist/* || true
       - run: |
           ls -alh dist/ >> /dev/stderr

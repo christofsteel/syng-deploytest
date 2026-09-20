@@ -46,6 +46,8 @@ on:
         description: 'commit hash'
         required: true
         type: string
+      docker:
+        type: boolean
 
 jobs:
   docker:
