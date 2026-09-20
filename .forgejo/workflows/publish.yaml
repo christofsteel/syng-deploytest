@@ -87,7 +87,9 @@ jobs:
         with:
           ref: ${{ inputs.commit }}
       - name: ensure dist
-        run: mkdir dist/
+        run: |
+          mkdir dist/
+          echo "TODO Changelog" >> dist/CHANGELOG.md
       - name: download artifact
         if: ${{ inputs.windows || inputs.flatpak }}
         uses: actions/download-artifact@v3
