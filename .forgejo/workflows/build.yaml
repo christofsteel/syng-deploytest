@@ -27,6 +27,11 @@ on:
         value: ${{ jobs.build-flatpak.outputs.artifact_url }}
 
 jobs:
+  print-inputs-build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ github.event.client_payload.message }} > /dev/stderr
+
   build-wine:
     uses: ./.forgejo/workflows/wix.yaml
     with:

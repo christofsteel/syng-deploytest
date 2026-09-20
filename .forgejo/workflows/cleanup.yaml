@@ -24,7 +24,7 @@ jobs:
   print-inputs-cleanup:
     runs-on: ubuntu-latest
     steps:
-      run: echo ${{ github.event.client_payload.message }} > /dev/stderr
+      - run: echo ${{ github.event.client_payload.message }} > /dev/stderr
 
   merge-and-bump:
     runs-on: ubuntu-latest
