@@ -15,6 +15,8 @@ on:
         description: 'commit hash'
         required: true
         type: string
+      flatpak:
+        type: boolean
 
 jobs:
   print-inputs-build-flatpak:
