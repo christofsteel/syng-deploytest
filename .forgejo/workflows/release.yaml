@@ -81,6 +81,8 @@ jobs:
       release: ${{ inputs.release }}
       commit: ${{ needs.prepare.outputs.commit }}
       flatpak: ${{ inputs.flatpak }}
+      version: ${{ needs.prepare.outputs.version }}
+    secrets: inherit
 
       
 

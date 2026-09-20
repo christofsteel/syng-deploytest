@@ -19,6 +19,8 @@ on:
         description: 'commit hash'
         required: true
         type: string
+      version:
+        type: string
 
 jobs:
   print-inputs-cleanup:
@@ -62,9 +64,9 @@ jobs:
         run: |
           git remote add codeberg https://christofsteel:${{ secrets.SYNG_CODEBERG }}@codeberg.org/${{ inputs.repo_name }}
           git remote add github https://${{ secrets.GH_TESTREPO_CONTENTS_WRITE }}@github.com/${{ inputs.repo_name }}
-          git push -d origin "release-${{steps.get-version.outputs.version}}"
-          git push -d github "release-${{steps.get-version.outputs.version}}"
-          git push -d codeberg "release-${{steps.get-version.outputs.version}}"
+          git push -d origin "release-${{ inputs.version}}"
+          git push -d github "release-${{ inputs.version }}"
+          git push -d codeberg "release-${{ inputs.version}}"
       - name: commit and push
         run: |
           git add pyproject.toml
