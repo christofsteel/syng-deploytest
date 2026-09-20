@@ -21,7 +21,7 @@ jobs:
   print-inputs-release:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ tojson(inputs) }} > /dev/stderr
+      - run: echo "${{ tojson(inputs) }}" > /dev/stderr
 
   prepare:
     uses: ./.forgejo/workflows/prepare.yaml

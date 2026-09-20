@@ -30,7 +30,7 @@ jobs:
   print-inputs-build:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ tojson(inputs) }} > /dev/stderr
+      - run: echo "${{ tojson(inputs) }}" > /dev/stderr
 
   build-wine:
     uses: ./.forgejo/workflows/wix.yaml

@@ -24,7 +24,7 @@ jobs:
   print-inputs-cleanup:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ tojson(inputs) }} > /dev/stderr
+      - run: echo "${{ tojson(inputs) }}" > /dev/stderr
 
   merge-and-bump:
     runs-on: ubuntu-latest

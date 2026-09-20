@@ -20,7 +20,7 @@ jobs:
   print-inputs-build-flatpak:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ tojson(inputs) }} > /dev/stderr
+      - run: echo "${{ tojson(inputs) }}" > /dev/stderr
 
   prepare-yaml-files:
     runs-on: privileged-ubuntu-latest
