@@ -32,12 +32,6 @@ on:
         type: boolean
         default: true
 
-env:
-  owner: christofsteel
-  repo_name: syng-deploytest
-
-  
-
 jobs:
   print-inputs-release:
     runs-on: ubuntu-latest
@@ -49,7 +43,7 @@ jobs:
     with:
       release: ${{ inputs.release }}
       flatpak: ${{ inputs.flatpak }}
-      repo_name: ${{ env.owner }}/${{ env.repo_name }}
+      repo_name: christofsteel/syng-deploytest
     secrets: inherit
 
   build:
