@@ -39,6 +39,8 @@ jobs:
       repo_name: syng-deploytest
       repo_user: christofsteel
       docker_user: christofsteel
+    steps:
+      - echo "Setting configuration"
 
   print-inputs-release:
     needs: set_configuration
