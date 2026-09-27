@@ -40,7 +40,7 @@ jobs:
       repo_user: christofsteel
       docker_user: christofsteel
     steps:
-      - echo "Setting configuration"
+      - run: echo "Setting configuration"
 
   print-inputs-release:
     needs: set_configuration
