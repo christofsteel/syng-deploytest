@@ -62,7 +62,7 @@ jobs:
       gh_user: ${{ needs.set_configuration.outputs.gh_user }}
       gh_pat: ${{ needs.set_configuration.outputs.gh_pat }}
       codeberg_user: ${{ needs.set_configuration.outputs.codeberg_user }}
-      codeberg_pat: ${{ needs.set_configuration.outputs.gh_pat }}
+      codeberg_pat: ${{ needs.set_configuration.outputs.codeberg_pat }}
 
     secrets: inherit
 
