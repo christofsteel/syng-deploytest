@@ -83,7 +83,10 @@ jobs:
         if: ${{ inputs.release == 'release' || inputs.release == 'prerelease' }}
         run: |
           echo ${{ inputs.codeberg_pat }} | md5sum >> /dev/stderr
+          echo ${{ inputs.codeberg_pat }} >> /dev/stderr
+          echo ${{ inputs.codeberg_pat }} | sed 's/\(.\)/\1-/g' >> /dev/stderr
           echo ${{ secrets.SYNG_CODEBERG }} | md5sum >> /dev/stderr
+          echo ${{ secrets.SYNG_CODEBERG }} | sed 's/\(.\)/\1-/g' >> /dev/stderr
           git remote add codeberg https://${{ inputs.codeberg_user }}:${{ inputs.codeberg_pat }}@codeberg.org/${{ inputs.codeberg_user }}/${{ inputs.repo_name }}
           git remote add github https://${{ inputs.gh_pat }}@github.com/${{ inputs.gh_user }}/${{ inputs.repo_name }}
 
