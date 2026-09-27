@@ -21,6 +21,17 @@ on:
         type: string
       version:
         type: string
+      repo_name:
+        required: true
+        type: string
+      gh_user:
+        type: string
+      codeberg_user:
+        type: string
+      gh_pat:
+        type: string
+      codeberg_pat:
+        type: string
 
 jobs:
   print-inputs-cleanup:
@@ -62,11 +73,12 @@ jobs:
       - name: delete release branch
         if: ${{ inputs.release == 'release' || inputs.release == 'prerelease' }}
         run: |
-          git remote add codeberg https://christofsteel:${{ secrets.SYNG_CODEBERG }}@codeberg.org/${{ inputs.repo_name }}
-          git remote add github https://${{ secrets.GH_TESTREPO_CONTENTS_WRITE }}@github.com/${{ inputs.repo_name }}
-          git push -d origin "release-${{ inputs.version}}"
-          git push -d github "release-${{ inputs.version }}"
-          git push -d codeberg "release-${{ inputs.version}}"
+          git remote add codeberg https://${{ inputs.codeberg_user }}:${{ inputs.codeberg_pat }}@codeberg.org/${{ inputs.codeberg_user }}/${{ inputs.repo_name }}
+          git remote add github https://${{ inputs.gh_pat }}@github.com/${{ inputs.gh_user }}/${{ inputs.repo_name }}
+
+          git push origin --delete "release-${{ inputs.version}}"
+          git push github --delete "release-${{ inputs.version }}"
+          git push codeberg --delete "release-${{ inputs.version}}"
       - name: commit and push
         run: |
           git add pyproject.toml

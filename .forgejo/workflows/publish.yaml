@@ -55,6 +55,10 @@ on:
         type: string
       pypi:
         type: boolean
+      pypi_key:
+        type: string
+      pypi_publish_args:
+        type: string
         
 
 jobs:
@@ -102,7 +106,7 @@ jobs:
       - name: Upload to pypi-test
         run: |
           uv build
-          uv publish --index testpypi --token ${{ secrets.SYNG_PYPI_TEST }}
+          uv publish ${{ inputs.pypi_publish_args }} --token ${{ inputs.pypi_key }}
 
   publish-release:
     runs-on: ubuntu-latest

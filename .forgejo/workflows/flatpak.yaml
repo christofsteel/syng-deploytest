@@ -50,7 +50,6 @@ jobs:
       
   build-flatpak:
     needs: prepare-yaml-files
-    if: false # TODO
     runs-on: privileged-ubuntu-latest
     container: 
       image: git.k-fortytwo.de/christofsteel/syng-flatpakbuilder:1.0.0

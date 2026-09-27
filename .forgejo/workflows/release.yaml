@@ -49,8 +49,11 @@ jobs:
       docker_remote_registry: ghcr.io
       docker_remote_key: ${{ secrets.GHCR_PUSH }}
 
-      flatpak_remote_repo: flathub/rocks.syng.Syng
+      flatpak_remote_repo: christofsteel/testrepo #flathub/rocks.syng.Syng
       flatpak_remote_pat: ${{ secrets.SYNG_FLATHUB_REPO }}
+
+      pypi_key: ${{ secrets.SYNG_PYPI_TEST }}
+      pypi_publish_args: "--index testpypi"
 
     steps:
       - run: echo "Setting configuration"
@@ -116,7 +119,8 @@ jobs:
       gh_pat: ${{ needs.set_configuration.outputs.gh_pat }}
       codeberg_user: ${{ needs.set_configuration.outputs.codeberg_user }}
       codeberg_pat: ${{ needs.set_configuration.outputs.codeberg_pat }}
-    secrets: inherit
+      pypi_publish_args: ${{ needs.set_configuration.outputs.pypi_publish_args }}
+      pypi_key: ${{ needs.set_configuration.outputs.pypi_key }}
 
   cleanup:
     needs: [prepare, publish]
@@ -126,7 +130,11 @@ jobs:
       commit: ${{ needs.prepare.outputs.commit }}
       flatpak: ${{ inputs.flatpak }}
       version: ${{ needs.prepare.outputs.version }}
-    secrets: inherit
+      repo_name: ${{ needs.set_configuration.outputs.repo_name }}
+      gh_user: ${{ needs.set_configuration.outputs.gh_user }}
+      gh_pat: ${{ needs.set_configuration.outputs.gh_pat }}
+      codeberg_user: ${{ needs.set_configuration.outputs.codeberg_user }}
+      codeberg_pat: ${{ needs.set_configuration.outputs.codeberg_pat }}
 
       
 
@@ -139,8 +147,8 @@ jobs:
         uses: actions/checkout@v4        
       - name: Remove Branch
         run: |
-          git remote add codeberg https://christofsteel:${{ secrets.SYNG_CODEBERG }}@codeberg.org/${{ inputs.repo_name }}
-          git remote add github https://${{ secrets.GH_TESTREPO_CONTENTS_WRITE }}@github.com/${{ inputs.repo_name }}
+          git remote add codeberg https://${{ inputs.codeberg_user }}:${{ inputs.codeberg_pat }}@codeberg.org/${{ inputs.codeberg_user }}/${{ inputs.repo_name }}
+          git remote add github https://${{ inputs.gh_pat }}@github.com/${{ inputs.gh_user }}/${{ inputs.repo_name }}
 
           git push origin --delete release-${{needs.prepare.outputs.version}} || true
           git push origin --delete v${{needs.prepare.outputs.version}} || true
