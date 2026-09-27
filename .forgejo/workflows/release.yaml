@@ -86,6 +86,8 @@ jobs:
       docker_username: ${{ needs.set_configuration.outputs.docker_user }}
       docker_local_registry: ${{ needs.set_configuration.outputs.docker_local_registry }}
       docker_remote_registry: ${{ needs.set_configuration.outputs.docker_remote_registry }}
+      docker_remote_key: ${{ needs.set_configuration.outputs.docker_remote_key }}
+
 
   publish:
     needs: [build, prepare, set_configuration]

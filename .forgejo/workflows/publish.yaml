@@ -39,6 +39,10 @@ on:
         type: string
       docker_remote_registry:
         type: string
+      docker_local_key:
+        type: string
+      docker_remote_key:
+        type: string
       pypi:
         type: boolean
         
@@ -57,6 +61,8 @@ jobs:
       image_name: ${{ inputs.docker_image_name }}
       local_registry: ${{ inputs.docker_local_registry }}
       remote_registry: ${{ inputs.docker_remote_registry }}
+      local_key: ${{ inputs.docker_local_key }}
+      remote_key: ${{ inputs.docker_remote_key }}
 
   publish-flathub:
     if: ${{ inputs.flatpak }}
