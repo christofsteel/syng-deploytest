@@ -63,6 +63,8 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
+      - name: print inputs
+        run: echo "${{ tojson(inputs) }}" > /dev/stderr
       - name: check out repo
         uses: actions/checkout@v4
         with:
