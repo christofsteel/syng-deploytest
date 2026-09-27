@@ -41,6 +41,7 @@ jobs:
       codeberg_user: christofsteel
       gh_pat: ${{ secrets.GH_TESTREPO_CONTENTS_WRITE }}
       codeberg_pat: ${{ secrets.SYNG_CODEBERG }}
+
       docker_user: christofsteel
       docker_image: christofsteel/syngtesting
       docker_local_registry: git.k-fortytwo.de
@@ -70,8 +71,6 @@ jobs:
       codeberg_user: ${{ needs.set_configuration.outputs.codeberg_user }}
       codeberg_pat: ${{ needs.set_configuration.outputs.codeberg_pat }}
 
-    secrets: inherit
-
   build:
     needs: [set_configuration, prepare]
     uses: ./.forgejo/workflows/build.yaml
@@ -86,6 +85,7 @@ jobs:
       docker_username: ${{ needs.set_configuration.outputs.docker_user }}
       docker_local_registry: ${{ needs.set_configuration.outputs.docker_local_registry }}
       docker_remote_registry: ${{ needs.set_configuration.outputs.docker_remote_registry }}
+      docker_local_key: ${{ needs.set_configuration.outputs.docker_local_key }}
       docker_remote_key: ${{ needs.set_configuration.outputs.docker_remote_key }}
 
 

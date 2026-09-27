@@ -78,7 +78,8 @@ jobs:
       - name: Build Flatpak Artifact
         if: steps.cache-flatpak.outputs.cache-hit != 'true'
         run: |
-          flatpak build-bundle /workspace/christofsteel/syng-deploytest/repo "rocks.syng.Syng.flatpak" "rocks.syng.Syng"
+          # flatpak build-bundle /workspace/christofsteel/syng-deploytest/repo "rocks.syng.Syng.flatpak" "rocks.syng.Syng"
+          flatpak build-bundle /repo "rocks.syng.Syng.flatpak" "rocks.syng.Syng"
           mv rocks.syng.Syng.flatpak rocks.syng.Syng-${{ inputs.version }}-x86_64.flatpak
 
       - name: Upload Flatpak artifact
