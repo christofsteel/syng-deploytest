@@ -33,30 +33,41 @@ on:
         default: true
 
 jobs:
+  set_configuration:
+    runs-on: ubuntu-latest
+    outputs:
+      repo_name: syng-deploytest
+      repo_user: christofsteel
+      docker_user: christofsteel
+
   print-inputs-release:
+    needs: set_configuration
     runs-on: ubuntu-latest
     steps:
       - run: echo "${{ tojson(inputs) }}" > /dev/stderr
+      - run: echo "${{ tojson(needs.set_configuration.outputs) }}" >> /dev/stderr
 
   prepare:
+    needs: set_configuration
     uses: ./.forgejo/workflows/prepare.yaml
     with:
       release: ${{ inputs.release }}
       flatpak: ${{ inputs.flatpak }}
-      repo_name: christofsteel/syng-deploytest
+      repo_name: ${{ needs.set_configuration.outputs.repo_user }}/${{ needs.set_configuration.outputs.repo_name }}
     secrets: inherit
 
   build:
-    needs: prepare
+    needs: [set_configuration, prepare]
     uses: ./.forgejo/workflows/build.yaml
     with:
       release: ${{ inputs.release }}
       version: ${{ needs.prepare.outputs.version }}
       commit: ${{ needs.prepare.outputs.commit }}
-      image_name: christofsteel/syngtesting
       flatpak: ${{ inputs.flatpak }}
       windows: ${{ inputs.windows }}
       docker: ${{ inputs.docker }}
+      image_name: christofsteel/syngtesting
+      username: ${{ needs.set_configuration.outputs.docker_user }}
 
   publish:
     needs: [build, prepare]
@@ -66,12 +77,12 @@ jobs:
       version: ${{ needs.prepare.outputs.version }}
       commit: ${{ needs.prepare.outputs.commit }}
       image_name: christofsteel/syngtesting
-      flatpak_repo: christofsteel/testrepo
-      repo_name: christofsteel/syng-deploytest
       flatpak: ${{ inputs.flatpak }}
       docker: ${{ inputs.docker }}
       pypi: ${{ inputs.pypi }}
       windows: ${{ inputs.windows }}
+      flatpak_repo: christofsteel/testrepo
+      repo_name: christofsteel/syng-deploytest
     secrets: inherit
 
   cleanup:

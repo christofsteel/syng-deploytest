@@ -48,6 +48,8 @@ on:
         type: string
       docker:
         type: boolean
+      username:
+        type: string
 
 jobs:
   docker:
@@ -57,9 +59,9 @@ jobs:
         run: |
           echo "IMAGE_NAME=${{ inputs.image_name }}" >> ${GITHUB_ENV}
           echo "REGISTRY=git.k-fortytwo.de" >> ${GITHUB_ENV}
-          echo "USERNAME=christofsteel" >> ${GITHUB_ENV}
+          echo "USERNAME=${{ inputs.username }}" >> ${GITHUB_ENV}
           echo "REGISTRY2=ghcr.io" >> ${GITHUB_ENV}
-          echo "USERNAME2=christofsteel" >> ${GITHUB_ENV}
+          echo "USERNAME2=${{ inputs.username }}" >> ${GITHUB_ENV}
 
       - name: check out repo
         uses: actions/checkout@v4
