@@ -22,6 +22,14 @@ on:
       repo_name:
         required: true
         type: string
+      gh_user:
+        type: string
+      codeberg_user:
+        type: string
+      gh_pat:
+        type: string
+      codeberg_pat:
+        type: string
     outputs:
       version: 
         value: ${{ jobs.update-version.outputs.version }}
@@ -74,8 +82,8 @@ jobs:
       - name: Create release-branch
         if: ${{ inputs.release == 'release' || inputs.release == 'prerelease' }}
         run: |
-          git remote add codeberg https://christofsteel:${{ secrets.SYNG_CODEBERG }}@codeberg.org/${{ inputs.repo_name }}
-          git remote add github https://${{ secrets.GH_TESTREPO_CONTENTS_WRITE }}@github.com/${{ inputs.repo_name }}
+          git remote add codeberg https://${{ inputs.codeberg_user }}:${{ inputs.codeberg_pat }}@codeberg.org/${{ inputs.codeberg_user }}/${{ inputs.repo_name }}
+          git remote add github https://${{ inputs.gh_pat }}@github.com/${{ inputs.gh_user }}/${{ inputs.repo_name }}
 
           git checkout -b "release-${{steps.get-version.outputs.version}}"
           git push origin "release-${{steps.get-version.outputs.version}}"

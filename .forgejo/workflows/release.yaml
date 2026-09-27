@@ -37,8 +37,11 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       repo_name: syng-deploytest
-      repo_user: christofsteel
+      gh_user: christofsteel
       docker_user: christofsteel
+      codeberg_user: christofsteel
+      gh_pat: ${{ secrets.GH_TESTREPO_CONTENTS_WRITE }}
+      codeberg_pat: ${{ secrets.SYNG_CODEBERG }}
     steps:
       - run: echo "Setting configuration"
 
@@ -55,7 +58,12 @@ jobs:
     with:
       release: ${{ inputs.release }}
       flatpak: ${{ inputs.flatpak }}
-      repo_name: ${{ needs.set_configuration.outputs.repo_user }}/${{ needs.set_configuration.outputs.repo_name }}
+      repo_name: ${{ needs.set_configuration.outputs.repo_name }}
+      gh_user: ${{ needs.set_configuration.outputs.gh_user }}
+      gh_pat: ${{ needs.set_configuration.outputs.gh_pat }}
+      codeberg_user: ${{ needs.set_configuration.outputs.codeberg_user }}
+      codeberg_pat: ${{ needs.set_configuration.outputs.gh_pat }}
+
     secrets: inherit
 
   build:
