@@ -49,7 +49,7 @@ jobs:
       docker_remote_registry: ghcr.io
       docker_remote_key: ${{ secrets.GHCR_PUSH }}
 
-      flatpak_remote_repo: christofsteel/testrepo
+      flatpak_remote_repo: flathub/rocks.syng.Syng
       flatpak_remote_pat: ${{ secrets.SYNG_FLATHUB_REPO }}
 
     steps:
