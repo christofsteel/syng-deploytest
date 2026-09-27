@@ -48,7 +48,10 @@ jobs:
       docker_local_key: ${{ secrets.FJCR_PUSH }}
       docker_remote_registry: ghcr.io
       docker_remote_key: ${{ secrets.GHCR_PUSH }}
-      
+
+      flatpak_remote_repo: christofsteel/testrepo
+      flatpak_remote_pat: ${{ secrets.SYNG_FLATHUB_REPO }}
+
     steps:
       - run: echo "Setting configuration"
 
@@ -106,8 +109,13 @@ jobs:
       docker_remote_key: ${{ needs.set_configuration.outputs.docker_remote_key }}
       pypi: ${{ inputs.pypi }}
       windows: ${{ inputs.windows }}
-      flatpak_repo: christofsteel/testrepo
-      repo_name: christofsteel/syng-deploytest
+      flatpak_repo: ${{ needs.set_configuration.outputs.flatpak_remote_repo }}
+      flatpak_remote_pat: ${{ needs.set_configuration.outputs.flatpak_remote_pat }}
+      repo_name: ${{ needs.set_configuration.outputs.repo_name }}
+      gh_user: ${{ needs.set_configuration.outputs.gh_user }}
+      gh_pat: ${{ needs.set_configuration.outputs.gh_pat }}
+      codeberg_user: ${{ needs.set_configuration.outputs.codeberg_user }}
+      codeberg_pat: ${{ needs.set_configuration.outputs.codeberg_pat }}
     secrets: inherit
 
   cleanup:
