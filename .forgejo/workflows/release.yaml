@@ -38,10 +38,14 @@ jobs:
     outputs:
       repo_name: syng-deploytest
       gh_user: christofsteel
-      docker_user: christofsteel
       codeberg_user: christofsteel
       gh_pat: ${{ secrets.GH_TESTREPO_CONTENTS_WRITE }}
       codeberg_pat: ${{ secrets.SYNG_CODEBERG }}
+      docker_user: christofsteel
+      docker_image: christofsteel/syngtesting
+      docker_local_registry: git.k-fortytwo.de
+      docker_remote_registry: ghcr.io
+      
     steps:
       - run: echo "Setting configuration"
 
@@ -76,19 +80,24 @@ jobs:
       flatpak: ${{ inputs.flatpak }}
       windows: ${{ inputs.windows }}
       docker: ${{ inputs.docker }}
-      image_name: christofsteel/syngtesting
-      username: ${{ needs.set_configuration.outputs.docker_user }}
+      docker_image_name: ${{ needs.set_configuration.outputs.docker_image }}
+      docker_username: ${{ needs.set_configuration.outputs.docker_user }}
+      docker_local_registry: ${{ needs.set_configuration.outputs.docker_local_registry }}
+      docker_remote_registry: ${{ needs.set_configuration.outputs.docker_remote_registry }}
 
   publish:
-    needs: [build, prepare]
+    needs: [build, prepare, set_configuration]
     uses: ./.forgejo/workflows/publish.yaml
     with:
       release: ${{ inputs.release }}
       version: ${{ needs.prepare.outputs.version }}
       commit: ${{ needs.prepare.outputs.commit }}
-      image_name: christofsteel/syngtesting
       flatpak: ${{ inputs.flatpak }}
       docker: ${{ inputs.docker }}
+      docker_image_name: ${{ needs.set_configuration.outputs.docker_image }}
+      docker_username: ${{ needs.set_configuration.outputs.docker_user }}
+      docker_local_registry: ${{ needs.set_configuration.outputs.docker_local_registry }}
+      docker_remote_registry: ${{ needs.set_configuration.outputs.docker_remote_registry }}
       pypi: ${{ inputs.pypi }}
       windows: ${{ inputs.windows }}
       flatpak_repo: christofsteel/testrepo

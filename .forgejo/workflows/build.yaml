@@ -27,6 +27,14 @@ on:
       docker:
         required: false
         type: boolean
+      docker_username:
+        type: string
+      docker_image_name:
+        type: string
+      docker_local_registry:
+        type: string
+      docker_remote_registry:
+        type: string
         
     outputs:
       flatpak_yaml_artifact_url:
@@ -54,8 +62,11 @@ jobs:
       commit: ${{ inputs.commit }}
       push: "false"
       release: ${{ inputs.release }}
-      image_name: ${{ inputs.image_name }}
       docker: ${{ inputs.docker }}
+      username: ${{ inputs.docker_username }}
+      image_name: ${{ inputs.docker_image_name }}
+      local_registry: ${{ inputs.docker_local_registry }}
+      remote_registry: ${{ inputs.docker_remote_registry }}
 
   build-flatpak:
     if: ${{ inputs.flatpak }}

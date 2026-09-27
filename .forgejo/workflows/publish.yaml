@@ -31,6 +31,14 @@ on:
         type: boolean
       docker:
         type: boolean
+      docker_username:
+        type: string
+      docker_image_name:
+        type: string
+      docker_local_registry:
+        type: string
+      docker_remote_registry:
+        type: string
       pypi:
         type: boolean
         
@@ -44,9 +52,11 @@ jobs:
       commit: ${{ inputs.sha }}
       push: "true"
       release: ${{ inputs.type }}
-      image_name: ${{ inputs.image_name }}
       docker: ${{ inputs.docker }}
-    secrets: inherit
+      username: ${{ inputs.docker_username }}
+      image_name: ${{ inputs.docker_image_name }}
+      local_registry: ${{ inputs.docker_local_registry }}
+      remote_registry: ${{ inputs.docker_remote_registry }}
 
   publish-flathub:
     if: ${{ inputs.flatpak }}

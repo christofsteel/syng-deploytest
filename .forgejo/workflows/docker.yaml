@@ -50,6 +50,10 @@ on:
         type: boolean
       username:
         type: string
+      local_registry:
+        type: string
+      remote_registry:
+        type: string
 
 jobs:
   docker:
@@ -57,11 +61,8 @@ jobs:
     steps:
       - name: set env
         run: |
-          echo "IMAGE_NAME=${{ inputs.image_name }}" >> ${GITHUB_ENV}
           echo "REGISTRY=git.k-fortytwo.de" >> ${GITHUB_ENV}
-          echo "USERNAME=${{ inputs.username }}" >> ${GITHUB_ENV}
           echo "REGISTRY2=ghcr.io" >> ${GITHUB_ENV}
-          echo "USERNAME2=${{ inputs.username }}" >> ${GITHUB_ENV}
 
       - name: check out repo
         uses: actions/checkout@v4
@@ -86,7 +87,7 @@ jobs:
           ;;
           esac
           echo ${TAGS[@]}
-          FULL_TAGS=$(for tag in ${TAGS[@]}; do echo ${{ env.REGISTRY2 }}/${{ env.IMAGE_NAME }}:${tag},${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${tag}; done | tr '\n' ',' | sed s/,$//)
+          FULL_TAGS=$(for tag in ${TAGS[@]}; do echo ${{ env.REGISTRY2 }}/${{ inputs.image_name }}:${tag},${{ env.REGISTRY }}/${{ inputs.image_name }}:${tag}; done | tr '\n' ',' | sed s/,$//)
           echo "TAGS=\"${FULL_TAGS}\"" >> "$GITHUB_OUTPUT"
       - name: Print tags
         run: echo ${{ steps.tagname.outputs.tags }}
@@ -97,14 +98,14 @@ jobs:
         uses: docker/login-action@v4
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ env.USERNAME }}
+          username: ${{ inputs.username }}
           password: ${{ secrets.FJCR_PUSH }}
       - name: Docker login (GH)
         if: ${{ inputs.push }}
         uses: docker/login-action@v4
         with:
           registry: ${{ env.REGISTRY2 }}
-          username: ${{ env.USERNAME2 }}
+          username: ${{ inputs.username }}
           password: ${{ secrets.GHCR_PUSH }}
       - name: Build and push
         uses: docker/build-push-action@v7
