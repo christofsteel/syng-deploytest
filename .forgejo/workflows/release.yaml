@@ -123,7 +123,7 @@ jobs:
       pypi_key: ${{ needs.set_configuration.outputs.pypi_key }}
 
   cleanup:
-    needs: [prepare, publish]
+    needs: [prepare, publish, set_configuration]
     uses: ./.forgejo/workflows/cleanup.yaml
     with:
       release: ${{ inputs.release }}
@@ -139,7 +139,7 @@ jobs:
       
 
   cleanup-fail:
-    needs: [prepare, publish]
+    needs: [prepare, publish, set_configuration]
     runs-on: ubuntu-latest
     if: ${{ failure() || cancelled() }}
     steps:
@@ -147,8 +147,8 @@ jobs:
         uses: actions/checkout@v4        
       - name: Remove Branch
         run: |
-          git remote add codeberg https://${{ inputs.codeberg_user }}:${{ inputs.codeberg_pat }}@codeberg.org/${{ inputs.codeberg_user }}/${{ inputs.repo_name }}
-          git remote add github https://${{ inputs.gh_pat }}@github.com/${{ inputs.gh_user }}/${{ inputs.repo_name }}
+          git remote add codeberg https://${{ needs.set_configuration.outputs.codeberg_user }}:${{ needs.set_configuration.outputs.codeberg_pat }}@codeberg.org/${{ needs.set_configuration.outputs.codeberg_user }}/${{ needs.set_configuration.outputs.repo_name }}
+          git remote add github https://${{ needs.set_configuration.outputs.gh_pat }}@github.com/${{ needs.set_configuration.outputs.gh_user }}/${{ needs.set_configuration.outputs.repo_name }}
 
           git push origin --delete release-${{needs.prepare.outputs.version}} || true
           git push origin --delete v${{needs.prepare.outputs.version}} || true
