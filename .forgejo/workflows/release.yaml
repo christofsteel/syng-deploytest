@@ -44,7 +44,9 @@ jobs:
       docker_user: christofsteel
       docker_image: christofsteel/syngtesting
       docker_local_registry: git.k-fortytwo.de
+      docker_local_key: ${{ secrets.FJCR_PUSH }}
       docker_remote_registry: ghcr.io
+      docker_remote_key: ${{ secrets.GHCR_PUSH }}
       
     steps:
       - run: echo "Setting configuration"
@@ -97,7 +99,9 @@ jobs:
       docker_image_name: ${{ needs.set_configuration.outputs.docker_image }}
       docker_username: ${{ needs.set_configuration.outputs.docker_user }}
       docker_local_registry: ${{ needs.set_configuration.outputs.docker_local_registry }}
+      docker_local_key: ${{ needs.set_configuration.outputs.docker_local_key }}
       docker_remote_registry: ${{ needs.set_configuration.outputs.docker_remote_registry }}
+      docker_remote_key: ${{ needs.set_configuration.outputs.docker_remote_key }}
       pypi: ${{ inputs.pypi }}
       windows: ${{ inputs.windows }}
       flatpak_repo: christofsteel/testrepo

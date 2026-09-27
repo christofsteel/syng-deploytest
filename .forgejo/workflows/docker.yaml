@@ -54,16 +54,15 @@ on:
         type: string
       remote_registry:
         type: string
+      local_key:
+        type: string
+      remote_key:
+        type: string
 
 jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
-      - name: set env
-        run: |
-          echo "REGISTRY=git.k-fortytwo.de" >> ${GITHUB_ENV}
-          echo "REGISTRY2=ghcr.io" >> ${GITHUB_ENV}
-
       - name: check out repo
         uses: actions/checkout@v4
         with:
@@ -97,16 +96,16 @@ jobs:
         if: ${{ inputs.push }}
         uses: docker/login-action@v4
         with:
-          registry: ${{ env.REGISTRY }}
+          registry: ${{ inputs.local_registry }}
           username: ${{ inputs.username }}
-          password: ${{ secrets.FJCR_PUSH }}
+          password: ${{ inputs.local_key }}
       - name: Docker login (GH)
         if: ${{ inputs.push }}
         uses: docker/login-action@v4
         with:
-          registry: ${{ env.REGISTRY2 }}
+          registry: ${{ inputs.remote_registry }}
           username: ${{ inputs.username }}
-          password: ${{ secrets.GHCR_PUSH }}
+          password: ${{ inputs.remote_key }}
       - name: Build and push
         uses: docker/build-push-action@v7
         with:
